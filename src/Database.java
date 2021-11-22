@@ -2,8 +2,10 @@ import java.sql.*;
 
 /**
  * Database Singleton class
- *
+ * <p>
  * Provides a single connection to the current database for other components to use.
+ *
+ * @author Kareem Morsy
  */
 public class Database {
     private static Database instance = null;
