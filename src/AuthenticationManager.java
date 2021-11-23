@@ -18,6 +18,10 @@ public class AuthenticationManager {
         return currentAccount;
     }
 
+    public void logout(){
+        currentAccount = null;
+    }
+
     public boolean register(Account acc) {
         Map<String, String> cred = new HashMap<>();
         cred.put("userName", acc.userName);
@@ -62,7 +66,7 @@ public class AuthenticationManager {
         else return false;
     }
 
-    public boolean login(Account acc) {
+    public boolean login(String username, String password) {
         //TODO Query DB & validate creds
         return true;
     }

@@ -61,4 +61,19 @@ public class RideManager {
             db.update("DELETE FROM offer WHERE ride_id ="+offer.getRequest().getId()+"AnD driver_id="+offer.getDriver().getUserName());
         }
     }
+
+    public boolean makeRequest(String source, String Destination, Customer account){
+        //TODO Create request and return true/false accordingly
+        return true;
+    }
+
+    public List<Request> getRequests(){
+        //TODO returns list of all requests
+        return new ArrayList<Request>();
+    }
+
+    public Driver getLastRideDriver(Customer account){
+        //TODO Return last ride's driver for user provided
+        return new Driver("", "", "", "", "");
+    }
 }
