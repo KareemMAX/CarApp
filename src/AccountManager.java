@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 
 public class AccountManager {
@@ -9,17 +8,17 @@ public class AccountManager {
         return singletonInstance;
     }
 
-    public ArrayList<Account> getAllAccounts(){
+    public <T extends Account> ArrayList<T> getAllAccounts(){
         //TODO
         return new ArrayList();
     }
 
-    public ArrayList<Account> getSuspendedAccounts(){
+    public <T extends Account> ArrayList<T> getSuspendedAccounts(){
         //TODO
         return new ArrayList();
     }
 
-    public void updateAccount(Account acc){
+    public <T extends Account> void updateAccount(T acc){
         //TODO Query DB with new values
     }
 }
