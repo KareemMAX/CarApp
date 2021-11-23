@@ -5,6 +5,7 @@ import java.util.List;
  */
 public class Request {
     private final RideManager rideManager = RideManager.getInstance();
+    private final int id;
     private final String source;
     private final String destination;
     private final Customer user;
@@ -15,10 +16,19 @@ public class Request {
      * @param destination The destination area of the request
      * @param user The requested {@link Customer}
      */
-    public Request(String source, String destination, Customer user) {
+    public Request(int id, String source, String destination, Customer user) {
         this.source = source;
         this.destination = destination;
         this.user = user;
+        this.id = id;
+    }
+
+    /**
+     * The database ID
+     * @return Request ID
+     */
+    public int getId() {
+        return id;
     }
 
     /**

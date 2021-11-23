@@ -140,6 +140,20 @@ public class Driver extends Account {
         return (float) sum / (float) rates.size();
     }
 
+    @Override
+    public String toString() {
+        return "Driver{" +
+                "userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", nationalID='" + nationalID + '\'' +
+                ", license='" + license + '\'' +
+                ", verified=" + verified +
+                ", favouriteAreas=" + favouriteAreas +
+                ", rates=" + rates +
+                "} " + super.toString();
+    }
+
     /**
      * Add new entry to the areas made favourite by this driver
      * @param newArea The new area to be added
