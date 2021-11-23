@@ -108,11 +108,11 @@ public class Driver extends Account {
     }
 
     /**
-     * sets the verified boolean value to true
-     * ie. makes him verified
+     * sets the verified boolean
+     * @param b intended value to set
      */
-    public void verify() {
-        this.verified = true;
+    public void setVerified(boolean b) {
+        this.verified = b;
     }
     //TODO needs implementation
     public void notify(Request request) {
@@ -169,4 +169,5 @@ public class Driver extends Account {
     public void deleteFavouriteArea(String area) {
         favouriteAreas.remove(area);
     }
+    public void setFavouriteAreas(List<String> areas) {this.favouriteAreas = areas;}
 }

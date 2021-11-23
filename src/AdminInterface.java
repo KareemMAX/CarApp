@@ -16,7 +16,7 @@ public class AdminInterface implements UserInterface {
         int choice = scan.nextInt();
         switch (choice){
             case 1 -> {
-                ArrayList<Driver> drivers = AccountManager.getInstance().getAllAccounts();
+                ArrayList<Driver> drivers = AccountManager.getInstance().getAllAccounts("Driver");
                 int counter = 1;
                 for (Driver driver : drivers){
                     System.out.print(counter);
@@ -28,7 +28,7 @@ public class AdminInterface implements UserInterface {
                 drivers.get(input - 1).setSuspended(!drivers.get(input - 1).suspended);
             }
             case 2 -> {
-                ArrayList<Customer> customers = AccountManager.getInstance().getAllAccounts();
+                ArrayList<Customer> customers = AccountManager.getInstance().getAllAccounts("Customer");
                 int counter = 1;
                 for (Customer customer : customers){
                     System.out.print(counter);

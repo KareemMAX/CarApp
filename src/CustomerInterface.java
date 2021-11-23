@@ -22,7 +22,7 @@ public class CustomerInterface implements UserInterface {
                 String src = scan.nextLine();
                 System.out.print("Destination : ");
                 String dest = scan.nextLine();
-                if (RideManager.getInstance().makeRequest(src, dest, (Customer) AuthenticationManager.getInstance().getcurrentAccount())){
+                if (RideManager.getInstance().makeRequest(src, dest, (Customer) AuthenticationManager.getInstance().getCurrentAccount())){
                     System.out.println("Drivers has been notified with your request");
                     System.out.println("Pending offers ...");
                 }
@@ -32,10 +32,10 @@ public class CustomerInterface implements UserInterface {
             }
             case 2 -> {
                 //TODO Query past rides
-                Driver lastDriver = RideManager.getInstance().getLastRideDriver((Customer) AuthenticationManager.getInstance().getcurrentAccount());
+                Driver lastDriver = RideManager.getInstance().getLastRideDriver((Customer) AuthenticationManager.getInstance().getCurrentAccount());
                 System.out.print("Rating (Decimal value from 0 to 5) -> ");
                 float rateValue = scan.nextFloat();
-                lastDriver.rate((Customer) AuthenticationManager.getInstance().getcurrentAccount(), rateValue);
+                lastDriver.rate((Customer) AuthenticationManager.getInstance().getCurrentAccount(), rateValue);
             }
             case 3 -> {
                 AuthenticationManager.getInstance().logout();
