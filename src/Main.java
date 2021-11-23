@@ -16,7 +16,7 @@ public class Main {
         while (true){
             System.out.println("--- Car App ---");
             System.out.println("---------------");
-            if (AuthenticationManager.getInstance().getcurrentAccount() == null){
+            if (AuthenticationManager.getInstance().getCurrentAccount() == null){
                 System.out.println("1. Login");
                 System.out.println("2. Register");
                 System.out.println("3. Exit");
@@ -36,7 +36,7 @@ public class Main {
                 }
             }
             else {
-                AuthenticationManager.getInstance().getcurrentAccount().userInterface.userDashboard();
+                AuthenticationManager.getInstance().getCurrentAccount().userInterface.userDashboard();
                 scan.close();
             }
         }
@@ -51,7 +51,7 @@ public class Main {
         System.out.print("Password : ");
         String password = scan.nextLine();
         if (AuthenticationManager.getInstance().login(user, password)){
-            System.out.println("Welcome " + AuthenticationManager.getInstance().getcurrentAccount().getUserName());
+            System.out.println("Welcome " + AuthenticationManager.getInstance().getCurrentAccount().getUserName());
         }
         else{
             System.out.println("Invalid username and/or password");
@@ -83,11 +83,11 @@ public class Main {
                 }
                 if (null == email) {
                     if (AuthenticationManager.getInstance().register(new Customer(user, password, phoneNumber)))
-                        System.out.println("Welcome " + AuthenticationManager.getInstance().getcurrentAccount().getUserName());
+                        System.out.println("Welcome " + AuthenticationManager.getInstance().getCurrentAccount().getUserName());
                     else System.out.println("Something went wrong");
                 }
                 else if (AuthenticationManager.getInstance().register(new Customer(user, password, phoneNumber, email))) {
-                    System.out.println("Welcome " + AuthenticationManager.getInstance().getcurrentAccount().getUserName());
+                    System.out.println("Welcome " + AuthenticationManager.getInstance().getCurrentAccount().getUserName());
                 }
                 else System.out.println("Something went wrong");
 
@@ -111,12 +111,12 @@ public class Main {
                 String nationalId = scan.nextLine();
                 if (null == email) {
                     if (AuthenticationManager.getInstance().register(new Driver(user, password, phoneNumber, licence, nationalId)))
-                        System.out.println("Welcome " + AuthenticationManager.getInstance().getcurrentAccount().getUserName());
+                        System.out.println("Welcome " + AuthenticationManager.getInstance().getCurrentAccount().getUserName());
                     else System.out.println("Something went wrong");
 
                 }
                 else if (AuthenticationManager.getInstance().register(new Driver(user, password, phoneNumber, licence, nationalId, email))){
-                    System.out.println("Welcome " + AuthenticationManager.getInstance().getcurrentAccount().getUserName());
+                    System.out.println("Welcome " + AuthenticationManager.getInstance().getCurrentAccount().getUserName());
                 }
                 else System.out.println("Something went wrong");
             }

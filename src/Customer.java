@@ -55,6 +55,7 @@ public class Customer extends Account {
     public List<Offer> getPastRides() {
         return pastRides;
     }
+    public void setPastRides(List<Offer> rides) {this.pastRides = rides;}
 
     //TODO needs Implementation
     public void notify(Offer offer) {

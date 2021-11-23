@@ -26,7 +26,7 @@ public class RideManager {
                 Offer offer = new Offer(
                         request,
                         table.getFloat("price"),
-                        accountManager.getAccount(table.getString("driver_id"))
+                        (Driver) accountManager.getAccount(table.getString("driver_id"))
                 );
 
                 result.add(offer);

@@ -11,7 +11,7 @@ public class DriverInterface implements UserInterface{
      * */
     @Override
     public void userDashboard() {
-        Driver currentAccount = (Driver) AuthenticationManager.getInstance().getcurrentAccount();
+        Driver currentAccount = (Driver) AuthenticationManager.getInstance().getCurrentAccount();
         System.out.println("1. Add Favourite Area");
         System.out.println("2. Show Requests");
         System.out.println("3. Show Ratings");
