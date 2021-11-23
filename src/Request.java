@@ -61,4 +61,9 @@ public class Request {
     public void makerOffer(Driver driver, float price) {
         rideManager.makeOffer(driver, this, price);
     }
+
+    @Override
+    public String toString(){
+        return "Source : " + source +" ,Destination : " + destination + " ,Username : " + user.getUserName();
+    }
 }

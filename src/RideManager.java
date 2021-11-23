@@ -25,6 +25,11 @@ public class RideManager {
         return true;
     }
 
+    public List<Request> getRequests(){
+        //TODO returns list of all requests
+        return new ArrayList<Request>();
+    }
+
     public Driver getLastRideDriver(Customer account){
         //TODO Return last ride's driver for user provided
         return new Driver("", "", "", "", "");

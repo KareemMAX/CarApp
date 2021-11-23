@@ -15,6 +15,10 @@ public class AuthenticationManager {
         return currentAccount;
     }
 
+    public void logout(){
+        currentAccount = null;
+    }
+
     public boolean register(Account acc) {
         Map<String, String> cred = new HashMap<>();
         cred.put("userName", acc.userName);

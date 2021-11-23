@@ -14,6 +14,7 @@ public class CustomerInterface implements UserInterface {
     public void userDashboard() {
         System.out.println("1. Request ride");
         System.out.println("2. Rate most frequent driver");
+        System.out.println("3. Logout");
         int choice = scan.nextInt();
         switch (choice){
             case 1 -> {
@@ -35,6 +36,9 @@ public class CustomerInterface implements UserInterface {
                 System.out.print("Rating (Decimal value from 0 to 5) -> ");
                 float rateValue = scan.nextFloat();
                 lastDriver.rate((Customer) AuthenticationManager.getInstance().getcurrentAccount(), rateValue);
+            }
+            case 3 -> {
+                AuthenticationManager.getInstance().logout();
             }
         }
     }
