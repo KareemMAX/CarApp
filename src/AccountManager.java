@@ -13,6 +13,11 @@ public class AccountManager {
         return new ArrayList();
     }
 
+    public <T extends Account> T getAccount(String username) {
+        // TODO
+        return null;
+    }
+
     public <T extends Account> ArrayList<T> getSuspendedAccounts(){
         //TODO
         return new ArrayList();
