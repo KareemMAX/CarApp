@@ -89,3 +89,22 @@ public class RideManager {
         }
     }
 }
+/*import java.util.ArrayList;
+
+public class main {
+    public static void main(String [] args){
+        Driver d= new Driver("ana", "aaa", "sss", "ddd", "fff");
+        Customer user=new Customer("andrew", "21", "");
+        Request s=new Request(1, "misr", "giza",user);
+       RideManager  db = RideManager.getInstance();
+        ArrayList<Offer> result = new ArrayList<>();
+        result= (ArrayList<Offer>) db.listOffers(s);
+        System.out.println(result.size());
+        db.makeOffer(d,s,150);
+        db.makeOffer(d,s,123567978);
+
+
+
+    }
+}
+*/
