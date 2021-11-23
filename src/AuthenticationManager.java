@@ -36,7 +36,7 @@ public class AuthenticationManager {
         return true;
     }
 
-    public boolean login(Account acc) {
+    public boolean login(String username, String password) {
         //TODO Query DB & validate creds
         return true;
     }

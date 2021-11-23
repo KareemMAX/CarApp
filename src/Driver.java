@@ -13,17 +13,18 @@ public class Driver extends Account {
      * Creates a new driver account with the parameters as the account details
      * @param userName      The User name associated with this account
      * @param password      The Password associated with this account
-     * @param email         The E-Mail address associated with this account
      * @param phoneNumber   The Phone number associated with this account
      * @param licence       The License number associated with this account
      * @param nationalID    The National ID associated with this account
+     * @param email         The E-Mail address associated with this account
      */
-    public Driver(String userName, String password, String email, String phoneNumber, String licence, String nationalID) {
+    public Driver(String userName, String password, String phoneNumber, String licence, String nationalID, String email) {
         super(userName, password);
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.license = licence;
         this.nationalID = nationalID;
+        this.userInterface = new DriverInterface();
     }
 
     /**

@@ -18,6 +18,15 @@ public class RideManager {
     }
 
     public void setOfferAccepted(Offer offer, boolean accepted) {
+    }
 
+    public boolean makeRequest(String source, String Destination, Customer account){
+        //TODO Create request and return true/false accordingly
+        return true;
+    }
+
+    public Driver getLastRideDriver(Customer account){
+        //TODO Return last ride's driver for user provided
+        return new Driver("", "", "", "", "");
     }
 }
