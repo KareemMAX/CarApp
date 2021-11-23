@@ -2,9 +2,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * RideManager Singleton class
+ * <p>
+ * Provides a single connection to the current database for other components to use.
+ *
+ * @author Andrew Naseif
+ */
 public class RideManager {
     private static RideManager singletonInstance;
 
+    /**
+     * Gets the singleton instance of the class
+     * @return The active instance of the class
+     */
     public static RideManager getInstance() {
         if (singletonInstance == null) singletonInstance = new RideManager();
         return singletonInstance;
@@ -13,13 +25,16 @@ public class RideManager {
 
     private final Database db =Database.getInstance();
     private final AccountManager accountManager = AccountManager.getInstance();
-
+    /**
+     * Makes a query to the database to get al list of offers for a given request.
+     * if any error has happened during execution a stacktrace is printed.
+     * @param request The SQL will use it to make query.
+     * @return {@link ArrayList} if the execution happened successfully.
+     */
     public List<Offer> listOffers(Request request) {
         ResultSet table= db.query("SELECT * FROM offer\n" +
-                "right JOIN request ON offer.offer_id=request.request_id WHERE request.request_id=" + request.getId());
-
+                "right JOIN request ON offer.ride_id=request.request_id WHERE ride_id=" + request.getId());
         ArrayList<Offer> result = new ArrayList<>();
-
         try
         {
             while (table.next()) {
@@ -28,7 +43,6 @@ public class RideManager {
                         table.getFloat("price"),
                         (Driver) accountManager.getAccount(table.getString("driver_id"))
                 );
-
                 result.add(offer);
             }
         }
@@ -38,9 +52,15 @@ public class RideManager {
 
         return result;
     }
+    /**
+     * Makes a query to the database to insert new offer in database.
+     * @param driver The SQL will use it to know who make this offer.
+     * @param request The SQL will use it to make offer for this request.
+     * @param price  it is the price of ride.
+     */
     public void makeOffer(Driver driver, Request request, float price) {
         Offer offer = new Offer(request,price, driver);
-        StringBuilder sqlQuery = new StringBuilder("INSERT INTO offer (driver_id, accepted, ride_id, price)\n");
+        StringBuilder sqlQuery = new StringBuilder("INSERT INTO offer (driver_id,accepted,ride_id,price)\n");
         sqlQuery.append("VALUES (");
         sqlQuery.append("'").append(driver.getUserName()).append("',");
         sqlQuery.append(0).append(",");
@@ -49,6 +69,13 @@ public class RideManager {
         db.update(sqlQuery.toString());
         request.getUser().notify(offer);
     }
+
+    /**
+     * Makes a query to the database to insert new offer in database.
+     * @param offer used to which offer is checked
+     * @param accepted {@code true} all offers will be deleted excepted this offer.
+     * {@code  false}only this offer will be deleted
+     */
     public void setOfferAccepted(Offer offer, boolean accepted) {
         if(accepted){
             db.update("UPDATE offer \n" +
@@ -77,3 +104,22 @@ public class RideManager {
         return new Driver("", "", "", "", "");
     }
 }
+/*import java.util.ArrayList;
+
+public class main {
+    public static void main(String [] args){
+        Driver d= new Driver("ana", "aaa", "sss", "ddd", "fff");
+        Customer user=new Customer("andrew", "21", "");
+        Request s=new Request(1, "misr", "giza",user);
+       RideManager  db = RideManager.getInstance();
+        ArrayList<Offer> result = new ArrayList<>();
+        result= (ArrayList<Offer>) db.listOffers(s);
+        System.out.println(result.size());
+        db.makeOffer(d,s,150);
+        db.makeOffer(d,s,123567978);
+
+
+
+    }
+}
+*/

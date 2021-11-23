@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Car_App" id="Project-1d1a" database="MySql" >
+	<schema name="car_app" >
+		<table name="admin" prior="tbl_0" >
+			<column name="username" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="password" type="varchar" length="100" jt="12" />
+			<column name="suspended" type="bit" jt="-7" />
+			<index name="pk_admin_username" unique="PRIMARY_KEY" >
+				<column name="username" />
+			</index>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="customer" prior="cu" >
+			<column name="username" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="password" type="varchar" length="100" jt="12" />
+			<column name="email" type="varchar" length="100" jt="12" />
+			<column name="phone_number" type="varchar" length="100" jt="12" />
+			<column name="suspended" type="bit" jt="-7" />
+			<index name="pk_customer_username" unique="PRIMARY_KEY" >
+				<column name="username" />
+			</index>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="driver" prior="tbl_0" >
+			<column name="username" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="password" type="varchar" length="100" jt="12" />
+			<column name="email" type="varchar" length="100" jt="12" />
+			<column name="phonenumber" type="varchar" length="100" jt="12" />
+			<column name="national_id" type="varchar" length="100" jt="12" />
+			<column name="license" type="varchar" length="100" jt="12" />
+			<column name="suspended" type="bit" jt="-7" />
+			<column name="verified" type="bit" jt="-7" />
+			<index name="pk_driver_username" unique="PRIMARY_KEY" >
+				<column name="username" />
+			</index>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="favourite_places" prior="tbl_0" >
+			<column name="favourite_place" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="driver_id" type="varchar" length="100" jt="12" />
+			<index name="pk_favourite_places_favourite_place" unique="PRIMARY_KEY" >
+				<column name="favourite_place" />
+			</index>
+			<fk name="fk_favourite_places_driver" to_schema="car_app" to_table="driver" >
+				<fk_column name="driver_id" pk="username" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="offer" prior="tbl_0" >
+			<column name="offer_id" type="int" jt="4" mandatory="y" />
+			<column name="driver_id" type="varchar" length="100" jt="12" />
+			<column name="accepted" type="bit" jt="-7" />
+			<column name="ride_id" type="int" jt="4" />
+			<column name="price" type="float" jt="7" />
+			<index name="pk_offer_offer_id" unique="PRIMARY_KEY" >
+				<column name="offer_id" />
+			</index>
+			<fk name="fk_offer_driver" to_schema="car_app" to_table="request" >
+				<fk_column name="ride_id" pk="request_id" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="rate" prior="tbl_0" >
+			<column name="user_id" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="driver_id" type="varchar" length="100" jt="12" />
+			<column name="rate_value" type="float" jt="7" />
+			<index name="pk_rate_user_id" unique="PRIMARY_KEY" >
+				<column name="user_id" />
+			</index>
+			<fk name="fk_rate_driver" to_schema="car_app" to_table="driver" >
+				<fk_column name="driver_id" pk="username" />
+			</fk>
+			<fk name="fk_rate_customer" to_schema="car_app" to_table="customer" >
+				<fk_column name="user_id" pk="username" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="request" prior="tbl_0" >
+			<column name="request_id" type="int" jt="4" mandatory="y" />
+			<column name="source" type="varchar" length="100" jt="12" />
+			<column name="destination" type="varchar" length="100" jt="12" />
+			<column name="user_id" type="varchar" length="100" jt="12" />
+			<index name="pk_request_request_id" unique="PRIMARY_KEY" >
+				<column name="request_id" />
+			</index>
+			<fk name="fk_request_customer" to_schema="car_app" to_table="customer" >
+				<fk_column name="user_id" pk="username" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="tbl" />
+	</schema>
+	<layout name="Default Layout" id="Layout-158" show_relation="columns" >
+		<entity schema="car_app" name="admin" color="C1D8EE" x="224" y="384" />
+		<entity schema="car_app" name="customer" color="C1D8EE" x="768" y="160" />
+		<entity schema="car_app" name="driver" color="C1D8EE" x="352" y="48" />
+		<entity schema="car_app" name="favourite_places" color="C1D8EE" x="128" y="256" />
+		<entity schema="car_app" name="offer" color="C1D8EE" x="416" y="336" />
+		<entity schema="car_app" name="rate" color="C1D8EE" x="560" y="80" />
+		<entity schema="car_app" name="request" color="C1D8EE" x="640" y="320" />
+		<callout x="48" y="624" pointer="Round" >
+			<comment><![CDATA[DbSchema is disconnected from the database.
+New designed tables will be saved to project file and later can be create in any database.
+Right-click the layout to create new tables. Drop this callout from its context menu.]]></comment>
+		</callout>
+	</layout>
+</project>

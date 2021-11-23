@@ -26,7 +26,7 @@ CREATE TABLE driver
     username    varchar(100),
     password    varchar(100),
     email       varchar(100),
-    phone       varchar(100),
+    phonenumber varchar(100),
     national_id varchar(100),
     license     varchar(100),
     suspended   bit,
@@ -60,8 +60,8 @@ CREATE TABLE offer
     driver_id varchar(100),
     accepted   bit,
     ride_id   int,
-    PRIMARY KEY (offer_id),
     price     float,
+    PRIMARY KEY (offer_id),
     FOREIGN KEY (driver_id) REFERENCES driver (username),
     FOREIGN KEY (ride_id) REFERENCES request (request_id)
 );
