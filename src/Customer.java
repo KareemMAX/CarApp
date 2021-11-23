@@ -9,13 +9,14 @@ public class Customer extends Account {
      * Creates a new customer account with the parameters as the account details
      * @param userName      The User name associated with this account
      * @param password      The password associated with this account
-     * @param email         The E-mail address associated with this account
      * @param phoneNumber   The phone number associated with this account
+     * @param email         The E-mail address associated with this account
      */
-    public Customer(String userName, String password, String email, String phoneNumber) {
+    public Customer(String userName, String password, String phoneNumber, String email) {
         super(userName, password);
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.userInterface = new CustomerInterface();
     }
 
     /**

@@ -14,4 +14,9 @@ public class Rate {
     public Customer getUser() {
         return user;
     }
+
+    @Override
+    public String toString(){
+        return user.getUserName() + " : " + String.valueOf(rateValue);
+    }
 }
