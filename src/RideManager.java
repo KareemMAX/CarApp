@@ -113,8 +113,8 @@ public class RideManager {
                         table.getInt("request_id"),
                         table.getString("source"),
                         table.getString("destination"),
-                        dbA.getAccount(table.getString("user_id"))
-                        );
+                        (Customer) dbA.getAccount(table.getString("user_id"))
+                );
                 result.add(request);
             }
         }
