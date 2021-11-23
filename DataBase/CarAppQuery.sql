@@ -5,27 +5,24 @@ USE car_app;
 
 CREATE TABLE admin
 (
-    user_id   int IDENTITY (1,1),
     username  varchar(100),
     password  varchar(100),
     suspended bit,
-    PRIMARY KEY (user_id)
+    PRIMARY KEY (username)
 );
 
 CREATE TABLE customer
 (
-    customer_id  int IDENTITY (1,1),
     username     varchar(100),
     password     varchar(100),
     email        varchar(100),
     phone_number varchar(100),
     suspended    bit,
-    PRIMARY KEY (customer_id),
+    PRIMARY KEY (username),
 );
 
 CREATE TABLE driver
 (
-    driver_id   int IDENTITY (1,1),
     username    varchar(100),
     password    varchar(100),
     email       varchar(100),
@@ -34,17 +31,17 @@ CREATE TABLE driver
     license     varchar(100),
     suspended   bit,
     verified    bit,
-    PRIMARY KEY (driver_id),
+    PRIMARY KEY (username),
 );
 
 CREATE TABLE rate
 (
-    user_id    int,
-    driver_id  int,
+    user_id    varchar(100),
+    driver_id  varchar(100),
     rate_value float,
     PRIMARY KEY (user_id, driver_id),
-    FOREIGN KEY (driver_id) REFERENCES driver (driver_id),
-    FOREIGN KEY (user_id) REFERENCES customer (customer_id)
+    FOREIGN KEY (driver_id) REFERENCES driver (username),
+    FOREIGN KEY (user_id) REFERENCES customer (username)
 );
 
 CREATE TABLE request
@@ -52,35 +49,27 @@ CREATE TABLE request
     request_id  int IDENTITY (1,1),
     source      varchar(100),
     destination varchar(100),
-    user_id     int,
+    user_id     varchar(100),
     PRIMARY KEY (request_id),
-    FOREIGN KEY (user_id) REFERENCES customer (customer_id)
+    FOREIGN KEY (user_id) REFERENCES customer (username)
 );
 
 CREATE TABLE offer
 (
     offer_id  int IDENTITY (1,1),
-    driver_id int,
+    driver_id varchar(100),
+    accepted   bit,
     ride_id   int,
     PRIMARY KEY (offer_id),
-    price     int,
-    FOREIGN KEY (driver_id) REFERENCES driver (driver_id),
+    price     float,
+    FOREIGN KEY (driver_id) REFERENCES driver (username),
     FOREIGN KEY (ride_id) REFERENCES request (request_id)
 );
 
 CREATE TABLE favourite_places
 (
     favourite_place varchar(100),
-    driver_id       int,
+    driver_id       varchar(100),
     PRIMARY KEY (favourite_place, driver_id),
-    FOREIGN KEY (driver_id) REFERENCES driver (driver_id),
-);
-
-CREATE TABLE past_rides
-(
-    user_id  int,
-    offer_id int,
-    PRIMARY KEY (user_id, offer_id),
-    FOREIGN KEY (user_id) REFERENCES customer (customer_id),
-    FOREIGN KEY (offer_id) REFERENCES offer (offer_id)
+    FOREIGN KEY (driver_id) REFERENCES driver (username),
 );
