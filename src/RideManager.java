@@ -90,36 +90,55 @@ public class RideManager {
     }
 
     public boolean makeRequest(String source, String Destination, Customer account){
-        //TODO Create request and return true/false accordingly
+        if(source==null || Destination==null ||account.getUserName()==null){
+            return false;
+        }
+        StringBuilder sqlQuery = new StringBuilder("INSERT INTO request (source,destination,user_id)\n");
+        sqlQuery.append("VALUES (");
+        sqlQuery.append("'").append(source).append("',");
+        sqlQuery.append("'").append(Destination).append("',");
+        sqlQuery.append("'").append(account.getUserName()).append("');");
+        db.update(sqlQuery.toString());
         return true;
     }
 
     public List<Request> getRequests(){
-        //TODO returns list of all requests
-        return new ArrayList<Request>();
+        AccountManager dbA =AccountManager.getInstance();
+        ResultSet table= db.query("SELECT * FROM request");
+        ArrayList<Request> result = new ArrayList<>();
+        try
+        {
+            while (table.next()) {
+                Request request = new Request(
+                        table.getInt("request_id"),
+                        table.getString("source"),
+                        table.getString("destination"),
+                        dbA.getAccount(table.getString("user_id"))
+                        );
+                result.add(request);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
-
     public Driver getLastRideDriver(Customer account){
-        //TODO Return last ride's driver for user provided
+        // TO DO
         return new Driver("", "", "", "", "");
     }
 }
-/*import java.util.ArrayList;
-
-public class main {
-    public static void main(String [] args){
+ /*   public static void main(String [] args){
         Driver d= new Driver("ana", "aaa", "sss", "ddd", "fff");
         Customer user=new Customer("andrew", "21", "");
         Request s=new Request(1, "misr", "giza",user);
-       RideManager  db = RideManager.getInstance();
+        RideManager  db = RideManager.getInstance();
         ArrayList<Offer> result = new ArrayList<>();
         result= (ArrayList<Offer>) db.listOffers(s);
         System.out.println(result.size());
         db.makeOffer(d,s,150);
         db.makeOffer(d,s,123567978);
-
-
+        db.makeRequest("homee", "giza",user);
 
     }
-}
-*/
+}*/
