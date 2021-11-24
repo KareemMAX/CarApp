@@ -211,4 +211,7 @@ public class AccountManager {
             db.update(query);
         }
     }
+    public void addFavouriteArea(Driver driver,String area){
+        db.update("INSERT INTO favourite_places values('"+area+"','"+driver.getUserName()+"')");
+    }
 }

@@ -64,6 +64,7 @@ public class Customer extends Account {
      * @return A list of accepted offers
      */
     public List<Offer> getPastRides() {
+        initPastRidesFromDB();
         return pastRides;
     }
 
@@ -129,15 +130,15 @@ public class Customer extends Account {
         ArrayList<Offer> rides = new ArrayList<Offer>();
         ResultSet ridesTable = db.query("SELECT * FROM offer INNER JOIN request ON offer.ride_id = request.request_id\n" +
                 "WHERE offer.accepted = 'true' AND request.user_id = '" + getUserName() + "'");
-        ResultSet resultSet = db.query("SELECT username FROM customer WHERE username= '" + getUserName() + "' AND password = '" + password + "'");
         try {
             while (ridesTable.next()) {
                 Request request = new Request(ridesTable.getInt("request_id"), ridesTable.getString("source"),
                         ridesTable.getString("destination"), this);
-                Offer offer = new Offer(request, resultSet.getFloat("price"),
+                Offer offer = new Offer(request, ridesTable.getFloat("price"),
                         (Driver) AccountManager.getInstance().getAccount(ridesTable.getString("driver_id")));
                 rides.add(offer);
             }
+            pastRides=rides;
         } catch (java.sql.SQLException e) {
             System.out.println("SQL ERROR");
         }

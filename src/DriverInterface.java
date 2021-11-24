@@ -22,7 +22,7 @@ public class DriverInterface implements UserInterface {
         switch (choice) {
             case 1 -> {
                 System.out.print("Area : ");
-                String area = scan.nextLine();
+                String area = scan.next();
                 currentAccount.addFavouriteArea(area);
             }
             case 2 -> {
@@ -59,6 +59,6 @@ public class DriverInterface implements UserInterface {
                 AuthenticationManager.getInstance().logout();
             }
         }
-        //TODO
+
     }
 }

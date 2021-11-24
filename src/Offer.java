@@ -70,4 +70,14 @@ public class Offer {
         accepted = false;
         rideManager.setOfferAccepted(this, false);
     }
+
+    @Override
+    public String toString() {
+        return "Offer{" +
+                "request=" + request +
+                ", offerPrice=" + offerPrice +
+                ", driver=" + driver.getUserName() +
+                ", accepted=" + accepted +
+                '}';
+    }
 }

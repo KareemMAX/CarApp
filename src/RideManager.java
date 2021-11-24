@@ -91,7 +91,7 @@ public class RideManager {
                         " ride_id =" + offer.getRequest().getId() + "AnD driver_id= '" + offer.getDriver().getUserName()+"'");
                 db.update("DELETE FROM offer WHERE accepted=0 and  ride_id =" + offer.getRequest().getId()+";");
             } else {
-                db.update("DELETE FROM offer WHERE ride_id =" + offer.getRequest().getId() + "AnD driver_id=" + offer.getDriver().getUserName());
+                db.update("DELETE FROM offer WHERE ride_id =" + offer.getRequest().getId() + "AnD driver_id= '" + offer.getDriver().getUserName()+"'");
             }
 
         } catch (Exception e) {
@@ -127,7 +127,8 @@ public class RideManager {
      */
     public List<Request> getRequests() {
         AccountManager dbA = AccountManager.getInstance();
-        ResultSet table = db.query("SELECT * FROM request");
+        ResultSet table = db.query("SELECT distinct request_id, [source], destination, [user_id] FROM request LEFT jOIN  offer \n" +
+                "on request.request_id=offer.ride_id WHERE accepted !='true' or accepted is NULL ;");
         ArrayList<Request> result = new ArrayList<>();
         try {
             while (table.next()) {
@@ -144,33 +145,9 @@ public class RideManager {
         }
         return result;
     }
-    public List<Offer> getOffersForRequest(Request request){
-        ResultSet table= db.query("SELECT * from offer left join request\n" +
-                "on offer.ride_id="+request.getId());
-        ArrayList<Offer> result = new ArrayList<>();
-        try
-        {
-            while (table.next()) {
-                Offer offer = new Offer(
-                        request,
-                        table.getFloat("price"),
-                        (Driver) accountManager.getAccount(table.getString("driver_id"))
-                );
-                result.add(offer);
-            }
 
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
 
-    /**
-     * Gets the driver of the last ride of a customer
-     * @param account The customer account
-     * @return The driver of the last ride
-     */
+
 
     /**
      * @return Last ride driver for a certain customer
@@ -178,4 +155,8 @@ public class RideManager {
     public Driver getLastRideDriver(Customer account) {
         return account.getPastRides().get(account.getPastRides().size() - 1).getDriver();
     }
+    public void rate(Driver driver,Rate rate){
+        db.update("Insert Into rate values"+"('"+rate.getUser().getUserName()+"','"+driver.getUserName()+"',"+rate.getRateValue()+");");
+    }
+
 }

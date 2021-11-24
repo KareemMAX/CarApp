@@ -1,6 +1,5 @@
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * A driver account class
@@ -13,7 +12,7 @@ public class Driver extends Account {
     private String nationalID = "";
     private String license = "";
     private boolean verified = false;
-    private List<String> favouriteAreas;
+    private List<String> favouriteAreas = new ArrayList<>();
     private List<Rate> rates;
 
     /**
@@ -33,6 +32,7 @@ public class Driver extends Account {
         this.license = licence;
         this.nationalID = nationalID;
         this.userInterface = new DriverInterface();
+        this.rates = new ArrayList<>();
     }
 
     /**
@@ -50,6 +50,7 @@ public class Driver extends Account {
         this.phoneNumber = phoneNumber;
         this.license = licence;
         this.nationalID = nationalID;
+        this.rates = new ArrayList<>();
     }
 
     /**
@@ -113,6 +114,7 @@ public class Driver extends Account {
      * @return List of Rates
      */
     public List<Rate> getRates() {
+        initRatesFromDB();
         return rates;
     }
 
@@ -141,8 +143,10 @@ public class Driver extends Account {
         this.verified = b;
         AccountManager.getInstance().updateAccount(this);
     }
+
     /**
      * Notification function for the customer to notify
+     *
      * @param request The new supplied request from a customer
      */
     public void notify(Request request) {
@@ -156,7 +160,9 @@ public class Driver extends Account {
      * @param value    The numerical value of the rating
      */
     public void rate(Customer customer, float value) {
-        rates.add(new Rate(customer, value));
+        Rate rate = new Rate(customer, value);
+        rates.add(rate);
+        RideManager.getInstance().rate(this, rate);
     }
 
     /**
@@ -172,6 +178,7 @@ public class Driver extends Account {
                         myRates.getFloat("rate_value"));
                 rates.add(rate);
             }
+            this.rates = rates;
         } catch (java.sql.SQLException e) {
             System.out.println("SQL ERROR");
         }
@@ -196,15 +203,15 @@ public class Driver extends Account {
     /**
      * Get the average of all ratings submitted on this driver
      *
-     * @return  Average Rating
+     * @return Average Rating
      */
     public float getAverageRate() {
         if (rates == null || rates.size() == 0) return 0;
-        int sum = 0;
+        float sum = 0;
         for (Rate rate : rates) {
             sum += rate.getRateValue();
         }
-        return (float) sum / (float) rates.size();
+        return sum / (float) rates.size();
     }
 
     @Override
@@ -233,7 +240,9 @@ public class Driver extends Account {
      * @param newArea The new area to be added
      */
     public void addFavouriteArea(String newArea) {
+        AccountManager.getInstance().addFavouriteArea(this, newArea);
         favouriteAreas.add(newArea);
+
     }
 
     /**
@@ -250,7 +259,9 @@ public class Driver extends Account {
      *
      * @param areas
      */
-    public void setFavouriteAreas(List<String> areas) {this.favouriteAreas = areas;}
+    public void setFavouriteAreas(List<String> areas) {
+        this.favouriteAreas = areas;
+    }
 
     /**
      * updates the data concerning this account in the data base
