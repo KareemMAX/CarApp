@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
+ * @author Mohamed Ashraf
  * Provides interface for Driver Dashboard
  * */
 public class DriverInterface implements UserInterface{

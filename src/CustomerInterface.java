@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 /**
+ * @author Mohamed Ashraf
  * Provides interface for Customer Dashboard
  * */
 public class CustomerInterface implements UserInterface {
