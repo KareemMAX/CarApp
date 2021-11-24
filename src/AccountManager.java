@@ -181,17 +181,17 @@ public class AccountManager {
         if(account instanceof Customer customer) {
             if (customer.isSuspended())
                 db.update("UPDATE customer\n"+
-                        "SET username= '"+customer.getUserName()+"', password= '"+customer.password+"', email= '"+customer.getEmail()+"', phone_number= '"+customer.getPhoneNumber()+"'"
-                        + ", suspended= 'false'" );
+                        "SET password= '"+customer.password+"', email= '"+customer.getEmail()+"', phone_number= '"+customer.getPhoneNumber()+"'"
+                        + ", suspended= 'false' WHERE username= '"+customer.getUserName()+"'");
 
             else
                 db.update("UPDATE customer\n"+
-                        "SET username= '"+customer.getUserName()+"', password= '"+customer.password+"', email= '"+customer.getEmail()+"', phone_number= '"+customer.getPhoneNumber()+"'"
-                        + ", suspended= 'true'" );
+                        "SET password= '"+customer.password+"', email= '"+customer.getEmail()+"', phone_number= '"+customer.getPhoneNumber()+"'"
+                        + ", suspended= 'true' WHERE username= '" +customer.getUserName()+ "'");
         }
         else if (account instanceof Driver driver) {
             String query = "UPDATE driver\n"+
-                    "SET username= '"+ driver.getUserName()+"', password= '"+driver.password+"', email= '"+ driver.getEmail()+"', phonenumber= '"+driver.getPhoneNumber()+"'"
+                    "SET password= '"+driver.password+"', email= '"+ driver.getEmail()+"', phonenumber= '"+driver.getPhoneNumber()+"'"
                     +", national_id= '"+driver.getNationalID()+"', license= '"+driver.getNationalID()+"'";
             if (driver.isSuspended())
                 query+= ", suspended= 'true'";
@@ -200,6 +200,7 @@ public class AccountManager {
             if (driver.isVerified())
                 query+= ", verified= 'true'";
             else query+= ", verified= 'false'";
+            query+=" WHERE username= '"+driver.getUserName()+"'";
 
             db.update(query);
         }

@@ -83,8 +83,8 @@ public class RideManager {
                         "SET \n" +
                         "    accepted = 1\n" +
                         "WHERE\n" +
-                        " ride_id =" + offer.getRequest().getId() + "AnD driver_id=" + offer.getDriver().getUserName());
-                db.update("DELETE FROM offer WHERE accepted=0;\n");
+                        " ride_id =" + offer.getRequest().getId() + "AnD driver_id= '" + offer.getDriver().getUserName()+"'");
+                db.update("DELETE FROM offer WHERE accepted=0 and  ride_id =" + offer.getRequest().getId()+";");
             } else {
                 db.update("DELETE FROM offer WHERE ride_id =" + offer.getRequest().getId() + "AnD driver_id=" + offer.getDriver().getUserName());
             }
@@ -131,6 +131,27 @@ public class RideManager {
                 );
                 result.add(request);
             }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    public List<Offer> getOffersForRequest(Request request){
+        ResultSet table= db.query("SELECT * from offer left join request\n" +
+                "on offer.ride_id="+request.getId());
+        ArrayList<Offer> result = new ArrayList<>();
+        try
+        {
+            while (table.next()) {
+                Offer offer = new Offer(
+                        request,
+                        table.getFloat("price"),
+                        (Driver) accountManager.getAccount(table.getString("driver_id"))
+                );
+                result.add(offer);
+            }
+
         }
         catch (SQLException e) {
             e.printStackTrace();
