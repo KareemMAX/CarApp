@@ -79,27 +79,10 @@ public class Customer extends Account {
         return !isSuspended();
     }
 
-    /**
-     * updates the data concerning this account in the database
-     */
-    public void updateInDB()
-    {
-        Database db = Database.getInstance();
-        if (isSuspended())
-            db.update("UPDATE customer\n"+
-                    "SET username= '"+getUserName()+"', password= '"+password+"', email= '"+email+"', phone_number= '"+phoneNumber+"'"
-                    + ", suspended= 'false'" );
-
-        else
-            db.update("UPDATE customer\n"+
-                    "SET username= '"+getUserName()+"', password= '"+password+"', email= '"+email+"', phone_number= '"+phoneNumber+"'"
-                    + ", suspended= 'true'" );
-    }
-
     @Override
     void setSuspended(boolean b) {
         super.setSuspended(b);
-        this.updateInDB();
+        AccountManager.getInstance().updateAccount(this);
     }
 
     /**

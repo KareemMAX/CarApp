@@ -178,6 +178,30 @@ public class AccountManager {
      * @param account Account to be updated
      */
     public void updateAccount(Account account) {
-        //TODO
+        if(account instanceof Customer customer) {
+            if (customer.isSuspended())
+                db.update("UPDATE customer\n"+
+                        "SET username= '"+customer.getUserName()+"', password= '"+customer.password+"', email= '"+customer.getEmail()+"', phone_number= '"+customer.getPhoneNumber()+"'"
+                        + ", suspended= 'false'" );
+
+            else
+                db.update("UPDATE customer\n"+
+                        "SET username= '"+customer.getUserName()+"', password= '"+customer.password+"', email= '"+customer.getEmail()+"', phone_number= '"+customer.getPhoneNumber()+"'"
+                        + ", suspended= 'true'" );
+        }
+        else if (account instanceof Driver driver) {
+            String query = "UPDATE driver\n"+
+                    "SET username= '"+ driver.getUserName()+"', password= '"+driver.password+"', email= '"+ driver.getEmail()+"', phonenumber= '"+driver.getPhoneNumber()+"'"
+                    +", national_id= '"+driver.getNationalID()+"', license= '"+driver.getNationalID()+"'";
+            if (driver.isSuspended())
+                query+= ", suspended= 'true'";
+            else query+= ", suspended= 'false'";
+
+            if (driver.isVerified())
+                query+= ", verified= 'true'";
+            else query+= ", verified= 'false'";
+
+            db.update(query);
+        }
     }
 }

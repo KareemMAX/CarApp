@@ -124,11 +124,14 @@ public class Driver extends Account {
      */
     public void setVerified(boolean b) {
         this.verified = b;
-        updateInDB();
+        AccountManager.getInstance().updateAccount(this);
     }
-    //TODO needs implementation
+    /**
+     * Notification function for the customer to notify
+     * @param request The new supplied request from a customer
+     */
     public void notify(Request request) {
-
+        //TODO needs Implementation
     }
 
     /**
@@ -199,7 +202,7 @@ public class Driver extends Account {
     @Override
     void setSuspended(boolean b) {
         super.setSuspended(b);
-        this.updateInDB();
+        AccountManager.getInstance().updateAccount(this);
     }
 
     @Override
@@ -237,24 +240,4 @@ public class Driver extends Account {
      * @param areas
      */
     public void setFavouriteAreas(List<String> areas) {this.favouriteAreas = areas;}
-
-    /**
-     * updates the data concerning this account in the data base
-     */
-    public void updateInDB()
-    {
-        Database db = Database.getInstance();
-        String query = "UPDATE driver\n"+
-                 "SET username= '"+getUserName()+"', password= '"+password+"', email= '"+email+"', phonenumber= '"+phoneNumber+"'"
-                +", national_id= '"+nationalID+"', license= '"+license+"'";
-        if (isSuspended())
-             query+= ", suspended= 'true'";
-        else query+= ", suspended= 'false'";
-
-        if (verified)
-             query+= ", verified= 'true'";
-        else query+= ", verified= 'false'";
-
-        db.update(query);
-    }
 }

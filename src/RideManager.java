@@ -137,6 +137,12 @@ public class RideManager {
         }
         return result;
     }
+
+    /**
+     * Gets the driver of the last ride of a customer
+     * @param account The customer account
+     * @return The driver of the last ride
+     */
     public Driver getLastRideDriver(Customer account){
         return account.getPastRides().get(account.getPastRides().size()-1).getDriver();
     }
