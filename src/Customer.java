@@ -1,3 +1,5 @@
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Customer extends Account {
@@ -69,4 +71,49 @@ public class Customer extends Account {
     boolean ableToSignIn() {
         return !suspended;
     }
+
+    /**
+     * updates the data concerning this account in the data base
+     */
+    public void updateInDB()
+    {
+        Database db = Database.getInstance();
+        if (suspended)
+            db.update("UPDATE customer\n"+
+                    "SET username= '"+userName+"', password= '"+password+"', email= '"+email+"', phone_number= '"+phoneNumber+"'"
+                    + ", suspended= 'false'" );
+
+        else
+            db.update("UPDATE customer\n"+
+                    "SET username= '"+userName+"', password= '"+password+"', email= '"+email+"', phone_number= '"+phoneNumber+"'"
+                    + ", suspended= 'true'" );
+    }
+
+    /**
+     * initializes past rides array
+     */
+    public void initPastRidesFromDB()
+    {
+        Database db = Database.getInstance();
+        ArrayList<Offer> rides= new ArrayList<Offer>();
+        ResultSet ridesTable = db.query("SELECT * FROM offer INNER JOIN request ON offer.ride_id = request.request_id\n" +
+                "WHERE offer.accepted = 'true' AND request.user_id = '"+userName+"'");
+        ResultSet resultSet = db.query("SELECT username FROM customer WHERE username= '" + userName + "' AND password = '" + password + "'");
+        try
+        {
+            while (ridesTable.next())
+            {
+                Request request = new Request(ridesTable.getInt("request_id"),ridesTable.getString("source"),
+                        ridesTable.getString("destination"), this);
+                Offer offer     = new Offer(request,resultSet.getFloat("price"),
+                        (Driver)AccountManager.getInstance().getAccount(ridesTable.getString("driver_id")));
+                rides.add(offer);
+            }
+        }
+        catch (java.sql.SQLException e)
+        {
+            System.out.println("SQL ERROR");
+        }
+    }
+
 }

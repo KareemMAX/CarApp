@@ -100,18 +100,7 @@ public class AuthenticationManager {
             if (size !=0)
             {
                 currentAccount = AccountManager.getInstance().getAccount(username);
-                ArrayList<Offer> rides= new ArrayList<Offer>();
-                ResultSet ridesTable = db.query("SELECT * FROM offer INNER JOIN request ON offer.ride_id = request.request_id\n" +
-                                                        "WHERE offer.accepted = 'true' AND request.user_id = '"+username+"'");
-                while (ridesTable.next())
-                {
-                    Request request = new Request(ridesTable.getInt("request_id"),ridesTable.getString("source"),
-                                                  ridesTable.getString("destination"), (Customer) currentAccount);
-                    Offer offer     = new Offer(request,resultSet.getFloat("price"),
-                                            (Driver) AccountManager.getInstance().getAccount(ridesTable.getString("driver_id")));
-                    rides.add(offer);
-                }
-                ((Customer)currentAccount).setPastRides(rides);
+                ((Customer)currentAccount).initPastRidesFromDB();
 
                 return true;
             }
@@ -126,23 +115,10 @@ public class AuthenticationManager {
             {
                 currentAccount = AccountManager.getInstance().getAccount(username);
                 //init favourite areas
-                ArrayList<String> areas = new ArrayList<String>();
-                ResultSet areasTable = db.query("SELECT favourite_place FROM favourite_places WHERE driver_id = '"+ currentAccount.getUserName()+"'");
-
-                while (areasTable.next())
-                    areas.add(areasTable.getString("favourite_place"));
-                ((Driver)currentAccount).setFavouriteAreas(areas);
+                ((Driver)currentAccount).initFavouriteAreasFromDB();
 
                 //init rates
-                ArrayList<Rate> rates = new ArrayList<Rate>();
-                ResultSet myRates = db.query("SELECT * FROM rate WHERE driver_id = '"+currentAccount.getUserName()+"'");
-                while (myRates.next())
-                {
-                    Rate rate = new Rate((Customer) AccountManager.getInstance().getAccount(myRates.getString("user_ID")),
-                                                    myRates.getFloat("rate_value"));
-                    rates.add(rate);
-                }
-                ((Driver)currentAccount).setRates(rates);
+                ((Driver)currentAccount).initRatesFromDB();
                 return true;
             }
             else return false;
