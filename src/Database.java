@@ -12,6 +12,7 @@ public class Database {
 
     /**
      * Gets the singleton instance of the class
+     *
      * @return The active instance of the class
      */
     public static Database getInstance() {
@@ -37,6 +38,7 @@ public class Database {
      * Makes a query to the database that makes updates, such as {@code CREATE}, {@code UPDATE}, {@code INSERT},
      * {@code DELETE}. The function will return {@code true} if updated and {@code false} if any error has happened
      * during execution, also a stacktrace is printed if any error occurs.
+     *
      * @param sqlQuery The SQL query to be executed.
      * @return {@code true} if the execution happened successfully, {@code false} otherwise.
      */
@@ -51,11 +53,11 @@ public class Database {
     }
 
     /**
-     *  Makes a query to the database that makes queries, such as {@code SELECT}. The function will return a
-     *  {@link ResultSet} if the query is successful and {@code null} if any error has happened during execution,
-     *  also a stacktrace is printed if any error occurs.
-     *  <p>
-     *  Please note that {@link ResultSet} need to be closed after usage.
+     * Makes a query to the database that makes queries, such as {@code SELECT}. The function will return a
+     * {@link ResultSet} if the query is successful and {@code null} if any error has happened during execution,
+     * also a stacktrace is printed if any error occurs.
+     * <p>
+     * Please note that {@link ResultSet} need to be closed after usage.
      *
      * @param sqlQuery The SQL query to be queried.
      * @return a {@link ResultSet} if the query executed successfully, {@code null} otherwise.

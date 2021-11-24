@@ -4,12 +4,13 @@ import java.util.Scanner;
 /**
  * @author Mohamed Ashraf
  * Provides interface for Driver Dashboard
- * */
-public class DriverInterface implements UserInterface{
-    private Scanner scan = new Scanner(System.in);
+ */
+public class DriverInterface implements UserInterface {
+    private final Scanner scan = new Scanner(System.in);
+
     /**
      * Provides terminal interface for Driver Dashboard
-     * */
+     */
     @Override
     public void userDashboard() {
         Driver currentAccount = (Driver) AuthenticationManager.getInstance().getCurrentAccount();
@@ -18,7 +19,7 @@ public class DriverInterface implements UserInterface{
         System.out.println("3. Show Ratings");
         System.out.println("4. Logout");
         int choice = scan.nextInt();
-        switch (choice){
+        switch (choice) {
             case 1 -> {
                 System.out.print("Area : ");
                 String area = scan.nextLine();
@@ -27,7 +28,7 @@ public class DriverInterface implements UserInterface{
             case 2 -> {
                 ArrayList<Request> requests = (ArrayList<Request>) RideManager.getInstance().getRequests();
                 int counter = 1;
-                for (Request request: requests){
+                for (Request request : requests) {
                     System.out.print(counter);
                     System.out.println(". " + request.toString());
                     counter++;
@@ -35,10 +36,9 @@ public class DriverInterface implements UserInterface{
                 System.out.print("-> ");
                 int rideChoice = scan.nextInt();
                 Request selectedRide = null;
-                try{
+                try {
                     selectedRide = requests.get(rideChoice - 1);
-                }
-                catch (ArrayIndexOutOfBoundsException e){
+                } catch (ArrayIndexOutOfBoundsException e) {
                     return;
                 }
                 System.out.print("Offer Value (In Decimal) : ");
@@ -46,9 +46,9 @@ public class DriverInterface implements UserInterface{
                 selectedRide.makerOffer(currentAccount, offerValue);
             }
             case 3 -> {
-                ArrayList <Rate> rates = (ArrayList<Rate>) currentAccount.getRates();
+                ArrayList<Rate> rates = (ArrayList<Rate>) currentAccount.getRates();
                 int counter = 1;
-                for (Rate rate : rates){
+                for (Rate rate : rates) {
                     System.out.print(counter);
                     System.out.println(". " + rate.toString());
                     System.out.print("Average Rating : ");

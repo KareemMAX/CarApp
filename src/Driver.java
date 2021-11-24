@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * A driver account class
+ *
  * @author Khaled Waleed
  */
 public class Driver extends Account {
@@ -17,12 +18,13 @@ public class Driver extends Account {
 
     /**
      * Creates a new driver account with the parameters as the account details
-     * @param userName      The User name associated with this account
-     * @param password      The Password associated with this account
-     * @param phoneNumber   The Phone number associated with this account
-     * @param licence       The License number associated with this account
-     * @param nationalID    The National ID associated with this account
-     * @param email         The E-Mail address associated with this account
+     *
+     * @param userName    The User name associated with this account
+     * @param password    The Password associated with this account
+     * @param phoneNumber The Phone number associated with this account
+     * @param licence     The License number associated with this account
+     * @param nationalID  The National ID associated with this account
+     * @param email       The E-Mail address associated with this account
      */
     public Driver(String userName, String password, String phoneNumber, String licence, String nationalID, String email) {
         super(userName, password);
@@ -36,11 +38,12 @@ public class Driver extends Account {
     /**
      * Creates a new driver account with the parameters as the account details
      * An overload of the Driver class constructor to allow not providing an email address
-     * @param userName      The Username associated with this account
-     * @param password      The Password associated with this account
-     * @param phoneNumber   The Phone number associated with this account
-     * @param licence       The License number associated with this account
-     * @param nationalID    The National ID associated with this account
+     *
+     * @param userName    The Username associated with this account
+     * @param password    The Password associated with this account
+     * @param phoneNumber The Phone number associated with this account
+     * @param licence     The License number associated with this account
+     * @param nationalID  The National ID associated with this account
      */
     public Driver(String userName, String password, String phoneNumber, String licence, String nationalID) {
         super(userName, password);
@@ -48,8 +51,10 @@ public class Driver extends Account {
         this.license = licence;
         this.nationalID = nationalID;
     }
+
     /**
      * Get the E-mail address associated with this customer
+     *
      * @return E-mail address as a String
      */
 
@@ -59,6 +64,7 @@ public class Driver extends Account {
 
     /**
      * Get the Phone number associated with this customer
+     *
      * @return phone number as a String
      */
     public String getPhoneNumber() {
@@ -67,6 +73,7 @@ public class Driver extends Account {
 
     /**
      * Get the National ID associated with this customer
+     *
      * @return National ID as a String
      */
     public String getNationalID() {
@@ -75,6 +82,7 @@ public class Driver extends Account {
 
     /**
      * Get the License number associated with this customer
+     *
      * @return License number as a String
      */
     public String getLicense() {
@@ -83,6 +91,7 @@ public class Driver extends Account {
 
     /**
      * Get the verification status of that account
+     *
      * @return boolean value equals true if verified
      */
     public boolean isVerified() {
@@ -91,6 +100,7 @@ public class Driver extends Account {
 
     /**
      * Get the driver's favourite areas as a list
+     *
      * @return List of strings (Areas)
      */
     public List<String> getFavouriteAreas() {
@@ -99,6 +109,7 @@ public class Driver extends Account {
 
     /**
      * Get the driver's past ratings
+     *
      * @return List of Rates
      */
     public List<Rate> getRates() {
@@ -108,10 +119,13 @@ public class Driver extends Account {
     /**
      * Sets the rates Array of that driver
      */
-    public void setRates (ArrayList<Rate> newRates) {this.rates = newRates;}
+    public void setRates(ArrayList<Rate> newRates) {
+        this.rates = newRates;
+    }
 
     /**
      * Indicates the ability to sign in of that driver account
+     *
      * @return boolean value indicator
      */
     public boolean ableToSignIn() {
@@ -120,6 +134,7 @@ public class Driver extends Account {
 
     /**
      * sets the verified boolean
+     *
      * @param b intended value to set
      */
     public void setVerified(boolean b) {
@@ -136,8 +151,9 @@ public class Driver extends Account {
 
     /**
      * Add a new entry to the driver's rating history
-     * @param customer      The customer who created that rating
-     * @param value         The numerical value of the rating
+     *
+     * @param customer The customer who created that rating
+     * @param value    The numerical value of the rating
      */
     public void rate(Customer customer, float value) {
         rates.add(new Rate(customer, value));
@@ -146,22 +162,17 @@ public class Driver extends Account {
     /**
      * initializes rates array
      */
-    public void initRatesFromDB()
-    {
+    public void initRatesFromDB() {
         Database db = Database.getInstance();
         ArrayList<Rate> rates = new ArrayList<Rate>();
-        ResultSet myRates = db.query("SELECT * FROM rate WHERE driver_id = '"+getUserName()+"'");
-        try
-        {
-            while (myRates.next())
-            {
+        ResultSet myRates = db.query("SELECT * FROM rate WHERE driver_id = '" + getUserName() + "'");
+        try {
+            while (myRates.next()) {
                 Rate rate = new Rate((Customer) AccountManager.getInstance().getAccount(myRates.getString("user_ID")),
                         myRates.getFloat("rate_value"));
                 rates.add(rate);
             }
-        }
-        catch (java.sql.SQLException e)
-        {
+        } catch (java.sql.SQLException e) {
             System.out.println("SQL ERROR");
         }
     }
@@ -169,26 +180,23 @@ public class Driver extends Account {
     /**
      * initializes favourite areas array
      */
-    public void initFavouriteAreasFromDB()
-    {
+    public void initFavouriteAreasFromDB() {
         Database db = Database.getInstance();
         ArrayList<String> areas = new ArrayList<String>();
-        ResultSet areasTable = db.query("SELECT favourite_place FROM favourite_places WHERE driver_id = '"+ getUserName()+"'");
+        ResultSet areasTable = db.query("SELECT favourite_place FROM favourite_places WHERE driver_id = '" + getUserName() + "'");
 
-        try
-        {
+        try {
             while (areasTable.next())
                 areas.add(areasTable.getString("favourite_place"));
-        }
-        catch (java.sql.SQLException e)
-        {
+        } catch (java.sql.SQLException e) {
             System.out.println("SQL ERROR");
         }
     }
 
     /**
      * Get the average of all ratings submitted on this driver
-     * @return
+     *
+     * @return  Average Rating
      */
     public float getAverageRate() {
         if (rates == null || rates.size() == 0) return 0;
@@ -221,6 +229,7 @@ public class Driver extends Account {
 
     /**
      * Add new entry to the areas made favourite by this driver
+     *
      * @param newArea The new area to be added
      */
     public void addFavouriteArea(String newArea) {
@@ -229,6 +238,7 @@ public class Driver extends Account {
 
     /**
      * Delete an entry from the areas made favourite by this driver
+     *
      * @param area The area to be deleted
      */
     public void deleteFavouriteArea(String area) {
@@ -237,7 +247,27 @@ public class Driver extends Account {
 
     /**
      * sets the array of the favourite areas
+     *
      * @param areas
      */
     public void setFavouriteAreas(List<String> areas) {this.favouriteAreas = areas;}
+
+    /**
+     * updates the data concerning this account in the data base
+     */
+    public void updateInDB() {
+        Database db = Database.getInstance();
+        String query = "UPDATE driver\n" +
+                "SET username= '" + getUserName() + "', password= '" + password + "', email= '" + email + "', phonenumber= '" + phoneNumber + "'"
+                + ", national_id= '" + nationalID + "', license= '" + license + "'";
+        if (isSuspended())
+            query += ", suspended= 'true'";
+        else query += ", suspended= 'false'";
+
+        if (verified)
+            query += ", verified= 'true'";
+        else query += ", verified= 'false'";
+
+        db.update(query);
+    }
 }
