@@ -69,7 +69,7 @@ public class Customer extends Account {
      * @return boolean value indicator
      */
     boolean ableToSignIn() {
-        return !suspended;
+        return !isSuspended();
     }
 
     /**
@@ -78,15 +78,21 @@ public class Customer extends Account {
     public void updateInDB()
     {
         Database db = Database.getInstance();
-        if (suspended)
+        if (isSuspended())
             db.update("UPDATE customer\n"+
-                    "SET username= '"+userName+"', password= '"+password+"', email= '"+email+"', phone_number= '"+phoneNumber+"'"
+                    "SET username= '"+getUserName()+"', password= '"+password+"', email= '"+email+"', phone_number= '"+phoneNumber+"'"
                     + ", suspended= 'false'" );
 
         else
             db.update("UPDATE customer\n"+
-                    "SET username= '"+userName+"', password= '"+password+"', email= '"+email+"', phone_number= '"+phoneNumber+"'"
+                    "SET username= '"+getUserName()+"', password= '"+password+"', email= '"+email+"', phone_number= '"+phoneNumber+"'"
                     + ", suspended= 'true'" );
+    }
+
+    @Override
+    void setSuspended(boolean b) {
+        super.setSuspended(b);
+        this.updateInDB();
     }
 
     /**
@@ -97,8 +103,8 @@ public class Customer extends Account {
         Database db = Database.getInstance();
         ArrayList<Offer> rides= new ArrayList<Offer>();
         ResultSet ridesTable = db.query("SELECT * FROM offer INNER JOIN request ON offer.ride_id = request.request_id\n" +
-                "WHERE offer.accepted = 'true' AND request.user_id = '"+userName+"'");
-        ResultSet resultSet = db.query("SELECT username FROM customer WHERE username= '" + userName + "' AND password = '" + password + "'");
+                "WHERE offer.accepted = 'true' AND request.user_id = '"+getUserName()+"'");
+        ResultSet resultSet = db.query("SELECT username FROM customer WHERE username= '" + getUserName() + "' AND password = '" + password + "'");
         try
         {
             while (ridesTable.next())

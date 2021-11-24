@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -15,14 +16,15 @@ public class CustomerInterface implements UserInterface {
     public void userDashboard() {
         System.out.println("1. Request ride");
         System.out.println("2. Rate most frequent driver");
-        System.out.println("3. Logout");
-        int choice = scan.nextInt();
+        System.out.println("3. Show offers");
+        System.out.println("4. Logout");
+        int choice = Integer.parseInt(scan.next());
         switch (choice){
             case 1 -> {
                 System.out.print("Source : ");
-                String src = scan.nextLine();
+                String src = scan.next();
                 System.out.print("Destination : ");
-                String dest = scan.nextLine();
+                String dest = scan.next();
                 if (RideManager.getInstance().makeRequest(src, dest, (Customer) AuthenticationManager.getInstance().getCurrentAccount())){
                     System.out.println("Drivers has been notified with your request");
                     System.out.println("Pending offers ...");
@@ -39,6 +41,9 @@ public class CustomerInterface implements UserInterface {
                 lastDriver.rate((Customer) AuthenticationManager.getInstance().getCurrentAccount(), rateValue);
             }
             case 3 -> {
+                //TODO get current offers
+            }
+            case 4 -> {
                 AuthenticationManager.getInstance().logout();
             }
         }

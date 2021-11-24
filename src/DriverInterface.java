@@ -30,8 +30,9 @@ public class DriverInterface implements UserInterface{
                 for (Request request: requests){
                     System.out.print(counter);
                     System.out.println(". " + request.toString());
+                    counter++;
                 }
-                System.out.println("-> ");
+                System.out.print("-> ");
                 int rideChoice = scan.nextInt();
                 Request selectedRide = null;
                 try{
@@ -40,7 +41,7 @@ public class DriverInterface implements UserInterface{
                 catch (ArrayIndexOutOfBoundsException e){
                     return;
                 }
-                System.out.println("Offer Value (In Decimal) : ");
+                System.out.print("Offer Value (In Decimal) : ");
                 float offerValue = scan.nextFloat();
                 selectedRide.makerOffer(currentAccount, offerValue);
             }

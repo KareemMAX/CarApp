@@ -1,7 +1,7 @@
 public abstract class Account {
-    String userName = "";
-    String password = "";
-    boolean suspended = false;
+    private String userName = "";
+    protected String password = "";
+    private boolean suspended = false;
 
     protected UserInterface userInterface;
 
@@ -29,6 +29,11 @@ public abstract class Account {
         this.suspended = b;
     }
 
+    /**
+     * gets the user suspension state
+     * @return      The current suspension state
+     * */
+    boolean isSuspended(){return suspended;}
     /**
      * gets the user name of that account
      * @return      The user name as a string

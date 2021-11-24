@@ -41,7 +41,7 @@ public class AuthenticationManager {
      */
     public boolean register(Account acc) {
         Map<String, String> cred = new HashMap<>();
-        cred.put("userName", acc.userName);
+        cred.put("userName", acc.getUserName());
         cred.put("password", acc.password);
         if (acc instanceof Customer) {
             cred.put("email", ((Customer) acc).getEmail());
@@ -76,10 +76,10 @@ public class AuthenticationManager {
                     cred.get("userName")+"' ,'"+cred.get("password")+"' ,'"+cred.get("email")+"' ,'"+ cred.get("phoneNumber")+"' ,"+
                     " 'false')");
         else if (acc instanceof Driver)
-            return db.update("Insert into customer (username,password,email,phone_number,nationalId, license," +
+            return db.update("Insert into driver (username,password,email,phonenumber,national_id, license," +
                     "suspended,verified) values ( '" +
                     cred.get("userName")+"' ,'"+cred.get("password")+"' ,'"+cred.get("email")+"' ,'"+ cred.get("phoneNumber")+"' ,'"+
-                    cred.get("nationalId")+"' , '"+ cred.get("licence")+"', 'false', 'false'");
+                    cred.get("nationalId")+"' , '"+ cred.get("licence")+"', 'false', 'false');");
         else return false;
     }
 
@@ -108,8 +108,10 @@ public class AuthenticationManager {
             size = 0;
             if (resultSet != null)
             {
-                resultSet.last();    // moves cursor to the last row
-                size = resultSet.getRow(); // get row id
+                while (resultSet.next())
+                {
+                    size++;
+                }
             }
             if (resultSet!=null && size !=0)
             {
@@ -119,6 +121,20 @@ public class AuthenticationManager {
 
                 //init rates
                 ((Driver)currentAccount).initRatesFromDB();
+                return true;
+            }
+            resultSet = db.query("SELECT username FROM admin WHERE username= '"+username+"' AND password = "+" '"+password+"'");
+            size = 0;
+            if (resultSet != null)
+            {
+                while (resultSet.next())
+                {
+                    size++;
+                }
+            }
+            if (resultSet!=null && size !=0)
+            {
+                currentAccount = AccountManager.getInstance().getAccount(username);
                 return true;
             }
             else return false;

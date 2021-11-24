@@ -111,7 +111,7 @@ public class Driver extends Account {
      * @return boolean value indicator
      */
     public boolean ableToSignIn() {
-        return !suspended && verified;
+        return !isSuspended() && verified;
     }
 
     /**
@@ -120,6 +120,7 @@ public class Driver extends Account {
      */
     public void setVerified(boolean b) {
         this.verified = b;
+        updateInDB();
     }
     //TODO needs implementation
     public void notify(Request request) {
@@ -142,7 +143,7 @@ public class Driver extends Account {
     {
         Database db = Database.getInstance();
         ArrayList<Rate> rates = new ArrayList<Rate>();
-        ResultSet myRates = db.query("SELECT * FROM rate WHERE driver_id = '"+userName+"'");
+        ResultSet myRates = db.query("SELECT * FROM rate WHERE driver_id = '"+getUserName()+"'");
         try
         {
             while (myRates.next())
@@ -165,7 +166,7 @@ public class Driver extends Account {
     {
         Database db = Database.getInstance();
         ArrayList<String> areas = new ArrayList<String>();
-        ResultSet areasTable = db.query("SELECT favourite_place FROM favourite_places WHERE driver_id = '"+ userName+"'");
+        ResultSet areasTable = db.query("SELECT favourite_place FROM favourite_places WHERE driver_id = '"+ getUserName()+"'");
 
         try
         {
@@ -183,6 +184,7 @@ public class Driver extends Account {
      * @return
      */
     public float getAverageRate() {
+        if (rates == null || rates.size() == 0) return 0;
         int sum = 0;
         for (Rate rate : rates) {
             sum += rate.getRateValue();
@@ -191,9 +193,15 @@ public class Driver extends Account {
     }
 
     @Override
+    void setSuspended(boolean b) {
+        super.setSuspended(b);
+        this.updateInDB();
+    }
+
+    @Override
     public String toString() {
         return "Driver{" +
-                "userName='" + userName + '\'' +
+                "userName='" + getUserName() + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", nationalID='" + nationalID + '\'' +
@@ -232,10 +240,10 @@ public class Driver extends Account {
     public void updateInDB()
     {
         Database db = Database.getInstance();
-        String query = "UPDATE customer\n"+
-                 "SET username= '"+userName+"', password= '"+password+"', email= '"+email+"', phone_number= '"+phoneNumber+"'"
+        String query = "UPDATE driver\n"+
+                 "SET username= '"+getUserName()+"', password= '"+password+"', email= '"+email+"', phonenumber= '"+phoneNumber+"'"
                 +", national_id= '"+nationalID+"', license= '"+license+"'";
-        if (suspended)
+        if (isSuspended())
              query+= ", suspended= 'true'";
         else query+= ", suspended= 'false'";
 

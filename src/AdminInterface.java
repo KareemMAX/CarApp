@@ -14,6 +14,7 @@ public class AdminInterface implements UserInterface {
     public void userDashboard() {
         System.out.println("1. List all driver");
         System.out.println("2. List all Customers");
+        System.out.println("3. logout");
         int choice = scan.nextInt();
         switch (choice){
             case 1 -> {
@@ -24,9 +25,22 @@ public class AdminInterface implements UserInterface {
                     System.out.println(". " + driver.toString());
                     counter++;
                 }
-                System.out.println("-> ");
+                System.out.println("Enter -1 to return");
+                System.out.print("-> ");
+                int index = scan.nextInt();
+                if (index == -1) return;
+                System.out.println("1. Verify");
+                System.out.println("2. Toggle suspension state");
+                System.out.println("3. Return");
                 int input = scan.nextInt();
-                drivers.get(input - 1).setSuspended(!drivers.get(input - 1).suspended);
+                switch (input){
+                    case 1 -> {
+                        drivers.get(index-1).setVerified(true);
+                    }
+                    case 2 -> {
+                        drivers.get(index-1).setSuspended(!drivers.get(index-1).isSuspended());
+                    }
+                }
             }
             case 2 -> {
                 ArrayList<Customer> customers = AccountManager.getInstance().getAllAccounts("Customer");
@@ -36,9 +50,17 @@ public class AdminInterface implements UserInterface {
                     System.out.println(". " + customer.toString());
                     counter++;
                 }
-                System.out.println("-> ");
+                System.out.println("Enter -1 to return");
+                System.out.print("-> ");
+                int index = scan.nextInt();
+                if (index == -1) return;
+                System.out.println("1. Toggle suspension state");
+                System.out.println("2. Return");
                 int input = scan.nextInt();
-                customers.get(input - 1).setSuspended(!customers.get(input - 1).suspended);
+                if (input == 1) customers.get(index - 1).setSuspended(!customers.get(index - 1).isSuspended());
+            }
+            case 3 -> {
+                AuthenticationManager.getInstance().logout();
             }
         }
     }

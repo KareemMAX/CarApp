@@ -27,7 +27,6 @@ public class Main {
                     }
                     case 2 -> {
                         registerInterface();
-                        loginInterface();
                     }
                     case 3 -> {
                         scan.close();
@@ -37,7 +36,6 @@ public class Main {
             }
             else {
                 AuthenticationManager.getInstance().getCurrentAccount().userInterface.userDashboard();
-                scan.close();
             }
         }
     }
@@ -81,7 +79,7 @@ public class Main {
                     System.out.print("Email : ");
                     email = scan.next();
                 }
-                if (null == email) {
+                if (email == null) {
                     if (AuthenticationManager.getInstance().register(new Customer(user, password, phoneNumber)))
                         System.out.println("Registration Complete!");
                     else System.out.println("Something went wrong");
@@ -94,29 +92,29 @@ public class Main {
             }
             case 2 -> {
                 System.out.print("Username : ");
-                String user = scan.nextLine();
+                String user = scan.next();
                 System.out.print("Password : ");
-                String password = scan.nextLine();
+                String password = scan.next();
                 System.out.print("Phone Number : ");
-                String phoneNumber = scan.nextLine();
+                String phoneNumber = scan.next();
                 System.out.print("Would you like to add an email ? (Y/N) -> ");
                 String email = null;
-                if (scan.nextLine().equalsIgnoreCase("y")){
+                if (scan.next().equalsIgnoreCase("y")){
                     System.out.print("Email : ");
-                    email = scan.nextLine();
+                    email = scan.next();
                 }
                 System.out.print("Licence : ");
-                String licence = scan.nextLine();
+                String licence = scan.next();
                 System.out.print("nationalId : ");
-                String nationalId = scan.nextLine();
-                if (null == email) {
+                String nationalId = scan.next();
+                if (email == null) {
                     if (AuthenticationManager.getInstance().register(new Driver(user, password, phoneNumber, licence, nationalId)))
-                        System.out.println("Welcome " + AuthenticationManager.getInstance().getCurrentAccount().getUserName());
+                        System.out.println("Registration Complete!");
                     else System.out.println("Something went wrong");
 
                 }
                 else if (AuthenticationManager.getInstance().register(new Driver(user, password, phoneNumber, licence, nationalId, email))){
-                    System.out.println("Welcome " + AuthenticationManager.getInstance().getCurrentAccount().getUserName());
+                    System.out.println("Registration Complete!");
                 }
                 else System.out.println("Something went wrong");
             }
