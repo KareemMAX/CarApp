@@ -106,6 +106,15 @@ public class Customer extends Account {
         AccountManager.getInstance().updateAccount(this);
     }
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "User name='"+this.getUserName()+"'"+
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
+
     /**
      * initializes past rides array
      */

@@ -119,7 +119,7 @@ public class RideManager {
         sqlQuery.append("'").append(account.getUserName()).append("');");
         db.update(sqlQuery.toString());
 
-        String query = "SELECT request_id FROM request WHERE source='" + source + "' and destination='" + destination + "', user_id='" + account.getUserName() + "'";
+        String query = "SELECT request_id FROM request WHERE source='" + source + "' and destination='" + destination + "'and user_id='" + account.getUserName() + "'";
         ResultSet resultSet = db.query(query);
         try {
             resultSet.next();
