@@ -7,6 +7,7 @@ public class Offer {
     private final Request request;
     private final float offerPrice;
     private final Driver driver;
+    private boolean accepted;
 
     private final RideManager rideManager = RideManager.getInstance();
 
@@ -20,6 +21,7 @@ public class Offer {
         this.request = request;
         this.offerPrice = offerPrice;
         this.driver = driver;
+        accepted = false;
     }
 
     /**
@@ -50,13 +52,22 @@ public class Offer {
      * Accepts the offer while rejecting any other existing offers to the same {@link Request} object
      */
     public void accept() {
+        accepted = true;
         rideManager.setOfferAccepted(this, true);
+    }
+
+    /**
+     * @return     true if the offer is accepted (IE completed/in-progress Ride) else returns false
+     * */
+    public boolean isAccepted(){
+        return accepted;
     }
 
     /**
      * Rejects the offer and clear it from memory/storage
      */
     public void reject() {
+        accepted = false;
         rideManager.setOfferAccepted(this, false);
     }
 }

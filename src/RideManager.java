@@ -138,23 +138,6 @@ public class RideManager {
         return result;
     }
     public Driver getLastRideDriver(Customer account){
-		// TODO
-        //return account.getPastRides().get(account.getPastRides().size()-1).getDriver();
-        return new Driver("", "", "", "", "");
+        return account.getPastRides().get(account.getPastRides().size()-1).getDriver();
     }
 }
- /*   public static void main(String [] args){
-        Driver d= new Driver("ana", "aaa", "sss", "ddd", "fff");
-        Customer user=new Customer("andrew", "21", "");
-        Request s=new Request(1, "misr", "giza",user);
-        RideManager  db = RideManager.getInstance();
-        List<Request> result = new ArrayList<>();
-        db.makeOffer(d,s,150);
-        db.makeOffer(d,s,123567978);
-        db.makeRequest("homee", "giza",user);
-        result=db.getRequests();
-        System.out.println(result.size());
-
-
-    }
-}*/
