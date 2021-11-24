@@ -2,6 +2,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A driver account class
+ * @author Khaled Waleed
+ */
 public class Driver extends Account {
     private String email = "";
     private String phoneNumber = "";
@@ -32,7 +36,7 @@ public class Driver extends Account {
     /**
      * Creates a new driver account with the parameters as the account details
      * An overload of the Driver class constructor to allow not providing an email address
-     * @param userName      The User name associated with this account
+     * @param userName      The Username associated with this account
      * @param password      The Password associated with this account
      * @param phoneNumber   The Phone number associated with this account
      * @param licence       The License number associated with this account

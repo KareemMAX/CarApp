@@ -1,3 +1,7 @@
+/**
+ * An account class holding account data
+ * @author Khaled Waleed
+ */
 public abstract class Account {
     private String userName = "";
     protected String password = "";
@@ -6,7 +10,7 @@ public abstract class Account {
     protected UserInterface userInterface;
 
     /**
-     * Creates An account with the specified user name and password
+     * Creates An account with the specified username and password
      * @param userName      User Name
      * @param password      Password
      */

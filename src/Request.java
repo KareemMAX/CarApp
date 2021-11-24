@@ -2,6 +2,7 @@ import java.util.List;
 
 /**
  * A request from the {@link Customer} to have a ride from a specific source to a specific destination.
+ * @author Kareem Morsy
  */
 public class Request {
     private final RideManager rideManager = RideManager.getInstance();

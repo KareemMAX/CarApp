@@ -2,6 +2,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A customer account class
+ * @author Khaled Waleed
+ */
 public class Customer extends Account {
     private String email = "";
     private String phoneNumber = "";
@@ -9,7 +13,7 @@ public class Customer extends Account {
 
     /**
      * Creates a new customer account with the parameters as the account details
-     * @param userName      The User name associated with this account
+     * @param userName      The Username associated with this account
      * @param password      The password associated with this account
      * @param phoneNumber   The phone number associated with this account
      * @param email         The E-mail address associated with this account
@@ -24,7 +28,7 @@ public class Customer extends Account {
     /**
      * Creates a new customer account with the parameters as the account details
      * An overload of the Customer class constructor to allow not providing an email address
-     * @param userName      The User name associated with this customer
+     * @param userName      The Username associated with this customer
      * @param password      The password associated with this customer
      * @param phoneNumber   The phone number associated with this customer
      */
@@ -59,9 +63,12 @@ public class Customer extends Account {
     }
     public void setPastRides(List<Offer> rides) {this.pastRides = rides;}
 
-    //TODO needs Implementation
+    /**
+     * Notification function for the driver to notify
+     * @param offer The new supplied offer from the driver
+     */
     public void notify(Offer offer) {
-
+        //TODO needs Implementation
     }
 
     /**
@@ -73,7 +80,7 @@ public class Customer extends Account {
     }
 
     /**
-     * updates the data concerning this account in the data base
+     * updates the data concerning this account in the database
      */
     public void updateInDB()
     {

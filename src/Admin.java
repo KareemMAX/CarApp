@@ -1,3 +1,7 @@
+/**
+ * Admin account class
+ * @author Khaled Waleed
+ */
 public class Admin extends Account {
 
     /**

@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Manager class that manages authentication in the application
+ * @author Khaled Waleed
+ */
 public class AuthenticationManager {
     private Account currentAccount;
     private static AuthenticationManager singletonInstance;
@@ -21,7 +25,7 @@ public class AuthenticationManager {
 
     /**
      * gets the logged in account
-     * @return
+     * @return The current user account
      */
     public Account getCurrentAccount() {
         return currentAccount;
@@ -83,6 +87,12 @@ public class AuthenticationManager {
         else return false;
     }
 
+    /**
+     * Logs in a user
+     * @param username The username to be logged in
+     * @param password The password to be logged in
+     * @return {@code true} if the user is logged in successfully, {@code false} otherwise
+     */
     public boolean login(String username, String password) {
         Database db = Database.getInstance();
         ResultSet resultSet = db.query("SELECT username FROM customer WHERE username= '" + username + "' AND password = '" + password + "'");

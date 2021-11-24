@@ -1,16 +1,29 @@
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+/**
+ * Manager class that controls and provides the available accounts in the database
+ * @author Khaled Waleed
+ */
 public class AccountManager {
     private static AccountManager singletonInstance;
     private final Database db = Database.getInstance();
 
+    /**
+     * Gets a singleton instance
+     * @return A {@link AccountManager} instance
+     */
     public static AccountManager getInstance() {
         if (singletonInstance == null) singletonInstance = new AccountManager();
         return singletonInstance;
     }
 
+    /**
+     * Gets all the accounts available of a specific class
+     * @param type The account type name as a string, either {@code "customer"}, or {@code "driver"}.
+     * @param <T> The type of the class to cast to
+     * @return A list of objects representing the account class
+     */
     public <T extends Account> ArrayList<T> getAllAccounts(String type) {
 
         if (type.equalsIgnoreCase("customer"))  //get all customers
@@ -56,6 +69,11 @@ public class AccountManager {
         }
     }
 
+    /**
+     * Gets a single account object from a username
+     * @param username The username of the desired account
+     * @return The account object of the specific username
+     */
     public Account getAccount(String username) {
         try {
             Account target;
@@ -117,6 +135,10 @@ public class AccountManager {
 
     }
 
+    /**
+     * Get a list of suspended accounts
+     * @return a list of accounts
+     */
     public ArrayList<Account> getSuspendedAccounts() {
 
         ArrayList<Account> result = new ArrayList<Account>();
@@ -151,7 +173,11 @@ public class AccountManager {
         return result;
     }
 
-    public <T extends Account> void updateAccount(T acc) {
+    /**
+     * Updates account in the database
+     * @param account Account to be updated
+     */
+    public void updateAccount(Account account) {
         //TODO
     }
 }
