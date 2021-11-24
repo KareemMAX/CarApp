@@ -4,14 +4,14 @@ import java.util.Scanner;
 /**
  * @author Mohamed Ashraf
  * Provides interface for Customer Dashboard
- * */
+ */
 public class CustomerInterface implements UserInterface {
 
-    private Scanner scan = new Scanner(System.in);
+    private final Scanner scan = new Scanner(System.in);
 
     /**
      * Provides terminal interface for Customer Dashboard
-     * */
+     */
     @Override
     public void userDashboard() {
         System.out.println("1. Request ride");
@@ -19,17 +19,16 @@ public class CustomerInterface implements UserInterface {
         System.out.println("3. Show offers");
         System.out.println("4. Logout");
         int choice = Integer.parseInt(scan.next());
-        switch (choice){
+        switch (choice) {
             case 1 -> {
                 System.out.print("Source : ");
                 String src = scan.next();
                 System.out.print("Destination : ");
                 String dest = scan.next();
-                if (RideManager.getInstance().makeRequest(src, dest, (Customer) AuthenticationManager.getInstance().getCurrentAccount())){
+                if (RideManager.getInstance().makeRequest(src, dest, (Customer) AuthenticationManager.getInstance().getCurrentAccount())) {
                     System.out.println("Drivers has been notified with your request");
                     System.out.println("Pending offers ...");
-                }
-                else {
+                } else {
                     System.out.println("Unexpected error occurred");
                 }
             }
@@ -44,14 +43,13 @@ public class CustomerInterface implements UserInterface {
                 // Filtering for current rides first
                 ArrayList<Request> requests = (ArrayList<Request>) RideManager.getInstance().getRequests();
                 int i = 0;
-                while (requests.size() > 0 && i < requests.size()){
-                    if (requests.get(i).getAllOffers().get(i).isAccepted()){
+                while (requests.size() > 0 && i < requests.size()) {
+                    if (requests.get(i).getAllOffers().get(i).isAccepted()) {
                         requests.remove(i);
-                    }
-                    else i++;
+                    } else i++;
                 }
                 int counter = 1;
-                for (Request request: requests){
+                for (Request request : requests) {
 
                     System.out.print(counter);
                     System.out.println(". " + request.toString());
@@ -60,9 +58,9 @@ public class CustomerInterface implements UserInterface {
                 System.out.println("Enter -1 to exit");
                 System.out.print("-> ");
                 int index = scan.nextInt();
-                Request currentRide = requests.get(index-1);
+                Request currentRide = requests.get(index - 1);
                 counter = 1;
-                for (Offer offer : currentRide.getAllOffers()){
+                for (Offer offer : currentRide.getAllOffers()) {
                     System.out.print(counter);
                     System.out.println(". " + offer.toString());
                     counter++;
@@ -72,7 +70,7 @@ public class CustomerInterface implements UserInterface {
                 index = scan.nextInt();
                 System.out.println("1. Accept Offer");
                 System.out.println("2. Reject Offer");
-                Offer currentOffer = currentRide.getAllOffers().get(index-1);
+                Offer currentOffer = currentRide.getAllOffers().get(index - 1);
                 index = scan.nextInt();
                 if (index == 1) currentOffer.accept();
                 else if (index == 2) currentOffer.reject();

@@ -1,5 +1,6 @@
 /**
  * Rate class, that holds a rate with its customer
+ *
  * @author Khaled Waleed
  */
 public class Rate {
@@ -13,6 +14,7 @@ public class Rate {
 
     /**
      * Gets the rate value
+     *
      * @return The rate value
      */
     public float getRateValue() {
@@ -26,8 +28,12 @@ public class Rate {
         return user;
     }
 
+
+    /**
+     * @return A string version of Rate object
+     */
     @Override
-    public String toString(){
-        return user.getUserName() + " : " + String.valueOf(rateValue);
+    public String toString() {
+        return user.getUserName() + " : " + rateValue;
     }
 }

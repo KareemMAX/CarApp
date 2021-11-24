@@ -4,23 +4,24 @@ import java.util.Scanner;
 /**
  * @author Mohamed Ashraf
  * Provides interface for Admin Dashboard
- * */
+ */
 public class AdminInterface implements UserInterface {
-    private Scanner scan = new Scanner(System.in);
+    private final Scanner scan = new Scanner(System.in);
+
     /**
      * Provides terminal interface for Admin Dashboard
-     * */
+     */
     @Override
     public void userDashboard() {
         System.out.println("1. List all driver");
         System.out.println("2. List all Customers");
         System.out.println("3. logout");
         int choice = scan.nextInt();
-        switch (choice){
+        switch (choice) {
             case 1 -> {
                 ArrayList<Driver> drivers = AccountManager.getInstance().getAllAccounts("Driver");
                 int counter = 1;
-                for (Driver driver : drivers){
+                for (Driver driver : drivers) {
                     System.out.print(counter);
                     System.out.println(". " + driver.toString());
                     counter++;
@@ -33,19 +34,19 @@ public class AdminInterface implements UserInterface {
                 System.out.println("2. Toggle suspension state");
                 System.out.println("3. Return");
                 int input = scan.nextInt();
-                switch (input){
+                switch (input) {
                     case 1 -> {
-                        drivers.get(index-1).setVerified(true);
+                        drivers.get(index - 1).setVerified(true);
                     }
                     case 2 -> {
-                        drivers.get(index-1).setSuspended(!drivers.get(index-1).isSuspended());
+                        drivers.get(index - 1).setSuspended(!drivers.get(index - 1).isSuspended());
                     }
                 }
             }
             case 2 -> {
                 ArrayList<Customer> customers = AccountManager.getInstance().getAllAccounts("Customer");
                 int counter = 1;
-                for (Customer customer : customers){
+                for (Customer customer : customers) {
                     System.out.print(counter);
                     System.out.println(". " + customer.toString());
                     counter++;

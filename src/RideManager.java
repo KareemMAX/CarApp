@@ -7,14 +7,16 @@ import java.util.List;
  * RideManager Singleton class
  * <p>
  * Provides a single connection to the current database for other components to use.
- * @version 1.00 2021/11/20
+ *
  * @author Andrew Naseif
+ * @version 1.00 2021/11/20
  */
 public class RideManager {
     private static RideManager singletonInstance;
 
     /**
      * Gets the singleton instance of the class
+     *
      * @return The active instance of the class
      */
     public static RideManager getInstance() {
@@ -23,43 +25,45 @@ public class RideManager {
     }
 
 
-    private final Database db =Database.getInstance();
+    private final Database db = Database.getInstance();
     private final AccountManager accountManager = AccountManager.getInstance();
+
     /**
      * Makes a query to the database to get al list of offers for a given request.
      * if any error has happened during execution a stacktrace is printed.
+     *
      * @param request The SQL will use it to make query.
      * @return {@link ArrayList} if the execution happened successfully.
      */
     public List<Offer> listOffers(Request request) {
-        ResultSet table= db.query("SELECT * FROM offer\n" +
+        ResultSet table = db.query("SELECT * FROM offer\n" +
                 "right JOIN request ON offer.ride_id=request.request_id WHERE ride_id=" + request.getId());
         ArrayList<Offer> result = new ArrayList<>();
-        try
-        {
+        try {
             while (table.next()) {
                 Offer offer = new Offer(
                         request,
                         table.getFloat("price"),
-                        (Driver) accountManager.<Driver>getAccount(table.getString("driver_id"))
+                        (Driver) accountManager.getAccount(table.getString("driver_id"))
                 );
                 result.add(offer);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return result;
     }
+
     /**
      * Makes a query to the database to insert new offer in database.
-     * @param driver The SQL will use it to know who make this offer.
+     *
+     * @param driver  The SQL will use it to know who make this offer.
      * @param request The SQL will use it to make offer for this request.
-     * @param price  it is the price of ride.
+     * @param price   it is the price of ride.
      */
     public void makeOffer(Driver driver, Request request, float price) {
-        Offer offer = new Offer(request,price, driver);
+        Offer offer = new Offer(request, price, driver);
         StringBuilder sqlQuery = new StringBuilder("INSERT INTO offer (driver_id,accepted,ride_id,price)\n");
         sqlQuery.append("VALUES (");
         sqlQuery.append("'").append(driver.getUserName()).append("',");
@@ -72,9 +76,10 @@ public class RideManager {
 
     /**
      * Makes a query to the database to insert new offer in database.
-     * @param offer used to which offer is checked
+     *
+     * @param offer    used to which offer is checked
      * @param accepted {@code true} all offers will be deleted excepted this offer.
-     * {@code  false}only this offer will be deleted
+     *                 {@code  false}only this offer will be deleted
      */
     public void setOfferAccepted(Offer offer, boolean accepted) {
         try {
@@ -89,18 +94,20 @@ public class RideManager {
                 db.update("DELETE FROM offer WHERE ride_id =" + offer.getRequest().getId() + "AnD driver_id=" + offer.getDriver().getUserName());
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /**
      * Makes a query to the database to insert new request in database.
-     * @param source The SQL will use it to know where he is.
+     *
+     * @param source      The SQL will use it to know where he is.
      * @param Destination The SQL will use it to make know where he is going to.
-     * @param account  the user he makes the request.
+     * @param account     the user he makes the request.
      */
-    public boolean makeRequest(String source, String Destination, Customer account){
-        if(source==null || Destination==null ||account.getUserName()==null){
+    public boolean makeRequest(String source, String Destination, Customer account) {
+        if (source == null || Destination == null || account.getUserName() == null) {
             return false;
         }
         StringBuilder sqlQuery = new StringBuilder("INSERT INTO request (source,destination,user_id)\n");
@@ -111,17 +118,18 @@ public class RideManager {
         db.update(sqlQuery.toString());
         return true;
     }
+
     /**
      * Makes a query to the database to get al list of requests.
      * if any error has happened during execution a stacktrace is printed.
+     *
      * @return {@link ArrayList} if the execution happened successfully.
      */
-    public List<Request> getRequests(){
-        AccountManager dbA =AccountManager.getInstance();
-        ResultSet table= db.query("SELECT * FROM request");
+    public List<Request> getRequests() {
+        AccountManager dbA = AccountManager.getInstance();
+        ResultSet table = db.query("SELECT * FROM request");
         ArrayList<Request> result = new ArrayList<>();
-        try
-        {
+        try {
             while (table.next()) {
                 Request request = new Request(
                         table.getInt("request_id"),
@@ -131,8 +139,7 @@ public class RideManager {
                 );
                 result.add(request);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
@@ -143,7 +150,11 @@ public class RideManager {
      * @param account The customer account
      * @return The driver of the last ride
      */
-    public Driver getLastRideDriver(Customer account){
-        return account.getPastRides().get(account.getPastRides().size()-1).getDriver();
+
+    /**
+     * @return Last ride driver for a certain customer
+     */
+    public Driver getLastRideDriver(Customer account) {
+        return account.getPastRides().get(account.getPastRides().size() - 1).getDriver();
     }
 }
