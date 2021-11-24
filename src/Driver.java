@@ -1,3 +1,4 @@
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,6 +136,49 @@ public class Driver extends Account {
     }
 
     /**
+     * initializes rates array
+     */
+    public void initRatesFromDB()
+    {
+        Database db = Database.getInstance();
+        ArrayList<Rate> rates = new ArrayList<Rate>();
+        ResultSet myRates = db.query("SELECT * FROM rate WHERE driver_id = '"+userName+"'");
+        try
+        {
+            while (myRates.next())
+            {
+                Rate rate = new Rate((Customer) AccountManager.getInstance().getAccount(myRates.getString("user_ID")),
+                        myRates.getFloat("rate_value"));
+                rates.add(rate);
+            }
+        }
+        catch (java.sql.SQLException e)
+        {
+            System.out.println("SQL ERROR");
+        }
+    }
+
+    /**
+     * initializes favourite areas array
+     */
+    public void initFavouriteAreasFromDB()
+    {
+        Database db = Database.getInstance();
+        ArrayList<String> areas = new ArrayList<String>();
+        ResultSet areasTable = db.query("SELECT favourite_place FROM favourite_places WHERE driver_id = '"+ userName+"'");
+
+        try
+        {
+            while (areasTable.next())
+                areas.add(areasTable.getString("favourite_place"));
+        }
+        catch (java.sql.SQLException e)
+        {
+            System.out.println("SQL ERROR");
+        }
+    }
+
+    /**
      * Get the average of all ratings submitted on this driver
      * @return
      */
@@ -175,5 +219,30 @@ public class Driver extends Account {
     public void deleteFavouriteArea(String area) {
         favouriteAreas.remove(area);
     }
+
+    /**
+     * sets the array of the favourite areas
+     * @param areas
+     */
     public void setFavouriteAreas(List<String> areas) {this.favouriteAreas = areas;}
+
+    /**
+     * updates the data concerning this account in the data base
+     */
+    public void updateInDB()
+    {
+        Database db = Database.getInstance();
+        String query = "UPDATE customer\n"+
+                 "SET username= '"+userName+"', password= '"+password+"', email= '"+email+"', phone_number= '"+phoneNumber+"'"
+                +", national_id= '"+nationalID+"', license= '"+license+"'";
+        if (suspended)
+             query+= ", suspended= 'true'";
+        else query+= ", suspended= 'false'";
+
+        if (verified)
+             query+= ", verified= 'true'";
+        else query+= ", verified= 'false'";
+
+        db.update(query);
+    }
 }

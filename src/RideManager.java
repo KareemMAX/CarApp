@@ -138,7 +138,8 @@ public class RideManager {
         return result;
     }
     public Driver getLastRideDriver(Customer account){
-        // TODO
+		// TODO
+        //return account.getPastRides().get(account.getPastRides().size()-1).getDriver();
         return new Driver("", "", "", "", "");
     }
 }
