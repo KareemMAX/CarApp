@@ -7,7 +7,7 @@ import java.util.List;
  * RideManager Singleton class
  * <p>
  * Provides a single connection to the current database for other components to use.
- *
+ * @version 1.00 2021/11/20
  * @author Andrew Naseif
  */
 public class RideManager {
@@ -41,7 +41,7 @@ public class RideManager {
                 Offer offer = new Offer(
                         request,
                         table.getFloat("price"),
-                        (Driver) accountManager.getAccount(table.getString("driver_id"))
+                        (Driver) accountManager.<Driver>getAccount(table.getString("driver_id"))
                 );
                 result.add(offer);
             }
@@ -77,18 +77,28 @@ public class RideManager {
      * {@code  false}only this offer will be deleted
      */
     public void setOfferAccepted(Offer offer, boolean accepted) {
-        if(accepted){
-            db.update("UPDATE offer \n" +
-                    "SET \n" +
-                    "    accepted = 1\n" +
-                    "WHERE\n" +
-                    " ride_id ="+offer.getRequest().getId()+"AnD driver_id="+offer.getDriver().getUserName());
-            db.update("DELETE FROM offer WHERE accepted=0;\n");
-        }else {
-            db.update("DELETE FROM offer WHERE ride_id ="+offer.getRequest().getId()+"AnD driver_id="+offer.getDriver().getUserName());
+        try {
+            if (accepted) {
+                db.update("UPDATE offer \n" +
+                        "SET \n" +
+                        "    accepted = 1\n" +
+                        "WHERE\n" +
+                        " ride_id =" + offer.getRequest().getId() + "AnD driver_id=" + offer.getDriver().getUserName());
+                db.update("DELETE FROM offer WHERE accepted=0;\n");
+            } else {
+                db.update("DELETE FROM offer WHERE ride_id =" + offer.getRequest().getId() + "AnD driver_id=" + offer.getDriver().getUserName());
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
-
+    /**
+     * Makes a query to the database to insert new request in database.
+     * @param source The SQL will use it to know where he is.
+     * @param Destination The SQL will use it to make know where he is going to.
+     * @param account  the user he makes the request.
+     */
     public boolean makeRequest(String source, String Destination, Customer account){
         if(source==null || Destination==null ||account.getUserName()==null){
             return false;
@@ -101,7 +111,11 @@ public class RideManager {
         db.update(sqlQuery.toString());
         return true;
     }
-
+    /**
+     * Makes a query to the database to get al list of requests.
+     * if any error has happened during execution a stacktrace is printed.
+     * @return {@link ArrayList} if the execution happened successfully.
+     */
     public List<Request> getRequests(){
         AccountManager dbA =AccountManager.getInstance();
         ResultSet table= db.query("SELECT * FROM request");
@@ -134,12 +148,13 @@ public class RideManager {
         Customer user=new Customer("andrew", "21", "");
         Request s=new Request(1, "misr", "giza",user);
         RideManager  db = RideManager.getInstance();
-        ArrayList<Offer> result = new ArrayList<>();
-        result= (ArrayList<Offer>) db.listOffers(s);
-        System.out.println(result.size());
+        List<Request> result = new ArrayList<>();
         db.makeOffer(d,s,150);
         db.makeOffer(d,s,123567978);
         db.makeRequest("homee", "giza",user);
+        result=db.getRequests();
+        System.out.println(result.size());
+
 
     }
 }*/
