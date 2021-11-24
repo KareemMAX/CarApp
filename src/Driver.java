@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Driver extends Account {
@@ -98,6 +99,11 @@ public class Driver extends Account {
     public List<Rate> getRates() {
         return rates;
     }
+
+    /**
+     * Sets the rates Array of that driver
+     */
+    public void setRates (ArrayList<Rate> newRates) {this.rates = newRates;}
 
     /**
      * Indicates the ability to sign in of that driver account

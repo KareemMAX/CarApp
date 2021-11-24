@@ -124,7 +124,7 @@ public class RideManager {
         return result;
     }
     public Driver getLastRideDriver(Customer account){
-        // TO DO
+        // TODO
         return new Driver("", "", "", "", "");
     }
 }

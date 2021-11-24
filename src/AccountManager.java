@@ -72,12 +72,11 @@ public class AccountManager {
             Account target;
             ResultSet table = db.query("SELECT * FROM driver WHERE username = '"+username+"'");
             int size=0;
-            if (table != null)
+            while (table.next())
             {
-                table.last();    // moves cursor to the last row
-                size = table.getRow(); // get row id
+                size++;
             }
-            if (size>0)
+            if (size!=0)
             {
                 table.next();
                 target = new Driver(table.getString("username"),
@@ -92,14 +91,16 @@ public class AccountManager {
             else
             {
                 table = db.query("SELECT * FROM customer WHERE username = '"+username+"'");
-                if (table != null)
+                size =0;
+                while (table.next())
                 {
-                    table.last();    // moves cursor to the last row
-                    size = table.getRow(); // get row id
+                    size++;
                 }
-                if (size > 0)
+                if (size != 0)
                 {
+                    table = db.query("SELECT * FROM customer WHERE username = '"+username+"'");
                     table.next();
+                    System.out.println("aa: "+table.getRow());
                     target = new Customer(table.getString("username"),
                             table.getString("password"),
                             table.getString("email"),
@@ -113,7 +114,9 @@ public class AccountManager {
             }
 
             if (target!= null)
+            {
                 return target;
+            }
             else throw new java.sql.SQLException();
 
         }

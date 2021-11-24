@@ -47,9 +47,9 @@ public class Main {
      * */
     public static void loginInterface(){
         System.out.print("Username : ");
-        String user = scan.nextLine();
+        String user = scan.next();
         System.out.print("Password : ");
-        String password = scan.nextLine();
+        String password = scan.next();
         if (AuthenticationManager.getInstance().login(user, password)){
             System.out.println("Welcome " + AuthenticationManager.getInstance().getCurrentAccount().getUserName());
         }
@@ -70,24 +70,24 @@ public class Main {
         switch (choice){
             case 1 -> {
                 System.out.print("Username : ");
-                String user = scan.nextLine();
+                String user = scan.next();
                 System.out.print("Password : ");
-                String password = scan.nextLine();
+                String password = scan.next();
                 System.out.print("Phone Number : ");
-                String phoneNumber = scan.nextLine();
+                String phoneNumber = scan.next();
                 System.out.print("Would you like to add an email ? (Y/N) -> ");
                 String email = null;
-                if (scan.nextLine().equalsIgnoreCase("y")){
+                if (scan.next().equalsIgnoreCase("y")){
                     System.out.print("Email : ");
-                    email = scan.nextLine();
+                    email = scan.next();
                 }
                 if (null == email) {
                     if (AuthenticationManager.getInstance().register(new Customer(user, password, phoneNumber)))
-                        System.out.println("Welcome " + AuthenticationManager.getInstance().getCurrentAccount().getUserName());
+                        System.out.println("Registration Complete!");
                     else System.out.println("Something went wrong");
                 }
                 else if (AuthenticationManager.getInstance().register(new Customer(user, password, phoneNumber, email))) {
-                    System.out.println("Welcome " + AuthenticationManager.getInstance().getCurrentAccount().getUserName());
+                    System.out.println("Registration Complete!");
                 }
                 else System.out.println("Something went wrong");
 
