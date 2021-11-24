@@ -1,6 +1,7 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,6 +28,7 @@ public class RideManager {
 
     private final Database db = Database.getInstance();
     private final AccountManager accountManager = AccountManager.getInstance();
+    private final HashMap<String, List<Driver>> subscribers = new HashMap<>();
 
     /**
      * Makes a query to the database to get al list of offers for a given request.
@@ -103,19 +105,37 @@ public class RideManager {
      * Makes a query to the database to insert new request in database.
      *
      * @param source      The SQL will use it to know where he is.
-     * @param Destination The SQL will use it to make know where he is going to.
+     * @param destination The SQL will use it to make know where he is going to.
      * @param account     the user he makes the request.
      */
-    public boolean makeRequest(String source, String Destination, Customer account) {
-        if (source == null || Destination == null || account.getUserName() == null) {
+    public boolean makeRequest(String source, String destination, Customer account) {
+        if (source == null || destination == null || account.getUserName() == null) {
             return false;
         }
         StringBuilder sqlQuery = new StringBuilder("INSERT INTO request (source,destination,user_id)\n");
         sqlQuery.append("VALUES (");
         sqlQuery.append("'").append(source).append("',");
-        sqlQuery.append("'").append(Destination).append("',");
+        sqlQuery.append("'").append(destination).append("',");
         sqlQuery.append("'").append(account.getUserName()).append("');");
         db.update(sqlQuery.toString());
+
+        String query = "SELECT request_id FROM request WHERE source='" + source + "' and destination='" + destination + "', user_id='" + account.getUserName() + "'";
+        ResultSet resultSet = db.query(query);
+        try {
+            resultSet.next();
+
+            if (subscribers.containsKey(source)) {
+                for (Driver driver :
+                        subscribers.get(source)) {
+                    driver.notify(new Request(resultSet.getInt("request_id"), source, destination, account));
+                }
+            }
+
+            resultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return true;
     }
 
@@ -146,7 +166,19 @@ public class RideManager {
         return result;
     }
 
+    /**
+     * Make a driver subscribe to any new requests in the system
+     * @param driver A driver to be notified
+     */
+    public void subscribeForRequests(Driver driver) {
+        for (String area :
+                driver.getFavouriteAreas()) {
+            if (!subscribers.containsKey(area))
+                subscribers.put(area, new ArrayList<>());
 
+            subscribers.get(area).add(driver);
+        }
+    }
 
 
     /**
