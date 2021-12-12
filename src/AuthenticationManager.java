@@ -107,10 +107,13 @@ public class AuthenticationManager {
         }
         try {
             if (size != 0) {
-                currentAccount = AccountManager.getInstance().getAccount(username);
-                ((Customer) currentAccount).initPastRidesFromDB();
+                Account temp = AccountManager.getInstance().getAccount(username);
+                if (temp.ableToSignIn()){
+                    currentAccount = temp;
+                    ((Customer) currentAccount).initPastRidesFromDB();
+                }
 
-                return true;
+                return temp.ableToSignIn();
             }
             resultSet = db.query("SELECT username FROM driver WHERE username= '" + username + "' AND password = " + " '" + password + "'");
             size = 0;
@@ -120,13 +123,16 @@ public class AuthenticationManager {
                 }
             }
             if (resultSet != null && size != 0) {
-                currentAccount = AccountManager.getInstance().getAccount(username);
-                //init favourite areas
-                ((Driver) currentAccount).initFavouriteAreasFromDB();
+                Account temp = AccountManager.getInstance().getAccount(username);
+                if (temp.ableToSignIn()) {
+                    currentAccount = temp;
+                    //init favourite areas
+                    ((Driver) currentAccount).initFavouriteAreasFromDB();
 
-                //init rates
-                ((Driver) currentAccount).initRatesFromDB();
-                return true;
+                    //init rates
+                    ((Driver) currentAccount).initRatesFromDB();
+                }
+                return temp.ableToSignIn();
             }
             resultSet = db.query("SELECT username FROM admin WHERE username= '" + username + "' AND password = " + " '" + password + "'");
             size = 0;
@@ -136,8 +142,12 @@ public class AuthenticationManager {
                 }
             }
             if (resultSet != null && size != 0) {
-                currentAccount = AccountManager.getInstance().getAccount(username);
-                return true;
+                Account temp = AccountManager.getInstance().getAccount(username);
+                if (temp.ableToSignIn()){
+                    currentAccount = temp;
+                }
+
+                return temp.ableToSignIn();
             } else return false;
         } catch (java.sql.SQLException e) {
             return false;
