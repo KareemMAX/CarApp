@@ -1,21 +1,30 @@
+package view;
+
+import controller.Customer;
+import controller.Driver;
+import controller.Offer;
+import controller.Request;
+import model.AuthenticationManager;
+import model.RideManager;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * @author Mohamed Ashraf
- * Provides interface for Customer Dashboard
+ * Provides interface for controller.Customer Dashboard
  */
 public class CustomerInterface implements UserInterface {
 
     private final Scanner scan = new Scanner(System.in);
 
     /**
-     * Provides terminal interface for Customer Dashboard
+     * Provides terminal interface for controller.Customer Dashboard
      */
     @Override
     public void userDashboard() {
-        System.out.println("1. Request ride");
-        System.out.println("2. Rate most frequent driver");
+        System.out.println("1. controller.Request ride");
+        System.out.println("2. controller.Rate most frequent driver");
         System.out.println("3. Show offers");
         System.out.println("4. Logout");
         int choice = Integer.parseInt(scan.next());
@@ -68,8 +77,8 @@ public class CustomerInterface implements UserInterface {
                 System.out.println("Enter -1 to exit");
                 System.out.print("-> ");
                 index = scan.nextInt();
-                System.out.println("1. Accept Offer");
-                System.out.println("2. Reject Offer");
+                System.out.println("1. Accept controller.Offer");
+                System.out.println("2. Reject controller.Offer");
                 Offer currentOffer = currentRide.getAllOffers().get(index - 1);
                 index = scan.nextInt();
                 if (index == 1) currentOffer.accept();

@@ -1,3 +1,9 @@
+package controller;
+
+import model.AccountManager;
+import model.Database;
+import view.CustomerInterface;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +35,7 @@ public class Customer extends Account {
 
     /**
      * Creates a new customer account with the parameters as the account details
-     * An overload of the Customer class constructor to allow not providing an email address
+     * An overload of the controller.Customer class constructor to allow not providing an email address
      *
      * @param userName    The Username associated with this customer
      * @param password    The password associated with this customer
@@ -91,7 +97,7 @@ public class Customer extends Account {
      *
      * @return boolean value indicator
      */
-    boolean ableToSignIn() {
+    public boolean ableToSignIn() {
         return !isSuspended();
     }
 
@@ -101,14 +107,14 @@ public class Customer extends Account {
      * @param b new state of suspension
      */
     @Override
-    void setSuspended(boolean b) {
+    public void setSuspended(boolean b) {
         super.setSuspended(b);
         AccountManager.getInstance().updateAccount(this);
     }
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "controller.Customer{" +
                 "User name='"+this.getUserName()+"'"+
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +

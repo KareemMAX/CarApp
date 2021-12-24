@@ -1,3 +1,9 @@
+package view;
+
+import controller.Customer;
+import model.AuthenticationManager;
+
+import controller.Driver;
 import java.util.Scanner;
 
 /**
@@ -60,8 +66,8 @@ public class Main {
      */
     public static void registerInterface() {
         System.out.println("Would you like to register as a ");
-        System.out.println("1. Customer");
-        System.out.println("2. Driver");
+        System.out.println("1. controller.Customer");
+        System.out.println("2. controller.Driver");
         System.out.println("3. Return");
         int choice = scan.nextInt();
         switch (choice) {

@@ -1,3 +1,5 @@
+package view;
+
 /**
  * @author Mohamed Ashraf
  * Interface class for command line interface

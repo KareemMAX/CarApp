@@ -1,3 +1,7 @@
+package controller;
+
+import model.RideManager;
+
 import java.util.List;
 
 /**
@@ -13,7 +17,7 @@ public class Request {
     private final Customer user;
 
     /**
-     * Request default constructor
+     * controller.Request default constructor
      *
      * @param source      The source area of the request
      * @param destination The destination area of the request
@@ -29,7 +33,7 @@ public class Request {
     /**
      * The database ID
      *
-     * @return Request ID
+     * @return controller.Request ID
      */
     public int getId() {
         return id;

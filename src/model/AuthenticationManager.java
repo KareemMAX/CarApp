@@ -1,8 +1,11 @@
-import javax.xml.transform.Result;
+package model;
+
+import controller.Account;
+import controller.Customer;
+import controller.Driver;
+
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

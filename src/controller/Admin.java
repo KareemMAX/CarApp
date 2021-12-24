@@ -1,5 +1,9 @@
+package controller;
+
+import view.AdminInterface;
+
 /**
- * Admin account class
+ * controller.Admin account class
  *
  * @author Khaled Waleed
  */
@@ -17,7 +21,7 @@ public class Admin extends Account {
     }
 
     /**
-     * Indicates the ability of the Admin class to sign in
+     * Indicates the ability of the controller.Admin class to sign in
      *
      * @return boolean value indicator that is always true for admins
      */

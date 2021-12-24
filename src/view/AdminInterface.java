@@ -1,15 +1,23 @@
+package view;
+
+import controller.Customer;
+import controller.Driver;
+import model.AccountManager;
+import model.AuthenticationManager;
+import view.UserInterface;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * @author Mohamed Ashraf
- * Provides interface for Admin Dashboard
+ * Provides interface for controller.Admin Dashboard
  */
 public class AdminInterface implements UserInterface {
     private final Scanner scan = new Scanner(System.in);
 
     /**
-     * Provides terminal interface for Admin Dashboard
+     * Provides terminal interface for controller.Admin Dashboard
      */
     @Override
     public void userDashboard() {
@@ -19,7 +27,7 @@ public class AdminInterface implements UserInterface {
         int choice = scan.nextInt();
         switch (choice) {
             case 1 -> {
-                ArrayList<Driver> drivers = AccountManager.getInstance().getAllAccounts("Driver");
+                ArrayList<Driver> drivers = AccountManager.getInstance().getAllAccounts("controller.Driver");
                 int counter = 1;
                 for (Driver driver : drivers) {
                     System.out.print(counter);
@@ -44,7 +52,7 @@ public class AdminInterface implements UserInterface {
                 }
             }
             case 2 -> {
-                ArrayList<Customer> customers = AccountManager.getInstance().getAllAccounts("Customer");
+                ArrayList<Customer> customers = AccountManager.getInstance().getAllAccounts("controller.Customer");
                 int counter = 1;
                 for (Customer customer : customers) {
                     System.out.print(counter);

@@ -1,11 +1,15 @@
+package controller;
+
+import view.UserInterface;
+
 /**
  * An account class holding account data
  *
  * @author Khaled Waleed
  */
 public abstract class Account {
-    protected String password = "";
-    protected UserInterface userInterface;
+    public String password = "";
+    public UserInterface userInterface;
     private String userName = "";
     private boolean suspended = false;
 
@@ -25,14 +29,14 @@ public abstract class Account {
      *
      * @return boolean value indicator
      */
-    abstract boolean ableToSignIn();
+    public abstract boolean ableToSignIn();
 
     /**
      * gets the user suspension state
      *
      * @return The current suspension state
      */
-    boolean isSuspended() {
+    public boolean isSuspended() {
         return suspended;
     }
 
@@ -41,7 +45,7 @@ public abstract class Account {
      *
      * @param b the desired suspension state
      */
-    void setSuspended(boolean b) {
+    public void setSuspended(boolean b) {
         this.suspended = b;
     }
 

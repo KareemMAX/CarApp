@@ -1,5 +1,7 @@
+package controller;
+
 /**
- * Rate class, that holds a rate with its customer
+ * controller.Rate class, that holds a rate with its customer
  *
  * @author Khaled Waleed
  */
@@ -30,7 +32,7 @@ public class Rate {
 
 
     /**
-     * @return A string version of Rate object
+     * @return A string version of controller.Rate object
      */
     @Override
     public String toString() {

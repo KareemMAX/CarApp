@@ -1,3 +1,10 @@
+package model;
+
+import controller.Account;
+import controller.Admin;
+import controller.Customer;
+import controller.Driver;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
@@ -181,7 +188,7 @@ public class AccountManager {
     /**
      * Updates account in the database
      *
-     * @param account Account to be updated
+     * @param account controller.Account to be updated
      */
     public void updateAccount(Account account) {
         if(account instanceof Customer customer) {

@@ -1,15 +1,23 @@
+package view;
+
+import controller.Driver;
+import controller.Rate;
+import controller.Request;
+import model.AuthenticationManager;
+import model.RideManager;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * @author Mohamed Ashraf
- * Provides interface for Driver Dashboard
+ * Provides interface for controller.Driver Dashboard
  */
 public class DriverInterface implements UserInterface {
     private final Scanner scan = new Scanner(System.in);
 
     /**
-     * Provides terminal interface for Driver Dashboard
+     * Provides terminal interface for controller.Driver Dashboard
      */
     @Override
     public void userDashboard() {
@@ -41,7 +49,7 @@ public class DriverInterface implements UserInterface {
                 } catch (ArrayIndexOutOfBoundsException e) {
                     return;
                 }
-                System.out.print("Offer Value (In Decimal) : ");
+                System.out.print("controller.Offer Value (In Decimal) : ");
                 float offerValue = scan.nextFloat();
                 selectedRide.makerOffer(currentAccount, offerValue);
             }

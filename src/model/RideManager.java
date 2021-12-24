@@ -1,3 +1,7 @@
+package model;
+
+import controller.*;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -5,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * RideManager Singleton class
+ * model.RideManager Singleton class
  * <p>
  * Provides a single connection to the current database for other components to use.
  *
@@ -187,7 +191,7 @@ public class RideManager {
     public Driver getLastRideDriver(Customer account) {
         return account.getPastRides().get(account.getPastRides().size() - 1).getDriver();
     }
-    public void rate(Driver driver,Rate rate){
+    public void rate(Driver driver, Rate rate){
         db.update("Insert Into rate values"+"('"+rate.getUser().getUserName()+"','"+driver.getUserName()+"',"+rate.getRateValue()+");");
     }
 

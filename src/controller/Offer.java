@@ -1,3 +1,7 @@
+package controller;
+
+import model.RideManager;
+
 /**
  * A full offer provided from the driver to a user {@link Request}.
  *
@@ -12,7 +16,7 @@ public class Offer {
     private final RideManager rideManager = RideManager.getInstance();
 
     /**
-     * Offer default constructor
+     * controller.Offer default constructor
      * @param request The original {@link Request} that the offer is for
      * @param offerPrice The offer proposed price
      * @param driver The {@link Driver} object offering
@@ -73,7 +77,7 @@ public class Offer {
 
     @Override
     public String toString() {
-        return "Offer{" +
+        return "controller.Offer{" +
                 "request=" + request +
                 ", offerPrice=" + offerPrice +
                 ", driver=" + driver.getUserName() +

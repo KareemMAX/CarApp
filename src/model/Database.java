@@ -1,7 +1,9 @@
+package model;
+
 import java.sql.*;
 
 /**
- * Database Singleton class
+ * model.Database Singleton class
  * <p>
  * Provides a single connection to the current database for other components to use.
  *

@@ -1,3 +1,10 @@
+package controller;
+
+import model.AccountManager;
+import model.Database;
+import model.RideManager;
+import view.DriverInterface;
+
 import java.sql.ResultSet;
 import java.util.*;
 
@@ -37,7 +44,7 @@ public class Driver extends Account {
 
     /**
      * Creates a new driver account with the parameters as the account details
-     * An overload of the Driver class constructor to allow not providing an email address
+     * An overload of the controller.Driver class constructor to allow not providing an email address
      *
      * @param userName    The Username associated with this account
      * @param password    The Password associated with this account
@@ -215,14 +222,14 @@ public class Driver extends Account {
     }
 
     @Override
-    void setSuspended(boolean b) {
+    public void setSuspended(boolean b) {
         super.setSuspended(b);
         AccountManager.getInstance().updateAccount(this);
     }
 
     @Override
     public String toString() {
-        return "Driver{" +
+        return "controller.Driver{" +
                 "userName='" + getUserName() + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
