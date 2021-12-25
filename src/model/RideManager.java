@@ -50,7 +50,7 @@ public class RideManager {
         try {
             while (table.next()) {
                 Offer offer = new Offer(
-                        table.getInt("offerID"),
+                        table.getString("offerID"),
                         request,
                         table.getFloat("price"),
                         (Driver) accountManager.getAccount(table.getString("driverUsername"))
@@ -72,7 +72,6 @@ public class RideManager {
      * @param price   it is the price of ride.
      */
     public void makeOffer(Driver driver, Request request, float price) {
-        Offer offer = new Offer(request, price, driver);
         StringBuilder sqlQuery = new StringBuilder("INSERT INTO offer (offerID, driverUsername,accepted,requestID,price)\n");
         sqlQuery.append("VALUES (");
         sqlQuery.append("NewID(), ");
@@ -157,7 +156,7 @@ public class RideManager {
                 for (Driver driver :
                         subscribers.get(source)) {
                     if (driver.isAvailable())
-                        driver.notify(new Request(resultSet.getInt("requestID"), source, destination, account, numberOfPassengers));
+                        driver.notify(new Request(resultSet.getString("requestID"), source, destination, account, numberOfPassengers));
                 }
             }
 
@@ -227,7 +226,7 @@ public class RideManager {
      * @param id ID of the offer
      * @return The offer object
      */
-    public Offer getOfferById(int id) {
+    public Offer getOfferById(String id) {
         AccountManager dbA = AccountManager.getInstance();
         ResultSet table = db.query("SELECT request.requestID, request.[source], request.destination, " +
                 "request.customerUsername, request.numberOfPassengers, offer.price, offer.accepted, offer.driverUsername" +
@@ -236,7 +235,7 @@ public class RideManager {
         try {
             while (table.next()) {
                 Request request = new Request(
-                        table.getInt("request.requestID"),
+                        table.getString("request.requestID"),
                         table.getString("request.[source]"),
                         table.getString("request.destination"),
                         (Customer) dbA.getAccount(table.getString("request.customerUsername")),

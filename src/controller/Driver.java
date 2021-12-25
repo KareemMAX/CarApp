@@ -233,7 +233,7 @@ public class Driver extends Account {
             while (activeOffersTable.next())
                 this.activeOffers.add(
                         rideManager.getOfferById(
-                                activeOffersTable.getInt("offerID")
+                                activeOffersTable.getString("offerID")
                         )
                 );
         } catch (java.sql.SQLException e) {

@@ -147,13 +147,13 @@ public class EventManager
                 Customer customer =
                         (Customer) AccountManager.getInstance().getAccount(table.getString("customerUsername"));
                 Request request =
-                        new Request(table.getInt("RequestID"),table.getString("source"),
+                        new Request(table.getString("requestID"),table.getString("source"),
                                 table.getString("destination"),customer,table.getInt("numberOfPassengers"));
                 Driver driver =
                         (Driver) AccountManager.getInstance().getAccount(table.getString("driverUsername"));
 
                 Offer offer =
-                        new Offer(table.getInt("offerID"),request,table.getInt("price"),driver);
+                        new Offer(table.getString("offerID"),request,table.getInt("price"),driver);
 
                 Date date = table.getDate("time");
                 String name = table.getString("name");

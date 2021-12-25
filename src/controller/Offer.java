@@ -11,7 +11,7 @@ import java.util.Date;
  * @author Kareem Morsy
  */
 public class Offer {
-    private final int id;
+    private final String id;
     private final Request request;
     private final float offerPrice;
     private final Driver driver;
@@ -25,7 +25,7 @@ public class Offer {
      * @param offerPrice The offer proposed price
      * @param driver The {@link Driver} object offering
      */
-    public Offer(int id, Request request, float offerPrice, Driver driver) {
+    public Offer(String id, Request request, float offerPrice, Driver driver) {
         this.id = id;
         this.request = request;
         this.offerPrice = offerPrice;
@@ -40,7 +40,7 @@ public class Offer {
      * @param driver The {@link Driver} object offering
      * @param accepted Is the ride offer accepted or not
      */
-    public Offer(int id, Request request, float offerPrice, Driver driver, boolean accepted) {
+    public Offer(String id, Request request, float offerPrice, Driver driver, boolean accepted) {
         this(id, request, offerPrice, driver);
         this.accepted = accepted;
     }
@@ -73,7 +73,7 @@ public class Offer {
      * The offer's database ID
      * @return The offer's database ID
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 

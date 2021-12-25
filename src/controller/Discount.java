@@ -1,24 +1,30 @@
 package controller;
 
-public class Discount extends Offer{
-    private  Offer offer;
+public class Discount extends Offer {
     private final float discount;
+    private Offer offer;
 
-    public Discount(Offer offer,float discount) {
-        super(offer.getRequest(),
-                offer.getOfferPrice(),
-                offer.getDriver());
-        this.discount=discount;
+    public Discount(Offer offer, float discount) {
+        super(
+            offer.getId(),
+            offer.getRequest(),
+            offer.getOfferPrice(),
+            offer.getDriver()
+        );
+        this.discount = discount;
     }
-    public void reject(){
+
+    public void reject() {
         offer.reject();
     }
-    public void accept(){
+
+    public void accept() {
         offer.accept();
     }
+
     @Override
     public float getOfferPrice() {
-        return offer.getOfferPrice()-(offer.getOfferPrice()/(discount/100));
+        return offer.getOfferPrice() - (offer.getOfferPrice() / (discount / 100));
     }
 
 
