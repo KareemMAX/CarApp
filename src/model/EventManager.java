@@ -8,14 +8,11 @@ package model;
 import controller.*;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 
 public class EventManager
 {
-    private static Calendar calender;
+    private static final Calendar calender = new GregorianCalendar();
     private static EventManager instance =null;
 
     /**
@@ -51,8 +48,8 @@ public class EventManager
         Database db = Database.getInstance();
 
         //Extract date as a string. must be in this format: 2020-12-20 12:41:00
-        char x='-'; //date separator //can be '/'
-        char z=':'; //time separator
+        String x="-"; //date separator //can be '/'
+        String z=":"; //time separator
         calender.setTime(date);
         int year = calender.get(Calendar.YEAR);
         int month = calender.get(Calendar.MONTH);
@@ -63,25 +60,8 @@ public class EventManager
         String sDate = String.valueOf(year)+x+month+x+day+' ';
         sDate+= hour+z+min+z+sec;
 
-        //Get offer ID
-        int offerID=0;
-        ResultSet table = db.query( "SELECT offerID " +
-                "FROM offer " +
-                "WHERE driverUsername = '"+ offer.getDriver().getUserName() +"' "+
-                "AND requestID = '"+offer.getRequest().getId()+"'"+
-                "AND accepted = 1");
-        try
-        {
-            table.next();   //Advance one step
-            offerID =table.getInt(0);
-        }
-        catch (java.sql.SQLException e)
-        {
-            System.out.println("Offer was not found in the Database");
-        }
-
         //Build the query
-        db.update("INSERT into event VALUES ( '"+name+"' ,'"+sDate+"' ,"+offerID);
+        db.update("INSERT into event VALUES (NewID() ,'"+offer.getId()+"' ,'"+name+"' ,'"+sDate+"')");
 
     }
 

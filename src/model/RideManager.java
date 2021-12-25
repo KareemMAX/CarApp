@@ -110,7 +110,7 @@ public class RideManager {
                         "SET \n" +
                         "    accepted = 1\n" +
                         "WHERE\n" +
-                        " requestID = '" + offer.getRequest().getId() + "' AND driverUsername = '" + offer.getDriver().getUserName()+"'")) {
+                        " offerID= '" + offer.getId()+"'")) {
                     db.update("DELETE FROM [offer] WHERE accepted=0 and  requestID = '" + offer.getRequest().getId() + "';");
 
                     offer.getDriver().pickUpCustomer(offer);
@@ -176,7 +176,8 @@ public class RideManager {
      */
     public List<Request> getRequests() {
         AccountManager dbA = AccountManager.getInstance();
-        ResultSet table = db.query("SELECT DISTINCT [request].[requestID], [source], [destination], [customerUsername] FROM [request] LEFT jOIN  [offer] \n" +
+        ResultSet table = db.query("SELECT DISTINCT [request].[requestID], [source], [destination], " +
+                "[customerUsername], [numberOfPassengers] FROM [request] LEFT jOIN  [offer] \n" +
                 "ON [request].[requestID]=[offer].[requestID] WHERE accepted !='true' or accepted is NULL ;");
         ArrayList<Request> result = new ArrayList<>();
         try {
