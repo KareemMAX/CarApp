@@ -5,6 +5,7 @@ import controller.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -91,7 +92,20 @@ public class RideManager {
         }
 
         //Store the new Offer as an event
-        Offer offer = new Offer(999,request,price,driver); //TODO //What is the ID?
+        int newID=0;
+        ResultSet table;
+        table = db.query("SELECT COUNT(offerID) FROM offer");
+        try
+        {
+            table.next(); //advance step
+            newID = table.getInt(0);
+        }
+        catch (SQLException e)
+        {
+            System.out.println("ERROR in counting");
+        }
+        Offer offer = new Offer(newID,request,price,driver);
+        EventManager.getInstance().receiveEvent("price added", new Date(),offer);
     }
 
     /**
@@ -119,6 +133,10 @@ public class RideManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //Send event
+        Event event = new Event("offer acceptance",new Date(),offer);
+        EventManager.getInstance().receiveEvent(event);
     }
 
     /**
