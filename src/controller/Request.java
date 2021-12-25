@@ -15,19 +15,22 @@ public class Request {
     private final String source;
     private final String destination;
     private final Customer user;
+    private final int numberOfPassengers;
 
     /**
      * controller.Request default constructor
      *
-     * @param source      The source area of the request
-     * @param destination The destination area of the request
-     * @param user        The requested {@link Customer}
+     * @param source             The source area of the request
+     * @param destination        The destination area of the request
+     * @param user               The requested {@link Customer}
+     * @param numberOfPassengers The number of passengers the user allowed to share the ride
      */
-    public Request(int id, String source, String destination, Customer user) {
+    public Request(int id, String source, String destination, Customer user, int numberOfPassengers) {
         this.source = source;
         this.destination = destination;
         this.user = user;
         this.id = id;
+        this.numberOfPassengers = numberOfPassengers;
     }
 
     /**
@@ -55,6 +58,15 @@ public class Request {
      */
     public String getDestination() {
         return destination;
+    }
+
+    /**
+     * The number of passengers the user allowed to share the ride
+     *
+     * @return The number of passengers
+     */
+    public int getNumberOfPassengers() {
+        return numberOfPassengers;
     }
 
     /**

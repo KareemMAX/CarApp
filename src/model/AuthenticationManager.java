@@ -134,6 +134,9 @@ public class AuthenticationManager {
 
                     //init rates
                     ((Driver) currentAccount).initRatesFromDB();
+
+                    //init active offers
+                    ((Driver) currentAccount).initActiveOffersFromDB();
                 }
                 return temp.ableToSignIn();
             }

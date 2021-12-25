@@ -132,8 +132,8 @@ public class Customer extends Account {
         try {
             while (ridesTable.next()) {
                 Request request = new Request(ridesTable.getInt("request_id"), ridesTable.getString("source"),
-                        ridesTable.getString("destination"), this);
-                Offer offer = new Offer(request, ridesTable.getFloat("price"),
+                        ridesTable.getString("destination"), this, ridesTable.getInt("numberOfPassengers"));
+                Offer offer = new Offer(ridesTable.getInt("offerID"), request, ridesTable.getFloat("price"),
                         (Driver) AccountManager.getInstance().getAccount(ridesTable.getString("driver_id")));
                 rides.add(offer);
             }

@@ -34,7 +34,9 @@ public class CustomerInterface implements UserInterface {
                 String src = scan.next();
                 System.out.print("Destination : ");
                 String dest = scan.next();
-                if (RideManager.getInstance().makeRequest(src, dest, (Customer) AuthenticationManager.getInstance().getCurrentAccount())) {
+                System.out.println("Number of passengers : ");
+                int numberOfPassengers = scan.nextInt();
+                if (RideManager.getInstance().makeRequest(src, dest, (Customer) AuthenticationManager.getInstance().getCurrentAccount(), numberOfPassengers)) {
                     System.out.println("Drivers has been notified with your request");
                     System.out.println("Pending offers ...");
                 } else {
