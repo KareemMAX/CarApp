@@ -41,16 +41,17 @@ public class AccountManager {
         {
             ArrayList<Customer> result = new ArrayList<Customer>();
             ResultSet table;
-            table = db.query("SELECT * FROM [customer] INNER JOIN [account] ON customer.username = account.username");
+            table = db.query("SELECT * FROM [customer] INNER JOIN [account] ON [customer].[username] = [account].[username]");
 
             try {
                 while (table.next()) {
                     Customer current = new Customer(table.getString("username"),
                             table.getString("password"),
                             table.getString("email"),
-                            table.getDate("birthday")
+                            table.getString("phoneNumber"),
+                            table.getDate("birthday"),
+                            table.getBoolean("suspended")
                     );
-                    current.setSuspended(table.getBoolean("suspended"));
                     result.add(current);
                 }
             } catch (java.sql.SQLException e) {
@@ -60,18 +61,19 @@ public class AccountManager {
         } else {
             ArrayList<Driver> result = new ArrayList<Driver>();
             ResultSet table;
-            table = db.query("SELECT * FROM [driver] INNER JOIN [account] ON driver.username = account.username");
+            table = db.query("SELECT * FROM [driver] INNER JOIN [account] ON [driver].[username] = [account].[username]");
 
             try {
                 while (table.next()) {
                     Driver current = new Driver(table.getString("username"),
                             table.getString("password"),
                             table.getString("email"),
-                            table.getString("phonenumber"),
+                            table.getString("phoneNumber"),
                             table.getString("national_id"),
-                            table.getString("license"));
-                    current.setSuspended(table.getBoolean("suspended"));
-                    current.setVerified(table.getBoolean("verified"));
+                            table.getString("license"),
+                            table.getBoolean("suspended"),
+                            table.getBoolean("verified")
+                    );
                     result.add(current);
                 }
             } catch (java.sql.SQLException e) {
@@ -204,12 +206,12 @@ public class AccountManager {
             if (customer.isSuspended())
                 db.update("UPDATE customer\n"+
                         "SET email= '"  +customer.getEmail() + "', phoneNumber= '"+customer.getPhoneNumber()+"'"
-                        + ", suspended= 'false' WHERE username= '"+customer.getUserName()+"'");
+                        + ", suspended= 'true' WHERE username= '"+customer.getUserName()+"'");
 
             else
                 db.update("UPDATE customer\n"+
                         "SET email= '"  +customer.getEmail() + "', phoneNumber= '"+customer.getPhoneNumber()+"'"
-                        + ", suspended= 'true' WHERE username= '"+customer.getUserName()+"'");
+                        + ", suspended= 'false' WHERE username= '"+customer.getUserName()+"'");
         }
         else if (account instanceof Driver driver) {
             String query = "UPDATE driver\n"+

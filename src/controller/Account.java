@@ -57,4 +57,9 @@ public abstract class Account {
     public String getUserName() {
         return userName;
     }
+
+    @Override
+    public String toString() {
+        return "suspended=" + suspended;
+    }
 }

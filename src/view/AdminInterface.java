@@ -27,7 +27,7 @@ public class AdminInterface implements UserInterface {
         int choice = scan.nextInt();
         switch (choice) {
             case 1 -> {
-                ArrayList<Driver> drivers = AccountManager.getInstance().getAllAccounts("controller.Driver");
+                ArrayList<Driver> drivers = AccountManager.getInstance().getAllAccounts("Driver");
                 int counter = 1;
                 for (Driver driver : drivers) {
                     System.out.print(counter);

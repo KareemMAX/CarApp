@@ -37,6 +37,14 @@ public class Customer extends Account {
         this.birthday = birthday;
     }
 
+    public Customer(String userName, String password, String email, String phoneNumber, Date birthday, boolean suspended) {
+        super(userName, password);
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.birthday = birthday;
+        super.setSuspended(suspended);
+    }
+
     /**
      * Creates a new customer account with the parameters as the account details
      * An overload of the controller.Customer class constructor to allow not providing an email address

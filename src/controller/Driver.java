@@ -25,7 +25,7 @@ public class Driver extends Account {
     /**
      * Creates a new driver account with the parameters as the account details
      *
-     * @param userName    The User name associated with this account
+     * @param userName    The Username associated with this account
      * @param password    The Password associated with this account
      * @param phoneNumber The Phone number associated with this account
      * @param licence     The License number associated with this account
@@ -40,6 +40,16 @@ public class Driver extends Account {
         this.nationalID = nationalID;
         this.userInterface = new DriverInterface();
         this.rates = new ArrayList<>();
+    }
+
+    public Driver(String userName, String password, String email, String phoneNumber, String nationalID, String license, boolean suspended, boolean verified) {
+        super(userName, password);
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.nationalID = nationalID;
+        this.license = license;
+        this.verified = verified;
+        super.setSuspended(suspended);
     }
 
     /**
