@@ -21,6 +21,9 @@ public class Driver extends Account {
     private boolean verified = false;
     private List<String> favouriteAreas = new ArrayList<>();
     private List<Rate> rates;
+    private List<Offer> activeOffers = new ArrayList<>();
+
+    private final RideManager rideManager = RideManager.getInstance();
 
     /**
      * Creates a new driver account with the parameters as the account details
@@ -169,7 +172,7 @@ public class Driver extends Account {
     public void rate(Customer customer, float value) {
         Rate rate = new Rate(customer, value);
         rates.add(rate);
-        RideManager.getInstance().rate(this, rate);
+        rideManager.rate(this, rate);
     }
 
     /**
@@ -202,6 +205,26 @@ public class Driver extends Account {
         try {
             while (areasTable.next())
                 areas.add(areasTable.getString("favourite_place"));
+            favouriteAreas = areas;
+        } catch (java.sql.SQLException e) {
+            System.out.println("SQL ERROR");
+        }
+    }
+
+    /**
+     * Initializes the active offers from the database
+     */
+    public void initActiveOffersFromDB() {
+        Database db = Database.getInstance();
+        ResultSet activeOffersTable = db.query("SELECT offerID FROM activeOffers WHERE username = '" + getUserName() + "'");
+
+        try {
+            while (activeOffersTable.next())
+                this.activeOffers.add(
+                        rideManager.getOfferById(
+                                activeOffersTable.getInt("offerID")
+                        )
+                );
         } catch (java.sql.SQLException e) {
             System.out.println("SQL ERROR");
         }
@@ -264,10 +287,52 @@ public class Driver extends Account {
     /**
      * sets the array of the favourite areas
      *
-     * @param areas
+     * @param areas List of areas
      */
     public void setFavouriteAreas(List<String> areas) {
         this.favouriteAreas = areas;
     }
 
+    /**
+     * Checks if the driver available to handle a new request
+     *
+     * @return A boolean
+     */
+    public boolean isAvailable() {
+        if (activeOffers.isEmpty()) {
+            return true;
+        }
+
+        int minPassengers = activeOffers.get(0).getRequest().getNumberOfPassengers();
+        for (Offer offer :
+                activeOffers) {
+            minPassengers = Math.min(minPassengers, offer.getRequest().getNumberOfPassengers());
+        }
+
+        return activeOffers.size() < minPassengers;
+    }
+
+    /**
+     * Adds the offer to the current active offers of the driver
+     *
+     * @param offer The offer to be active
+     */
+    public void pickUpCustomer(Offer offer) {
+        // TODO add event
+
+        activeOffers.add(offer);
+        rideManager.pickUpCustomer(offer);
+    }
+
+    /**
+     * Removes the offer from the current active offers
+     *
+     * @param offer The offer to be removed
+     */
+    public void dropCustomer(Offer offer) {
+        // TODO add event
+
+        activeOffers.remove(offer);
+        rideManager.dropCustomer(offer);
+    }
 }
