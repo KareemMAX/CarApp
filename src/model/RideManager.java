@@ -86,26 +86,12 @@ public class RideManager {
         try {
             resultSet.next();
             Offer offer = new Offer(resultSet.getInt("offerID"), request, price, driver);
+            EventManager.getInstance().receiveEvent("price added", new Date(),offer);
             request.getUser().notify(offer);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        //Store the new Offer as an event
-        int newID=0;
-        ResultSet table;
-        table = db.query("SELECT COUNT(offerID) FROM offer");
-        try
-        {
-            table.next(); //advance step
-            newID = table.getInt(0);
-        }
-        catch (SQLException e)
-        {
-            System.out.println("ERROR in counting");
-        }
-        Offer offer = new Offer(newID,request,price,driver);
-        EventManager.getInstance().receiveEvent("price added", new Date(),offer);
     }
 
     /**
@@ -134,9 +120,6 @@ public class RideManager {
             e.printStackTrace();
         }
 
-        //Send event
-        Event event = new Event("offer acceptance",new Date(),offer);
-        EventManager.getInstance().receiveEvent(event);
     }
 
     /**

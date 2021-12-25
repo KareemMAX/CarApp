@@ -1,6 +1,9 @@
 package controller;
 
+import model.EventManager;
 import model.RideManager;
+
+import java.util.Date;
 
 /**
  * A full offer provided from the driver to a user {@link Request}.
@@ -80,6 +83,9 @@ public class Offer {
     public void accept() {
         accepted = true;
         rideManager.setOfferAccepted(this, true);
+        //Send event
+        Event event = new Event("offer acceptance",new Date(),this);
+        EventManager.getInstance().receiveEvent(event);
     }
 
     /**
