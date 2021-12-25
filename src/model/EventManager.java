@@ -5,9 +5,7 @@ package model;
  *  @author Khaled Waleed
  */
 
-import controller.Event;
-import controller.Offer;
-import controller.Request;
+import controller.*;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -58,10 +56,10 @@ public class EventManager
 
         //Get offer ID
         int offerID=0;
-        ResultSet table = db.query( "SELECT offer_id " +
+        ResultSet table = db.query( "SELECT offerID " +
                 "FROM offer " +
-                "WHERE driver_id = '"+ offer.getDriver().getUserName() +"' "+
-                "AND ride_id = '"+offer.getRequest().getId()+"'"+
+                "WHERE driverUsername = '"+ offer.getDriver().getUserName() +"' "+
+                "AND requestID = '"+offer.getRequest().getId()+"'"+
                 "AND accepted = 1");
         try
         {
@@ -74,7 +72,7 @@ public class EventManager
         }
 
         //Build the query
-        db.update("INSERT into events VALUES ( '"+name+"' ,'"+sDate+"' ,"+offerID);
+        db.update("INSERT into event VALUES ( '"+name+"' ,'"+sDate+"' ,"+offerID);
 
     }
 
@@ -89,15 +87,77 @@ public class EventManager
     {
         receiveEvent(new Event(name, date, offer));
     }
+
+    /**
+     * Display All Events in the database
+     * @return
+     */
     public ArrayList<Event> getAllEvents()
     {
-
-        return null;
+        ArrayList<Event> resultEvents = new ArrayList<>();
+        Database db = Database.getInstance();
+        ResultSet table;
+        String query =  "SELECT * FROM event " +
+                        "LEFT JOIN offer " +
+                        "ON event.offerID = offer.offerID"+
+                        "LEFT JOIN request " +
+                        "ON offer.requestID = request.requestID";
+        table = db.query(query);
+        resultEvents = extractEventsFromResultSet(table);
+        return resultEvents;
     }
     public ArrayList<Event> getEventsForRide(Request request)
     {
+        ArrayList<Event> resultEvents = new ArrayList<>();
+        Database db = Database.getInstance();
+        ResultSet table;
+        String query =  "SELECT * FROM event " +
+                        "LEFT JOIN offer " +
+                        "ON event.offerID = offer.offerID " +
+                        "LEFT JOIN request " +
+                        "ON offer.requestID = request.requestID " +
+                        "WHERE requestID ='" + request.getId()+"'";
+        table = db.query(query);
+        resultEvents = extractEventsFromResultSet(table);
+        return resultEvents;
+    }
 
+    /**
+     * Extracts events as objects form the database
+     * @param table initialized with a query joining the tables (event,offer,request)
+     * @return
+     */
+    private ArrayList<Event> extractEventsFromResultSet(ResultSet table)
+    {
+        ArrayList<Event> resultEvents = new ArrayList<>();
+        try
+        {
+            while (table.next())
+            {
+                //Extract internal objects
+                Customer customer =
+                        (Customer) AccountManager.getInstance().getAccount(table.getString("customerUsername"));
+                Request request =
+                        new Request(table.getInt("RequestID"),table.getString("source"),
+                                table.getString("destination"),customer,table.getInt("numberOfPassengers"));
+                Driver driver =
+                        (Driver) AccountManager.getInstance().getAccount(table.getString("driverUsername"));
 
-        return null;
+                Offer offer =
+                        new Offer(table.getInt("offerID"),request,table.getInt("price"),driver);
+
+                Date date = table.getDate("time");
+                String name = table.getString("name");
+
+                //Plug into the event
+                Event event = new Event(name,date,offer);
+                resultEvents.add(event);
+            }
+        }
+        catch (java.sql.SQLException e)
+        {
+            System.out.println("ERROR in event retrieval!");
+        }
+        return resultEvents;
     }
 }
