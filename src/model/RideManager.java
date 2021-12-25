@@ -89,6 +89,9 @@ public class RideManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        //Store the new Offer as an event
+        Offer offer = new Offer(999,request,price,driver); //TODO //What is the ID?
     }
 
     /**

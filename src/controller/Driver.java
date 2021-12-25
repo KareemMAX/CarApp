@@ -2,6 +2,7 @@ package controller;
 
 import model.AccountManager;
 import model.Database;
+import model.EventManager;
 import model.RideManager;
 import view.DriverInterface;
 
@@ -318,8 +319,10 @@ public class Driver extends Account {
      * @param offer The offer to be active
      */
     public void pickUpCustomer(Offer offer) {
-        // TODO add event
 
+        EventManager eventManager = EventManager.getInstance();
+        Event event = new Event("Pick up",new Date(),offer);
+        eventManager.receiveEvent(event);
         activeOffers.add(offer);
         rideManager.pickUpCustomer(offer);
     }
@@ -330,8 +333,9 @@ public class Driver extends Account {
      * @param offer The offer to be removed
      */
     public void dropCustomer(Offer offer) {
-        // TODO add event
-
+        EventManager eventManager = EventManager.getInstance();
+        Event event = new Event("Drop",new Date(),offer);
+        eventManager.receiveEvent(event);
         activeOffers.remove(offer);
         rideManager.dropCustomer(offer);
     }

@@ -15,10 +15,19 @@ import java.util.TimeZone;
 
 public class EventManager
 {
-    private Calendar calender;
+    private static Calendar calender;
+    private static EventManager instance =null;
 
-
-
+    /**
+     * Gets the singleton instance of the class
+     *
+     * @return The active instance of the class
+     */
+    public static EventManager getInstance()
+    {
+        if (instance == null) instance = new EventManager();
+        return instance;
+    }
     /**
      * Event Manager Constructor
      */
