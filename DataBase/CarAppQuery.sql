@@ -73,3 +73,12 @@ CREATE TABLE favourite_places
     PRIMARY KEY (favourite_place, driver_id),
     FOREIGN KEY (driver_id) REFERENCES driver (username),
 );
+
+CREATE TABLE events
+(
+	event_id int NOT NULL PRIMARY KEY,
+	name varchar(100),
+	event_date smalldatetime,
+	offer_id int,
+	FOREIGN KEY (offer_id) REFERENCES offer (offer_id)
+);

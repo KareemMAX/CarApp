@@ -43,20 +43,26 @@ public class EventManager
         //init database
         Database db = Database.getInstance();
 
-        //Extract date as a string
+        //Extract date as a string. must be in this format: 2020-12-20 12:41:00
+        char x='-'; //date separator //can be '/'
+        char z=':'; //time separator
         calender.setTime(date);
         int year = calender.get(Calendar.YEAR);
         int month = calender.get(Calendar.MONTH);
         int day = calender.get(Calendar.DAY_OF_MONTH);
-        String sDate = "'"+year+"'-'"+month+"'-'"+day+"'";
+        int hour = calender.get(Calendar.HOUR_OF_DAY);
+        int min = calender.get(Calendar.MINUTE);
+        int sec = calender.get(Calendar.SECOND);
+        String sDate = String.valueOf(year)+x+month+x+day+' ';
+        sDate+= hour+z+min+z+sec;
 
         //Get offer ID
         int offerID=0;
         ResultSet table = db.query( "SELECT offer_id " +
-                                                "FROM offer " +
-                                                "WHERE driver_id = '"+ offer.getDriver().getUserName() +"' "+
-                                                "AND ride_id = '"+offer.getRequest().getId()+"'"+
-                                                "AND accepted = 1");
+                "FROM offer " +
+                "WHERE driver_id = '"+ offer.getDriver().getUserName() +"' "+
+                "AND ride_id = '"+offer.getRequest().getId()+"'"+
+                "AND accepted = 1");
         try
         {
             table.next();   //Advance one step
@@ -64,11 +70,11 @@ public class EventManager
         }
         catch (java.sql.SQLException e)
         {
-            System.out.println("Offer not Found in the Database");
+            System.out.println("Offer was not found in the Database");
         }
 
         //Build the query
-        db.update("INSERT into Events VALUES ( '"+name+"' ,'"+date+"' ,"+offerID);
+        db.update("INSERT into events VALUES ( '"+name+"' ,'"+sDate+"' ,"+offerID);
 
     }
 
