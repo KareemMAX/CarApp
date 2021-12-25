@@ -1,6 +1,9 @@
 package controller;
 
+import model.EventManager;
 import model.RideManager;
+
+import java.util.Date;
 
 /**
  * A full offer provided from the driver to a user {@link Request}.
@@ -8,6 +11,7 @@ import model.RideManager;
  * @author Kareem Morsy
  */
 public class Offer {
+    private final int id;
     private final Request request;
     private final float offerPrice;
     private final Driver driver;
@@ -21,11 +25,24 @@ public class Offer {
      * @param offerPrice The offer proposed price
      * @param driver The {@link Driver} object offering
      */
-    public Offer(Request request, float offerPrice, Driver driver) {
+    public Offer(int id, Request request, float offerPrice, Driver driver) {
+        this.id = id;
         this.request = request;
         this.offerPrice = offerPrice;
         this.driver = driver;
         accepted = false;
+    }
+
+    /**
+     * controller.Offer constructor with accepted parameter
+     * @param request The original {@link Request} that the offer is for
+     * @param offerPrice The offer proposed price
+     * @param driver The {@link Driver} object offering
+     * @param accepted Is the ride offer accepted or not
+     */
+    public Offer(int id, Request request, float offerPrice, Driver driver, boolean accepted) {
+        this(id, request, offerPrice, driver);
+        this.accepted = accepted;
     }
 
     /**
@@ -53,11 +70,22 @@ public class Offer {
     }
 
     /**
+     * The offer's database ID
+     * @return The offer's database ID
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
      * Accepts the offer while rejecting any other existing offers to the same {@link Request} object
      */
     public void accept() {
         accepted = true;
         rideManager.setOfferAccepted(this, true);
+        //Send event
+        Event event = new Event("offer acceptance",new Date(),this);
+        EventManager.getInstance().receiveEvent(event);
     }
 
     /**

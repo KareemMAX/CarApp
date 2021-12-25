@@ -135,7 +135,6 @@ public class Customer extends Account {
         AccountManager.getInstance().updateAccount(this);
     }
 
-
     @Override
     public String toString() {
         return "Customer{" +
@@ -158,8 +157,8 @@ public class Customer extends Account {
         try {
             while (ridesTable.next()) {
                 Request request = new Request(ridesTable.getString("requestID"), ridesTable.getString("source"),
-                        ridesTable.getString("destination"), this);
-                Offer offer = new Offer(request, ridesTable.getFloat("price"),
+                        ridesTable.getString("destination"), this, ridesTable.getInt("numberOfPassengers"));
+                Offer offer = new Offer(ridesTable.getInt("offerID"), request, ridesTable.getFloat("price"),
                         (Driver) AccountManager.getInstance().getAccount(ridesTable.getString("driverUsername")));
                 rides.add(offer);
             }
