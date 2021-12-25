@@ -42,15 +42,16 @@ public class RideManager {
      * @return {@link ArrayList} if the execution happened successfully.
      */
     public List<Offer> listOffers(Request request) {
-        ResultSet table = db.query("SELECT * FROM offer\n" +
-                "right JOIN request ON offer.ride_id=request.request_id WHERE ride_id=" + request.getId());
+        ResultSet table = db.query("SELECT * FROM [offer]\n" +
+                "right JOIN [request] ON [offer].[requestID]=[request].[requestID]" +
+                "WHERE [request].[requestID] = '" + request.getId() + "';");
         ArrayList<Offer> result = new ArrayList<>();
         try {
             while (table.next()) {
                 Offer offer = new Offer(
                         request,
                         table.getFloat("price"),
-                        (Driver) accountManager.getAccount(table.getString("driver_id"))
+                        (Driver) accountManager.getAccount(table.getString("driverUsername"))
                 );
                 result.add(offer);
             }
@@ -70,11 +71,12 @@ public class RideManager {
      */
     public void makeOffer(Driver driver, Request request, float price) {
         Offer offer = new Offer(request, price, driver);
-        StringBuilder sqlQuery = new StringBuilder("INSERT INTO offer (driver_id,accepted,ride_id,price)\n");
+        StringBuilder sqlQuery = new StringBuilder("INSERT INTO offer (offerID, driverUsername,accepted,requestID,price)\n");
         sqlQuery.append("VALUES (");
+        sqlQuery.append("NewID(), ");
         sqlQuery.append("'").append(driver.getUserName()).append("',");
         sqlQuery.append(0).append(",");
-        sqlQuery.append(request.getId()).append(",");
+        sqlQuery.append("'").append(request.getId()).append("', ");
         sqlQuery.append(price).append(");");
         db.update(sqlQuery.toString());
         request.getUser().notify(offer);
@@ -90,14 +92,17 @@ public class RideManager {
     public void setOfferAccepted(Offer offer, boolean accepted) {
         try {
             if (accepted) {
-                db.update("UPDATE offer \n" +
+                if (db.update("UPDATE [offer] \n" +
                         "SET \n" +
                         "    accepted = 1\n" +
                         "WHERE\n" +
-                        " ride_id =" + offer.getRequest().getId() + "AnD driver_id= '" + offer.getDriver().getUserName()+"'");
-                db.update("DELETE FROM offer WHERE accepted=0 and  ride_id =" + offer.getRequest().getId()+";");
+                        " requestID = '" + offer.getRequest().getId() + "' AND driverUsername = '" + offer.getDriver().getUserName()+"'"))
+                db.update("DELETE FROM [offer] WHERE accepted=0 and  requestID = '" + offer.getRequest().getId()+"';");
+                else{
+                    System.out.println("SOMETHING WENT TERRIBLY WRONG");
+                }
             } else {
-                db.update("DELETE FROM offer WHERE ride_id =" + offer.getRequest().getId() + "AnD driver_id= '" + offer.getDriver().getUserName()+"'");
+                db.update("DELETE FROM [offer] WHERE requestID = '" + offer.getRequest().getId() + "' AND driverUsername= '" + offer.getDriver().getUserName()+"'");
             }
 
         } catch (Exception e) {
@@ -112,18 +117,20 @@ public class RideManager {
      * @param destination The SQL will use it to make know where he is going to.
      * @param account     the user he makes the request.
      */
-    public boolean makeRequest(String source, String destination, Customer account) {
+    public boolean makeRequest(String source, String destination, Customer account, int numberOfPassengers) {
         if (source == null || destination == null || account.getUserName() == null) {
             return false;
         }
-        StringBuilder sqlQuery = new StringBuilder("INSERT INTO request (source,destination,user_id)\n");
+        StringBuilder sqlQuery = new StringBuilder("INSERT INTO request (RequestID, source,destination,customerUsername, numberOfPassengers)\n");
         sqlQuery.append("VALUES (");
+        sqlQuery.append("NewID(), ");
         sqlQuery.append("'").append(source).append("',");
         sqlQuery.append("'").append(destination).append("',");
-        sqlQuery.append("'").append(account.getUserName()).append("');");
+        sqlQuery.append("'").append(account.getUserName()).append("',");
+        sqlQuery.append(numberOfPassengers).append(");");
         db.update(sqlQuery.toString());
 
-        String query = "SELECT request_id FROM request WHERE source='" + source + "' and destination='" + destination + "'and user_id='" + account.getUserName() + "'";
+        String query = "SELECT requestID FROM [request] WHERE source='" + source + "' and destination='" + destination + "'and customerUsername='" + account.getUserName() + "'";
         ResultSet resultSet = db.query(query);
         try {
             resultSet.next();
@@ -131,7 +138,7 @@ public class RideManager {
             if (subscribers.containsKey(source)) {
                 for (Driver driver :
                         subscribers.get(source)) {
-                    driver.notify(new Request(resultSet.getInt("request_id"), source, destination, account));
+                    driver.notify(new Request(resultSet.getString("requestID"), source, destination, account));
                 }
             }
 
@@ -151,16 +158,16 @@ public class RideManager {
      */
     public List<Request> getRequests() {
         AccountManager dbA = AccountManager.getInstance();
-        ResultSet table = db.query("SELECT distinct request_id, [source], destination, [user_id] FROM request LEFT jOIN  offer \n" +
-                "on request.request_id=offer.ride_id WHERE accepted !='true' or accepted is NULL ;");
+        ResultSet table = db.query("SELECT DISTINCT [request].[requestID], [source], [destination], [customerUsername] FROM [request] LEFT jOIN  [offer] \n" +
+                "ON [request].[requestID]=[offer].[requestID] WHERE accepted !='true' or accepted is NULL ;");
         ArrayList<Request> result = new ArrayList<>();
         try {
             while (table.next()) {
                 Request request = new Request(
-                        table.getInt("request_id"),
+                        table.getString("requestID"),
                         table.getString("source"),
                         table.getString("destination"),
-                        (Customer) dbA.getAccount(table.getString("user_id"))
+                        (Customer) dbA.getAccount(table.getString("customerUsername"))
                 );
                 result.add(request);
             }
@@ -192,7 +199,7 @@ public class RideManager {
         return account.getPastRides().get(account.getPastRides().size() - 1).getDriver();
     }
     public void rate(Driver driver, Rate rate){
-        db.update("Insert Into rate values"+"('"+rate.getUser().getUserName()+"','"+driver.getUserName()+"',"+rate.getRateValue()+");");
+        db.update("INSERT INTO [rate] VALUES (NewID(), '"+rate.getUser().getUserName()+"','"+driver.getUserName()+"',"+rate.getRateValue()+");");
     }
 
 }

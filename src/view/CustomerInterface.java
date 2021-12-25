@@ -1,9 +1,6 @@
 package view;
 
-import controller.Customer;
-import controller.Driver;
-import controller.Offer;
-import controller.Request;
+import controller.*;
 import model.AuthenticationManager;
 import model.RideManager;
 
@@ -12,19 +9,19 @@ import java.util.Scanner;
 
 /**
  * @author Mohamed Ashraf
- * Provides interface for controller.Customer Dashboard
+ * Provides interface for Customer Dashboard
  */
 public class CustomerInterface implements UserInterface {
 
     private final Scanner scan = new Scanner(System.in);
 
     /**
-     * Provides terminal interface for controller.Customer Dashboard
+     * Provides terminal interface for Customer Dashboard
      */
     @Override
     public void userDashboard() {
-        System.out.println("1. controller.Request ride");
-        System.out.println("2. controller.Rate most frequent driver");
+        System.out.println("1. Request ride");
+        System.out.println("2. Rate most frequent driver");
         System.out.println("3. Show offers");
         System.out.println("4. Logout");
         int choice = Integer.parseInt(scan.next());
@@ -34,7 +31,9 @@ public class CustomerInterface implements UserInterface {
                 String src = scan.next();
                 System.out.print("Destination : ");
                 String dest = scan.next();
-                if (RideManager.getInstance().makeRequest(src, dest, (Customer) AuthenticationManager.getInstance().getCurrentAccount())) {
+                System.out.print("Number of Passengers : ");
+                int num = Integer.parseInt(scan.next());
+                if (RideManager.getInstance().makeRequest(src, dest, (Customer) AuthenticationManager.getInstance().getCurrentAccount(), num)) {
                     System.out.println("Drivers has been notified with your request");
                     System.out.println("Pending offers ...");
                 } else {
@@ -67,6 +66,7 @@ public class CustomerInterface implements UserInterface {
                 System.out.println("Enter -1 to exit");
                 System.out.print("-> ");
                 int index = scan.nextInt();
+                if (index == -1) return;
                 Request currentRide = requests.get(index - 1);
                 counter = 1;
                 for (Offer offer : currentRide.getAllOffers()) {
@@ -77,8 +77,8 @@ public class CustomerInterface implements UserInterface {
                 System.out.println("Enter -1 to exit");
                 System.out.print("-> ");
                 index = scan.nextInt();
-                System.out.println("1. Accept controller.Offer");
-                System.out.println("2. Reject controller.Offer");
+                System.out.println("1. Accept Offer");
+                System.out.println("2. Reject Offer");
                 Offer currentOffer = currentRide.getAllOffers().get(index - 1);
                 index = scan.nextInt();
                 if (index == 1) currentOffer.accept();

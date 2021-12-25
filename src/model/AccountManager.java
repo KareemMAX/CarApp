@@ -5,6 +5,7 @@ import controller.Admin;
 import controller.Customer;
 import controller.Driver;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
@@ -40,14 +41,15 @@ public class AccountManager {
         {
             ArrayList<Customer> result = new ArrayList<Customer>();
             ResultSet table;
-            table = db.query("SELECT * FROM customer");
+            table = db.query("SELECT * FROM [customer] INNER JOIN [account] ON customer.username = account.username");
 
             try {
                 while (table.next()) {
                     Customer current = new Customer(table.getString("username"),
                             table.getString("password"),
                             table.getString("email"),
-                            table.getString("phone_number"));
+                            table.getDate("birthday")
+                    );
                     current.setSuspended(table.getBoolean("suspended"));
                     result.add(current);
                 }
@@ -58,7 +60,7 @@ public class AccountManager {
         } else {
             ArrayList<Driver> result = new ArrayList<Driver>();
             ResultSet table;
-            table = db.query("SELECT * FROM driver");
+            table = db.query("SELECT * FROM [driver] INNER JOIN [account] ON driver.username = account.username");
 
             try {
                 while (table.next()) {
@@ -88,48 +90,53 @@ public class AccountManager {
     public Account getAccount(String username) {
         try {
             Account target;
-            ResultSet table = db.query("SELECT * FROM driver WHERE username = '" + username + "'");
+            ResultSet table = db.query("SELECT * FROM [driver] WHERE username = '" + username + "'");
             int size = 0;
             while (table.next()) {
                 size++;
             }
             if (size != 0) {
-                table = db.query("SELECT * FROM driver WHERE username = '" + username + "'");
+                table = db.query("SELECT * FROM [driver] INNER JOIN [account] ON driver.username = account.username WHERE account.username = '" + username + "'");
                 table.next();
-                target = new Driver(table.getString("username"),
+                target = new Driver(
+                        table.getString("username"),
                         table.getString("password"),
                         table.getString("email"),
-                        table.getString("phonenumber"),
+                        table.getString("phoneNumber"),
                         table.getString("national_id"),
-                        table.getString("license"));
+                        table.getString("license")
+                );
                 target.setSuspended(table.getBoolean("suspended"));
                 ((Driver) target).setVerified(table.getBoolean("verified"));
             } else {
-                table = db.query("SELECT * FROM customer WHERE username = '" + username + "'");
+                table = db.query("SELECT * FROM [customer] WHERE username = '" + username + "'");
                 size = 0;
                 while (table.next()) {
                     size++;
                 }
                 if (size != 0) {
-                    table = db.query("SELECT * FROM customer WHERE username = '" + username + "'");
+                    table = db.query("SELECT * FROM [customer] INNER JOIN [account] ON [customer].[username] = [account].[username] WHERE [customer].[username] = '" + username + "'");
                     table.next();
-                    target = new Customer(table.getString("username"),
+                    target = new Customer(
+                            table.getString("username"),
                             table.getString("password"),
+                            table.getString("phoneNumber"),
                             table.getString("email"),
-                            table.getString("phone_number"));
+                            table.getDate("birthday")
+                    );
                     target.setSuspended(table.getBoolean("suspended"));
                 } else {
-                    table = db.query("SELECT * FROM admin WHERE username = '" + username + "'");
+                    table = db.query("SELECT * FROM [admin] WHERE username = '" + username + "'");
                     size = 0;
                     while (table.next()) {
                         size++;
                     }
                     if (size != 0) {
-                        table = db.query("SELECT * FROM admin WHERE username = '" + username + "'");
+                        table = db.query("SELECT * FROM [admin] INNER JOIN [account] ON [admin].[username] = [account].[username] WHERE [admin].[username] = '" + username + "'");
                         table.next();
                         target = new Admin(table.getString("username"),
                                 table.getString("password"));
-                        target.setSuspended(table.getBoolean("suspended"));
+                        target.setSuspended(false);
                     } else
                         throw new java.sql.SQLException();
                 }
@@ -155,23 +162,25 @@ public class AccountManager {
 
         ArrayList<Account> result = new ArrayList<Account>();
         ResultSet table;
-        table = db.query("SELECT * FROM customer WHERE suspended = 'true'");
+        table = db.query("SELECT * FROM [customer] INNER JOIN [account] ON customer.username = account.username WHERE suspended = 'true'");
         try {
             while (table.next()) {
                 Customer current = new Customer(table.getString("username"),
                         table.getString("password"),
+                        table.getString("phone_number"),
                         table.getString("email"),
-                        table.getString("phone_number"));
+                        table.getDate("birthday")
+                        );
                 current.setSuspended(table.getBoolean("suspended"));
                 result.add(current);
             }
 
-            table = db.query("SELECT * FROM driver WHERE suspended = 'true'");
+            table = db.query("SELECT * FROM [driver] INNER JOIN [account] ON driver.username = account.username WHERE suspended = 'true'");
             while (table.next()) {
                 Driver current = new Driver(table.getString("username"),
                         table.getString("password"),
                         table.getString("email"),
-                        table.getString("phone"),
+                        table.getString("phoneNumber"),
                         table.getString("national_id"),
                         table.getString("license"));
                 current.setSuspended(table.getBoolean("suspended"));
@@ -194,17 +203,17 @@ public class AccountManager {
         if(account instanceof Customer customer) {
             if (customer.isSuspended())
                 db.update("UPDATE customer\n"+
-                        "SET password= '"+customer.password+"', email= '"+customer.getEmail()+"', phone_number= '"+customer.getPhoneNumber()+"'"
+                        "SET email= '"  +customer.getEmail() + "', phoneNumber= '"+customer.getPhoneNumber()+"'"
                         + ", suspended= 'false' WHERE username= '"+customer.getUserName()+"'");
 
             else
                 db.update("UPDATE customer\n"+
-                        "SET password= '"+customer.password+"', email= '"+customer.getEmail()+"', phone_number= '"+customer.getPhoneNumber()+"'"
-                        + ", suspended= 'true' WHERE username= '" +customer.getUserName()+ "'");
+                        "SET email= '"  +customer.getEmail() + "', phoneNumber= '"+customer.getPhoneNumber()+"'"
+                        + ", suspended= 'true' WHERE username= '"+customer.getUserName()+"'");
         }
         else if (account instanceof Driver driver) {
             String query = "UPDATE driver\n"+
-                    "SET password= '"+driver.password+"', email= '"+ driver.getEmail()+"', phonenumber= '"+driver.getPhoneNumber()+"'"
+                    "SET email= '" + driver.getEmail()+"', phoneNumber= '"+driver.getPhoneNumber()+"'"
                     +", national_id= '"+driver.getNationalID()+"', license= '"+driver.getNationalID()+"'";
             if (driver.isSuspended())
                 query+= ", suspended= 'true'";
@@ -219,6 +228,6 @@ public class AccountManager {
         }
     }
     public void addFavouriteArea(Driver driver,String area){
-        db.update("INSERT INTO favourite_places values('"+area+"','"+driver.getUserName()+"')");
+        db.update("INSERT INTO [favouriteAreas] values('"+area+"','"+driver.getUserName()+"')");
     }
 }

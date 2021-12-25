@@ -17,7 +17,7 @@ public class DriverInterface implements UserInterface {
     private final Scanner scan = new Scanner(System.in);
 
     /**
-     * Provides terminal interface for controller.Driver Dashboard
+     * Provides terminal interface for Driver Dashboard
      */
     @Override
     public void userDashboard() {
@@ -49,7 +49,7 @@ public class DriverInterface implements UserInterface {
                 } catch (ArrayIndexOutOfBoundsException e) {
                     return;
                 }
-                System.out.print("controller.Offer Value (In Decimal) : ");
+                System.out.print("Offer Value (In Decimal) : ");
                 float offerValue = scan.nextFloat();
                 selectedRide.makerOffer(currentAccount, offerValue);
             }

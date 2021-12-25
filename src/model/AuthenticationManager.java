@@ -52,11 +52,12 @@ public class AuthenticationManager {
      */
     public boolean register(Account acc) {
         Map<String, String> cred = new HashMap<>();
-        cred.put("userName", acc.getUserName());
+        cred.put("username", acc.getUserName());
         cred.put("password", acc.password);
         if (acc instanceof Customer) {
             cred.put("email", ((Customer) acc).getEmail());
             cred.put("phoneNumber", ((Customer) acc).getPhoneNumber());
+            cred.put("birthday", ((Customer) acc).getBirthday().toString());
         } else if (acc instanceof Driver) {
             cred.put("email", ((Driver) acc).getEmail());
             cred.put("phoneNumber", ((Driver) acc).getPhoneNumber());
@@ -67,8 +68,7 @@ public class AuthenticationManager {
         }
         //check if exists
         Database db = Database.getInstance();
-        ResultSet resultSet = db.query("SELECT username from customer WHERE username= '" + cred.get("userName") + "'" +
-                "UNION SELECT username from driver WHERE username= '" + cred.get("userName") + "'");
+        ResultSet resultSet = db.query("SELECT username from [dbo].[account] WHERE username= '" + cred.get("username") + "'");
         int counter = 0;
         try {
             while (resultSet.next())
@@ -78,15 +78,17 @@ public class AuthenticationManager {
             return false;
         }
         if (counter != 0) return false;
+        boolean insertToAccount = db.update("INSERT into account VALUES ( '" +
+                cred.get("username") + "', '" + cred.get("password") + "')");
 
         if (acc instanceof Customer)
-            return db.update("INSERT into customer VALUES ( '" +
-                    cred.get("userName") + "' ,'" + cred.get("password") + "' ,'" + cred.get("email") + "' ,'" + cred.get("phoneNumber") + "' ," +
-                    " 'false')");
+            return insertToAccount && db.update("INSERT into [dbo].[customer] VALUES ( '" +
+                    cred.get("username") + "' ,'" + cred.get("email") + "' ,'" + cred.get("phoneNumber") + "' ," +
+                    " 'false' , '" + cred.get("birthday") + "')");
         else if (acc instanceof Driver)
-            return db.update("Insert into driver (username,password,email,phonenumber,national_id, license," +
+            return db.update("Insert into [dbo].[driver] (username,email,phonenumber,national_id, license," +
                     "suspended,verified) values ( '" +
-                    cred.get("userName") + "' ,'" + cred.get("password") + "' ,'" + cred.get("email") + "' ,'" + cred.get("phoneNumber") + "' ,'" +
+                    cred.get("username") + "' ,'" + cred.get("email") + "' ,'" + cred.get("phoneNumber") + "' ,'" +
                     cred.get("nationalId") + "' , '" + cred.get("licence") + "', 'false', 'false');");
         else return false;
     }
@@ -100,7 +102,7 @@ public class AuthenticationManager {
      */
     public boolean login(String username, String password) {
         Database db = Database.getInstance();
-        ResultSet resultSet = db.query("SELECT username FROM customer WHERE username= '" + username + "' AND password = '" + password + "'");
+        ResultSet resultSet = db.query("SELECT username FROM [dbo].[account] WHERE username= '" + username + "' AND password = '" + password + "'");
         int size = 0;
         try {
             while (resultSet.next()) {
@@ -108,52 +110,14 @@ public class AuthenticationManager {
             }
         } catch (java.sql.SQLException e) {
         }
-        try {
-            if (size != 0) {
-                Account temp = AccountManager.getInstance().getAccount(username);
-                if (temp.ableToSignIn()){
-                    currentAccount = temp;
-                    ((Customer) currentAccount).initPastRidesFromDB();
-                }
-
-                return temp.ableToSignIn();
+        if (size != 0) {
+            Account temp = AccountManager.getInstance().getAccount(username);
+            if (temp.ableToSignIn()) {
+                currentAccount = temp;
+                if (temp instanceof Customer) ((Customer) currentAccount).initPastRidesFromDB();
             }
-            resultSet = db.query("SELECT username FROM driver WHERE username= '" + username + "' AND password = " + " '" + password + "'");
-            size = 0;
-            if (resultSet != null) {
-                while (resultSet.next()) {
-                    size++;
-                }
-            }
-            if (resultSet != null && size != 0) {
-                Account temp = AccountManager.getInstance().getAccount(username);
-                if (temp.ableToSignIn()) {
-                    currentAccount = temp;
-                    //init favourite areas
-                    ((Driver) currentAccount).initFavouriteAreasFromDB();
-
-                    //init rates
-                    ((Driver) currentAccount).initRatesFromDB();
-                }
-                return temp.ableToSignIn();
-            }
-            resultSet = db.query("SELECT username FROM admin WHERE username= '" + username + "' AND password = " + " '" + password + "'");
-            size = 0;
-            if (resultSet != null) {
-                while (resultSet.next()) {
-                    size++;
-                }
-            }
-            if (resultSet != null && size != 0) {
-                Account temp = AccountManager.getInstance().getAccount(username);
-                if (temp.ableToSignIn()){
-                    currentAccount = temp;
-                }
-
-                return temp.ableToSignIn();
-            } else return false;
-        } catch (java.sql.SQLException e) {
-            return false;
+            return temp.ableToSignIn();
         }
+        return false;
     }
 }

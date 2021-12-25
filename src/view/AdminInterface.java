@@ -52,7 +52,7 @@ public class AdminInterface implements UserInterface {
                 }
             }
             case 2 -> {
-                ArrayList<Customer> customers = AccountManager.getInstance().getAllAccounts("controller.Customer");
+                ArrayList<Customer> customers = AccountManager.getInstance().getAllAccounts("Customer");
                 int counter = 1;
                 for (Customer customer : customers) {
                     System.out.print(counter);

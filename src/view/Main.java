@@ -4,6 +4,8 @@ import controller.Customer;
 import model.AuthenticationManager;
 
 import controller.Driver;
+
+import java.sql.Date;
 import java.util.Scanner;
 
 /**
@@ -66,8 +68,8 @@ public class Main {
      */
     public static void registerInterface() {
         System.out.println("Would you like to register as a ");
-        System.out.println("1. controller.Customer");
-        System.out.println("2. controller.Driver");
+        System.out.println("1. Customer");
+        System.out.println("2. Driver");
         System.out.println("3. Return");
         int choice = scan.nextInt();
         switch (choice) {
@@ -84,11 +86,13 @@ public class Main {
                     System.out.print("Email : ");
                     email = scan.next();
                 }
+                System.out.print("Enter your birthdate in this format YYYY-MM-DD : ");
+                Date birthday = Date.valueOf(scan.next());
                 if (email == null) {
-                    if (AuthenticationManager.getInstance().register(new Customer(user, password, phoneNumber)))
+                    if (AuthenticationManager.getInstance().register(new Customer(user, password, phoneNumber, birthday)))
                         System.out.println("Registration Complete!");
                     else System.out.println("Something went wrong");
-                } else if (AuthenticationManager.getInstance().register(new Customer(user, password, phoneNumber, email))) {
+                } else if (AuthenticationManager.getInstance().register(new Customer(user, password, phoneNumber, email, birthday))) {
                     System.out.println("Registration Complete!");
                 } else System.out.println("Something went wrong");
 

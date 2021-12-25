@@ -16,7 +16,7 @@ public class Offer {
     private final RideManager rideManager = RideManager.getInstance();
 
     /**
-     * controller.Offer default constructor
+     * Offer default constructor
      * @param request The original {@link Request} that the offer is for
      * @param offerPrice The offer proposed price
      * @param driver The {@link Driver} object offering
@@ -77,7 +77,7 @@ public class Offer {
 
     @Override
     public String toString() {
-        return "controller.Offer{" +
+        return "Offer{" +
                 "request=" + request +
                 ", offerPrice=" + offerPrice +
                 ", driver=" + driver.getUserName() +

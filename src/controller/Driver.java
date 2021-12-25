@@ -32,7 +32,7 @@ public class Driver extends Account {
      * @param nationalID  The National ID associated with this account
      * @param email       The E-Mail address associated with this account
      */
-    public Driver(String userName, String password, String phoneNumber, String licence, String nationalID, String email) {
+    public Driver(String userName, String password, String email, String phoneNumber, String nationalID, String licence) {
         super(userName, password);
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -178,11 +178,11 @@ public class Driver extends Account {
     public void initRatesFromDB() {
         Database db = Database.getInstance();
         ArrayList<Rate> rates = new ArrayList<Rate>();
-        ResultSet myRates = db.query("SELECT * FROM rate WHERE driver_id = '" + getUserName() + "'");
+        ResultSet myRates = db.query("SELECT * FROM rate WHERE driverUsername = '" + getUserName() + "'");
         try {
             while (myRates.next()) {
-                Rate rate = new Rate((Customer) AccountManager.getInstance().getAccount(myRates.getString("user_ID")),
-                        myRates.getFloat("rate_value"));
+                Rate rate = new Rate((Customer) AccountManager.getInstance().getAccount(myRates.getString("customerUsername")),
+                        myRates.getFloat("rating"));
                 rates.add(rate);
             }
             this.rates = rates;
@@ -229,7 +229,7 @@ public class Driver extends Account {
 
     @Override
     public String toString() {
-        return "controller.Driver{" +
+        return "Driver{" +
                 "userName='" + getUserName() + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +

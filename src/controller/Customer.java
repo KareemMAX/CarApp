@@ -4,6 +4,7 @@ import model.AccountManager;
 import model.Database;
 import view.CustomerInterface;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Customer extends Account {
     private String email = "";
     private String phoneNumber = "";
     private List<Offer> pastRides;
+    private Date birthday;
 
     /**
      * Creates a new customer account with the parameters as the account details
@@ -25,12 +27,14 @@ public class Customer extends Account {
      * @param password    The password associated with this account
      * @param phoneNumber The phone number associated with this account
      * @param email       The E-mail address associated with this account
+     * @param birthday    The birthday date associated with this account
      */
-    public Customer(String userName, String password, String phoneNumber, String email) {
+    public Customer(String userName, String password, String phoneNumber, String email, Date birthday) {
         super(userName, password);
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.userInterface = new CustomerInterface();
+        this.birthday = birthday;
     }
 
     /**
@@ -40,10 +44,12 @@ public class Customer extends Account {
      * @param userName    The Username associated with this customer
      * @param password    The password associated with this customer
      * @param phoneNumber The phone number associated with this customer
+     * @param birthday    The birthday date associated with this account
      */
-    public Customer(String userName, String password, String phoneNumber) {
+    public Customer(String userName, String password, String phoneNumber, Date birthday) {
         super(userName, password);
         this.phoneNumber = phoneNumber;
+        this.birthday = birthday;
     }
 
     /**
@@ -62,6 +68,15 @@ public class Customer extends Account {
      */
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    /**
+     * Get the birthday associated with this customer
+     *
+     * @return Birthday as a SQL.Date object
+     */
+    public Date getBirthday() {
+        return birthday;
     }
 
     /**
@@ -112,12 +127,15 @@ public class Customer extends Account {
         AccountManager.getInstance().updateAccount(this);
     }
 
+
     @Override
     public String toString() {
-        return "controller.Customer{" +
+        return "Customer{" +
                 "User name='"+this.getUserName()+"'"+
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", isSuspended='" + isSuspended() + '\'' +
+                ", birthday='" + birthday.toString() + '\'' +
                 '}';
     }
 
@@ -127,14 +145,14 @@ public class Customer extends Account {
     public void initPastRidesFromDB() {
         Database db = Database.getInstance();
         ArrayList<Offer> rides = new ArrayList<Offer>();
-        ResultSet ridesTable = db.query("SELECT * FROM offer INNER JOIN request ON offer.ride_id = request.request_id\n" +
-                "WHERE offer.accepted = 'true' AND request.user_id = '" + getUserName() + "'");
+        ResultSet ridesTable = db.query("SELECT * FROM [offer] INNER JOIN request ON [offer].[requestID] = [request].[requestID]\n" +
+                "WHERE [offer].[accepted] = 'true' AND [request].[customerUsername] = '" + getUserName() + "'");
         try {
             while (ridesTable.next()) {
-                Request request = new Request(ridesTable.getInt("request_id"), ridesTable.getString("source"),
+                Request request = new Request(ridesTable.getString("requestID"), ridesTable.getString("source"),
                         ridesTable.getString("destination"), this);
                 Offer offer = new Offer(request, ridesTable.getFloat("price"),
-                        (Driver) AccountManager.getInstance().getAccount(ridesTable.getString("driver_id")));
+                        (Driver) AccountManager.getInstance().getAccount(ridesTable.getString("driverUsername")));
                 rides.add(offer);
             }
             pastRides=rides;

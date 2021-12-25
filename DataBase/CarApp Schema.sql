@@ -1,3 +1,5 @@
+
+
 -- ******************SqlDBM: Microsoft SQL Server * *****************
 -- ******************************************************************
 
@@ -13,36 +15,7 @@ CREATE TABLE [dbo].[account]
 GO
 
 
--- ******************SqlDBM: Microsoft SQL Server * *****************
--- ******************************************************************
 
--- ************************************** [dbo].[activeOffers]
-CREATE TABLE [dbo].[activeOffers]
-(
- [username] varchar(50) NOT NULL ,
- [offerID]  uniqueidentifier NOT NULL ,
-
-
- CONSTRAINT [PK_130] PRIMARY KEY CLUSTERED ([username] ASC, [offerID] ASC),
- CONSTRAINT [FK_127] FOREIGN KEY ([username])  REFERENCES [dbo].[driver]([username]),
- CONSTRAINT [FK_131] FOREIGN KEY ([offerID])  REFERENCES [dbo].[offer]([offerID])
-);
-GO
-
-
-CREATE NONCLUSTERED INDEX [FK_129] ON [dbo].[activeOffers] 
- (
-  [username] ASC
- )
-
-GO
-
-CREATE NONCLUSTERED INDEX [FK_133] ON [dbo].[activeOffers] 
- (
-  [offerID] ASC
- )
-
-GO
 
 
 -- ******************SqlDBM: Microsoft SQL Server * *****************
@@ -136,66 +109,9 @@ CREATE NONCLUSTERED INDEX [FK_44] ON [dbo].[driver]
 
 GO
 
--- ******************SqlDBM: Microsoft SQL Server * *****************
--- ******************************************************************
-
--- ************************************** [dbo].[event]
-CREATE TABLE [dbo].[event]
-(
- [eventID] uniqueidentifier NOT NULL ,
- [offerID] uniqueidentifier NOT NULL ,
- [name]    varchar(50) NOT NULL ,
- [time]    datetime NOT NULL ,
 
 
- CONSTRAINT [PK_105] PRIMARY KEY CLUSTERED ([eventID] ASC),
- CONSTRAINT [FK_106] FOREIGN KEY ([offerID])  REFERENCES [dbo].[offer]([offerID])
-);
-GO
 
-
-CREATE NONCLUSTERED INDEX [FK_108] ON [dbo].[event] 
- (
-  [offerID] ASC
- )
-
-GO
-
--- ******************SqlDBM: Microsoft SQL Server * *****************
--- ******************************************************************
-
--- ************************************** [dbo].[offer]
-CREATE TABLE [dbo].[offer]
-(
- [offerID]          uniqueidentifier NOT NULL ,
- [price]            money NOT NULL ,
- [accepted]         bit NOT NULL ,
- [driverUsername]   varchar(50) NOT NULL ,
- [customerUsername] uniqueidentifier NOT NULL ,
- [requestID]        uniqueidentifier NOT NULL ,
-
-
- CONSTRAINT [PK_67] PRIMARY KEY CLUSTERED ([offerID] ASC),
- CONSTRAINT [FK_70] FOREIGN KEY ([requestID], [customerUsername])  REFERENCES [dbo].[request]([requestID], [customerUsername]),
- CONSTRAINT [FK_73] FOREIGN KEY ([driverUsername])  REFERENCES [dbo].[driver]([username])
-);
-GO
-
-
-CREATE NONCLUSTERED INDEX [FK_72] ON [dbo].[offer] 
- (
-  [requestID] ASC, 
-  [customerUsername] ASC
- )
-
-GO
-
-CREATE NONCLUSTERED INDEX [FK_75] ON [dbo].[offer] 
- (
-  [driverUsername] ASC
- )
-
-GO
 
 -- ******************SqlDBM: Microsoft SQL Server * *****************
 -- ******************************************************************
@@ -272,5 +188,111 @@ CREATE NONCLUSTERED INDEX [FK_64] ON [dbo].[request]
 
 GO
 
+-- ******************SqlDBM: Microsoft SQL Server * *****************
+-- ******************************************************************
+
+-- ************************************** [dbo].[offer]
+CREATE TABLE [dbo].[offer]
+(
+ [offerID]          uniqueidentifier NOT NULL ,
+ [price]            money NOT NULL ,
+ [accepted]         bit NOT NULL ,
+ [driverUsername]   varchar(50) NOT NULL ,
+ [requestID]        uniqueidentifier NOT NULL ,
+
+
+ CONSTRAINT [PK_67] PRIMARY KEY CLUSTERED ([offerID] ASC),
+ CONSTRAINT [FK_70] FOREIGN KEY ([requestID])  REFERENCES [dbo].[request]([requestID]),
+ CONSTRAINT [FK_73] FOREIGN KEY ([driverUsername])  REFERENCES [dbo].[driver]([username])
+);
+GO
+
+
+CREATE NONCLUSTERED INDEX [FK_75] ON [dbo].[offer] 
+ (
+  [driverUsername] ASC
+ )
+
+GO
+
+
+-- ******************SqlDBM: Microsoft SQL Server * *****************
+-- ******************************************************************
+
+-- ************************************** [dbo].[activeOffers]
+CREATE TABLE [dbo].[activeOffers]
+(
+ [username] varchar(50) NOT NULL ,
+ [offerID]  uniqueidentifier NOT NULL ,
+
+
+ CONSTRAINT [PK_130] PRIMARY KEY CLUSTERED ([username] ASC, [offerID] ASC),
+ CONSTRAINT [FK_127] FOREIGN KEY ([username])  REFERENCES [dbo].[driver]([username]),
+ CONSTRAINT [FK_131] FOREIGN KEY ([offerID])  REFERENCES [dbo].[offer]([offerID])
+);
+GO
+
+
+CREATE NONCLUSTERED INDEX [FK_129] ON [dbo].[activeOffers] 
+ (
+  [username] ASC
+ )
+
+GO
+
+CREATE NONCLUSTERED INDEX [FK_133] ON [dbo].[activeOffers] 
+ (
+  [offerID] ASC
+ )
+
+GO
+
+-- ******************SqlDBM: Microsoft SQL Server * *****************
+-- ******************************************************************
+
+-- ************************************** [dbo].[event]
+CREATE TABLE [dbo].[event]
+(
+ [eventID] uniqueidentifier NOT NULL ,
+ [offerID] uniqueidentifier NOT NULL ,
+ [name]    varchar(50) NOT NULL ,
+ [time]    datetime NOT NULL ,
+
+
+ CONSTRAINT [PK_105] PRIMARY KEY CLUSTERED ([eventID] ASC),
+ CONSTRAINT [FK_106] FOREIGN KEY ([offerID])  REFERENCES [dbo].[offer]([offerID])
+);
+GO
+
+
+CREATE NONCLUSTERED INDEX [FK_108] ON [dbo].[event] 
+ (
+  [offerID] ASC
+ )
+
+GO
+
+-- ******************SqlDBM: Microsoft SQL Server * *****************
+-- ******************************************************************
+
+-- ************************************** [dbo].[favouriteAreas]
+CREATE TABLE [dbo].[favouriteAreas]
+(
+ [area]           varchar(50) NOT NULL ,
+ [driverUsername] varchar(50) NOT NULL ,
+
+
+ CONSTRAINT [PK_141] PRIMARY KEY CLUSTERED ([area] ASC),
+ CONSTRAINT [FK_135] FOREIGN KEY ([driverUsername])  REFERENCES [dbo].[driver]([username])
+);
+GO
+
+
+CREATE NONCLUSTERED INDEX [FK_137] ON [dbo].[favouriteAreas] 
+ (
+  [driverUsername] ASC
+ )
+
+GO
 
 
