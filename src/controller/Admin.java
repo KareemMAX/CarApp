@@ -1,6 +1,10 @@
 package controller;
-
+import model.DiscountManager;
 import view.AdminInterface;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * controller.Admin account class
@@ -8,6 +12,8 @@ import view.AdminInterface;
  * @author Khaled Waleed
  */
 public class Admin extends Account {
+    private List<PublicHolidays> publicHolidays;
+    private ArrayList<String> discountDestination;
 
     /**
      * Creates a new driver account with the parameters as the account details
@@ -29,4 +35,14 @@ public class Admin extends Account {
         return true;
     }
 
+    public void addNewHoliday(Date date, String name) {
+        PublicHolidays holiday = new PublicHolidays(date, name);
+        publicHolidays.add(holiday);
+        holiday.addNewHoliday();
+
+    }
+    public void addDiscountDestination(String destination){
+        discountDestination.add(destination);
+        DiscountManager.getInstance().addDiscountDestination(destination);
+    }
 }
