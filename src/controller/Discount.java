@@ -6,11 +6,12 @@ public class Discount extends Offer {
 
     public Discount(Offer offer, float discount) {
         super(
-            offer.getId(),
-            offer.getRequest(),
-            offer.getOfferPrice(),
-            offer.getDriver()
+                offer.getId(),
+                offer.getRequest(),
+                offer.getOfferPrice(),
+                offer.getDriver()
         );
+        this.offer=offer;
         this.discount = discount;
     }
 
@@ -23,9 +24,34 @@ public class Discount extends Offer {
     }
 
     @Override
-    public float getOfferPrice() {
-        return offer.getOfferPrice() - (offer.getOfferPrice() / (discount / 100));
+    public Request getRequest() {
+        return offer.getRequest();
     }
 
+    @Override
+    public Driver getDriver() {
+        return offer.getDriver();
+    }
 
+    @Override
+    public String getId() {
+        return offer.getId();
+    }
+
+    @Override
+    public float getOfferPrice() {
+        return offer.getOfferPrice() - (offer.getOfferPrice() * (discount / 100));
+    }
+
+    @Override
+    public String toString() {
+        return "Offer{" +
+                "request=" + offer.getRequest() +
+                ", offerPrice=" + getOfferPrice() +
+                ", driver=" + offer.getDriver().getUserName() +
+                ", accepted=" + offer.isAccepted()+
+                ", discount applied=" + discount +" %"+
+
+                '}';
+    }
 }
