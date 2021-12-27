@@ -3,11 +3,11 @@ package controller;
 import model.AccountManager;
 import model.Database;
 import view.CustomerInterface;
-
 import java.sql.Date;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 
 /**
  * A customer account class
@@ -133,6 +133,18 @@ public class Customer extends Account {
     public void setSuspended(boolean b) {
         super.setSuspended(b);
         AccountManager.getInstance().updateAccount(this);
+    }
+    public boolean isBirthDay() {
+        java.util.Date currentDate = new java.util.Date();
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
+        String []dateNow = dateFormat.format(currentDate).toString().split("-");
+        String[] birthdayUser =getBirthday().toString().split("-");
+        for (int i = 1; i < 3; i++) {
+            if (!(birthdayUser[i].equals(dateNow[i]))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
