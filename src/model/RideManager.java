@@ -55,6 +55,10 @@ public class RideManager {
                         table.getFloat("price"),
                         (Driver) accountManager.getAccount(table.getString("driverUsername"))
                 );
+                float discount=DiscountManager.getInstance().getDiscount(offer);
+                if (discount !=0){
+                    offer=new Discount(offer, discount);
+                }
                 result.add(offer);
             }
         } catch (SQLException e) {
@@ -88,7 +92,10 @@ public class RideManager {
         try {
             resultSet.next();
             Offer offer = new Offer(resultSet.getString("offerID"), request, price, driver);
-            EventManager.getInstance().receiveEvent("price added", new Date(),offer);
+            if(DiscountManager.getInstance().calculateDiscount(request) !=0) {
+                DiscountManager.getInstance().addDiscount(offer.getId(), DiscountManager.getInstance().calculateDiscount(request));
+            }
+            EventManager.getInstance().receiveEvent("price added", new Date(), offer);
             request.getUser().notify(offer);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,16 +117,15 @@ public class RideManager {
                         "SET \n" +
                         "    accepted = 1\n" +
                         "WHERE\n" +
-                        " offerID= '" + offer.getId()+"'")) {
+                        " offerID= '" + offer.getId() + "'")) {
                     db.update("DELETE FROM [offer] WHERE accepted=0 and  requestID = '" + offer.getRequest().getId() + "';");
 
                     offer.getDriver().pickUpCustomer(offer);
-                }
-                else{
+                } else {
                     System.out.println("SOMETHING WENT TERRIBLY WRONG");
                 }
             } else {
-                db.update("DELETE FROM [offer] WHERE requestID = '" + offer.getRequest().getId() + "' AND driverUsername= '" + offer.getDriver().getUserName()+"'");
+                db.update("DELETE FROM [offer] WHERE requestID = '" + offer.getRequest().getId() + "' AND driverUsername= '" + offer.getDriver().getUserName() + "'");
             }
 
         } catch (Exception e) {
@@ -199,6 +205,7 @@ public class RideManager {
 
     /**
      * Make a driver subscribe to any new requests in the system
+     *
      * @param driver A driver to be notified
      */
     public void subscribeForRequests(Driver driver) {
@@ -218,12 +225,14 @@ public class RideManager {
     public Driver getLastRideDriver(Customer account) {
         return account.getPastRides().get(account.getPastRides().size() - 1).getDriver();
     }
-    public void rate(Driver driver, Rate rate){
-        db.update("INSERT INTO [rate] VALUES (NewID(), '"+rate.getUser().getUserName()+"','"+driver.getUserName()+"',"+rate.getRateValue()+");");
+
+    public void rate(Driver driver, Rate rate) {
+        db.update("INSERT INTO [rate] VALUES (NewID(), '" + rate.getUser().getUserName() + "','" + driver.getUserName() + "'," + rate.getRateValue() + ");");
     }
 
     /**
      * Gets offer from the database by its ID
+     *
      * @param id ID of the offer
      * @return The offer object
      */
@@ -249,6 +258,10 @@ public class RideManager {
                         (Driver) dbA.getAccount(table.getString("offer.driverUsername")),
                         table.getBoolean("offer.accepted")
                 );
+                float discount = DiscountManager.getInstance().getDiscount(result);
+                if (discount != 0) {
+                    result = new Discount(result, discount);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -257,11 +270,13 @@ public class RideManager {
     }
 
     public void pickUpCustomer(Offer offer) {
-        db.update("Insert Into activeOffers (username,offerID) values"+"('"+offer.getDriver().getUserName()+"','"+offer.getId()+"');");
+        db.update("Insert Into activeOffers (username,offerID) values" + "('" + offer.getDriver().getUserName() + "','" + offer.getId() + "');");
     }
 
     public void dropCustomer(Offer offer) {
-        db.update("DELETE FROM activeOffers WHERE offerID =" + offer.getId()+";");
+        db.update("DELETE FROM activeOffers WHERE offerID =" + offer.getId() + ";");
     }
+
+
 
 }
