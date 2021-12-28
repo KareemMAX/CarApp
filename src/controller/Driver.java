@@ -22,9 +22,11 @@ public class Driver extends Account {
     private boolean verified = false;
     private List<String> favouriteAreas = new ArrayList<>();
     private List<Rate> rates;
-    private List<Offer> activeOffers = new ArrayList<>();
+    private final List<Offer> activeOffers = new ArrayList<>();
+    private float balance = 0;
 
     private final RideManager rideManager = RideManager.getInstance();
+    private final AccountManager accountManager = AccountManager.getInstance();
 
     /**
      * Creates a new driver account with the parameters as the account details
@@ -54,6 +56,7 @@ public class Driver extends Account {
         this.license = license;
         this.verified = verified;
         super.setSuspended(suspended);
+        this.userInterface = new DriverInterface();
     }
 
     /**
@@ -72,6 +75,7 @@ public class Driver extends Account {
         this.license = licence;
         this.nationalID = nationalID;
         this.rates = new ArrayList<>();
+        this.userInterface = new DriverInterface();
     }
 
     /**
@@ -135,7 +139,6 @@ public class Driver extends Account {
      * @return List of Rates
      */
     public List<Rate> getRates() {
-        initRatesFromDB();
         return rates;
     }
 
@@ -162,7 +165,7 @@ public class Driver extends Account {
      */
     public void setVerified(boolean b) {
         this.verified = b;
-        AccountManager.getInstance().updateAccount(this);
+        accountManager.updateAccount(this);
     }
 
     /**
@@ -187,61 +190,6 @@ public class Driver extends Account {
     }
 
     /**
-     * initializes rates array
-     */
-    public void initRatesFromDB() {
-        Database db = Database.getInstance();
-        ArrayList<Rate> rates = new ArrayList<Rate>();
-        ResultSet myRates = db.query("SELECT * FROM rate WHERE driverUsername = '" + getUserName() + "'");
-        try {
-            while (myRates.next()) {
-                Rate rate = new Rate((Customer) AccountManager.getInstance().getAccount(myRates.getString("customerUsername")),
-                        myRates.getFloat("rating"));
-                rates.add(rate);
-            }
-            this.rates = rates;
-        } catch (java.sql.SQLException e) {
-            System.out.println("SQL ERROR");
-        }
-    }
-
-    /**
-     * initializes favourite areas array
-     */
-    public void initFavouriteAreasFromDB() {
-        Database db = Database.getInstance();
-        ArrayList<String> areas = new ArrayList<String>();
-        ResultSet areasTable = db.query("SELECT area FROM favouriteAreas WHERE driverUsername = '" + getUserName() + "'");
-
-        try {
-            while (areasTable.next())
-                areas.add(areasTable.getString("area"));
-            favouriteAreas = areas;
-        } catch (java.sql.SQLException e) {
-            System.out.println("SQL ERROR");
-        }
-    }
-
-    /**
-     * Initializes the active offers from the database
-     */
-    public void initActiveOffersFromDB() {
-        Database db = Database.getInstance();
-        ResultSet activeOffersTable = db.query("SELECT offerID FROM activeOffers WHERE username = '" + getUserName() + "'");
-
-        try {
-            while (activeOffersTable.next())
-                this.activeOffers.add(
-                        rideManager.getOfferById(
-                                activeOffersTable.getString("offerID")
-                        )
-                );
-        } catch (java.sql.SQLException e) {
-            System.out.println("SQL ERROR");
-        }
-    }
-
-    /**
      * Get the average of all ratings submitted on this driver
      *
      * @return Average Rating
@@ -258,7 +206,11 @@ public class Driver extends Account {
     @Override
     public void setSuspended(boolean b) {
         super.setSuspended(b);
-        AccountManager.getInstance().updateAccount(this);
+        accountManager.updateAccount(this);
+    }
+
+    public List<Offer> getActiveOffers() {
+        return activeOffers;
     }
 
     @Override
@@ -281,7 +233,7 @@ public class Driver extends Account {
      * @param newArea The new area to be added
      */
     public void addFavouriteArea(String newArea) {
-        AccountManager.getInstance().addFavouriteArea(this, newArea);
+        accountManager.addFavouriteArea(this, newArea);
         favouriteAreas.add(newArea);
 
     }
@@ -302,6 +254,15 @@ public class Driver extends Account {
      */
     public void setFavouriteAreas(List<String> areas) {
         this.favouriteAreas = areas;
+    }
+
+    /**
+     * Gets the driver's current balance
+     *
+     * @return The current balance
+     */
+    public float getBalance() {
+        return balance;
     }
 
     /**
@@ -348,5 +309,8 @@ public class Driver extends Account {
         eventManager.receiveEvent(event);
         activeOffers.remove(offer);
         rideManager.dropCustomer(offer);
+        balance += offer.getPaidPrice();
+
+        accountManager.updateAccount(this);
     }
 }

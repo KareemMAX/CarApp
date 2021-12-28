@@ -44,6 +44,11 @@ public class Discount extends Offer {
     }
 
     @Override
+    public float getPaidPrice() {
+        return offer.getPaidPrice();
+    }
+
+    @Override
     public String toString() {
         return "Offer{" +
                 "request=" + offer.getRequest() +

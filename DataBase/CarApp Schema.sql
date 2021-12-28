@@ -90,6 +90,7 @@ CREATE TABLE [dbo].[driver]
     [license]     varchar(20) NOT NULL,
     [suspended]   bit         NOT NULL,
     [verified]    bit         NOT NULL,
+    [balance]     float       NOT NULL      DEFAULT 0
 
 
     CONSTRAINT [PK_22] PRIMARY KEY CLUSTERED ([username] ASC),

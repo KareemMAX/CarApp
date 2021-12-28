@@ -1,12 +1,14 @@
 package view;
 
 import controller.Driver;
+import controller.Offer;
 import controller.Rate;
 import controller.Request;
 import model.AuthenticationManager;
 import model.RideManager;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -25,7 +27,9 @@ public class DriverInterface implements UserInterface {
         System.out.println("1. Add Favourite Area");
         System.out.println("2. Show Requests");
         System.out.println("3. Show Ratings");
-        System.out.println("4. Logout");
+        System.out.println("4. Show active rides");
+        System.out.println("5. Show balance");
+        System.out.println("6. Logout");
         int choice = scan.nextInt();
         switch (choice) {
             case 1 -> {
@@ -64,6 +68,28 @@ public class DriverInterface implements UserInterface {
                 }
             }
             case 4 -> {
+                List<Offer> activeOffers = currentAccount.getActiveOffers();
+                int counter = 1;
+                for (Offer offer :
+                        activeOffers) {
+                    System.out.print(counter);
+                    System.out.println(". " + offer.toString());
+                    counter++;
+                }
+                System.out.println("Choose a ride to drop the customer:");
+                System.out.println("Enter -1 to exit");
+                System.out.print("-> ");
+                int index = scan.nextInt();
+                if (index == -1)
+                    return;
+
+                Offer chosenOffer = activeOffers.get(index - 1);
+                currentAccount.dropCustomer(chosenOffer);
+            }
+            case 5 -> {
+                System.out.println("Balance: " + currentAccount.getBalance());
+            }
+            case 6 -> {
                 AuthenticationManager.getInstance().logout();
             }
         }

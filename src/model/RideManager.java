@@ -239,26 +239,39 @@ public class RideManager {
      * @return The offer object
      */
     public Offer getOfferById(String id) {
+        return getOfferById(id, null);
+    }
+
+    /**
+     * Gets offer from the database by its ID
+     *
+     * @param id ID of the offer
+     * @param driver The driver offering the offer
+     * @return The offer object
+     */
+    public Offer getOfferById(String id, Driver driver) {
         AccountManager dbA = AccountManager.getInstance();
         ResultSet table = db.query("SELECT request.requestID, request.[source], request.destination, " +
                 "request.customerUsername, request.numberOfPassengers, offer.price, offer.accepted, offer.driverUsername" +
-                " FROM offer LEFT jOIN request on request.requestID=offer.requestID WHERE offer.offerID = " + id + ";");
+                " FROM offer LEFT jOIN request on request.requestID=offer.requestID WHERE offer.offerID = '" + id + "';");
         Offer result = null;
         try {
             while (table.next()) {
                 Request request = new Request(
-                        table.getString("request.requestID"),
-                        table.getString("request.[source]"),
-                        table.getString("request.destination"),
-                        (Customer) dbA.getAccount(table.getString("request.customerUsername")),
-                        table.getInt("request.numberOfPassengers")
+                        table.getString("requestID"),
+                        table.getString("source"),
+                        table.getString("destination"),
+                        (Customer) dbA.getAccount(table.getString("customerUsername")),
+                        table.getInt("numberOfPassengers")
                 );
+
                 result = new Offer(
                         id,
                         request,
-                        table.getFloat("offer.price"),
-                        (Driver) dbA.getAccount(table.getString("offer.driverUsername")),
-                        table.getBoolean("offer.accepted")
+                        table.getFloat("price"),
+                        driver == null ?
+                        (Driver) dbA.getAccount(table.getString("driverUsername")) : driver,
+                        table.getBoolean("accepted")
                 );
                 float discount = DiscountManager.getInstance().getDiscount(result);
                 if (discount != 0) {
@@ -276,7 +289,7 @@ public class RideManager {
     }
 
     public void dropCustomer(Offer offer) {
-        db.update("DELETE FROM activeOffers WHERE offerID =" + offer.getId() + ";");
+        db.update("DELETE FROM activeOffers WHERE offerID ='" + offer.getId() + "';");
     }
 
 

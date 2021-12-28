@@ -62,6 +62,14 @@ public class Offer {
     }
 
     /**
+     * The offer price paid to the driver
+     * @return The offer price paid to the driver
+     */
+    public float getPaidPrice() {
+        return offerPrice;
+    }
+
+    /**
      * The {@link Driver} object offering
      * @return The {@link Driver} object offering
      */
