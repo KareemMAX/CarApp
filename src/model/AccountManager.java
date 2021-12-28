@@ -129,7 +129,13 @@ public class AccountManager {
             adminModel.updateAccount(admin);
         }
     }
+
+    /**
+     * Adds a favourite area for the driver
+     * @param driver The driver
+     * @param area The area to be added
+     */
     public void addFavouriteArea(Driver driver,String area){
-        db.update("INSERT INTO [favouriteAreas] values('"+area+"','"+driver.getUserName()+"')");
+        driverModel.addFavouriteArea(driver, area);
     }
 }
