@@ -7,6 +7,7 @@ import model.AuthenticationManager;
 import view.UserInterface;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -27,7 +28,7 @@ public class AdminInterface implements UserInterface {
         int choice = scan.nextInt();
         switch (choice) {
             case 1 -> {
-                ArrayList<Driver> drivers = AccountManager.getInstance().getAllAccounts("Driver");
+                List<Driver> drivers = AccountManager.getInstance().getAllAccounts("Driver");
                 int counter = 1;
                 for (Driver driver : drivers) {
                     System.out.print(counter);
@@ -52,7 +53,7 @@ public class AdminInterface implements UserInterface {
                 }
             }
             case 2 -> {
-                ArrayList<Customer> customers = AccountManager.getInstance().getAllAccounts("Customer");
+                List<Customer> customers = AccountManager.getInstance().getAllAccounts("Customer");
                 int counter = 1;
                 for (Customer customer : customers) {
                     System.out.print(counter);
