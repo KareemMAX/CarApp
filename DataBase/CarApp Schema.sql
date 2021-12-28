@@ -301,7 +301,7 @@ GO
 
 CREATE NONCLUSTERED INDEX [FK_151] ON [discount]
     (
-     [offerID] ASC
+     [discountID] ASC
         )
 
 GO
