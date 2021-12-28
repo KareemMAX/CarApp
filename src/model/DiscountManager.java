@@ -15,6 +15,8 @@ public class DiscountManager {
 
     private static DiscountManager singletonInstance;
 
+    private DiscountManager() {}
+
     public static DiscountManager getInstance() {
         if (singletonInstance == null) singletonInstance = new DiscountManager();
         return singletonInstance;
@@ -26,7 +28,7 @@ public class DiscountManager {
 
     }
 
-    public ArrayList getAllPublicHolidays() {
+    public ArrayList<PublicHolidays> getAllPublicHolidays() {
         ArrayList<PublicHolidays> allHolidays = new ArrayList<PublicHolidays>();
         ResultSet resultSet = Database.getInstance().query("SELECT * FROM publicHolidays");
         try {
@@ -42,7 +44,7 @@ public class DiscountManager {
         return allHolidays;
     }
 
-    public ArrayList getAllPublicHolidaysDate() {
+    public ArrayList<Date> getAllPublicHolidaysDate() {
         ArrayList<Date> allHolidays = new ArrayList<Date>();
         ResultSet resultSet = Database.getInstance().query("SELECT date FROM publicHolidays");
         try {

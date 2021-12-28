@@ -88,7 +88,7 @@ public class EventManager
         ResultSet table;
         String query =  "SELECT * FROM event " +
                         "LEFT JOIN offer " +
-                        "ON event.offerID = offer.offerID"+
+                        "ON event.offerID = offer.offerID "+
                         "LEFT JOIN request " +
                         "ON offer.requestID = request.requestID";
         table = db.query(query);

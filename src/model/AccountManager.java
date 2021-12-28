@@ -18,6 +18,8 @@ public class AccountManager {
     private static AccountManager singletonInstance;
     private final Database db = Database.getInstance();
 
+    private AccountManager() {}
+
     /**
      * Gets a singleton instance
      *

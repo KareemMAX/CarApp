@@ -17,6 +17,7 @@ public class AuthenticationManager {
     private Account currentAccount;
     private static AuthenticationManager singletonInstance;
 
+    private AuthenticationManager() {}
 
     /**
      * Applying the Singleton Design pattern by only allowing getting the instance

@@ -20,6 +20,8 @@ import java.util.List;
 public class RideManager {
     private static RideManager singletonInstance;
 
+    private RideManager() {}
+
     /**
      * Gets the singleton instance of the class
      *
