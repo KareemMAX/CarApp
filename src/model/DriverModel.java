@@ -32,15 +32,8 @@ public class DriverModel  extends AccountModel<Driver>{
 
         try {
             while (table.next()) {
-                Driver current = new Driver(table.getString("username"),
-                        table.getString("password"),
-                        table.getString("email"),
-                        table.getString("phoneNumber"),
-                        table.getString("national_id"),
-                        table.getString("license"),
-                        table.getBoolean("suspended"),
-                        table.getBoolean("verified")
-                );
+                Driver current = createDriverFromResultSet(table);
+
                 result.add(current);
             }
         } catch (java.sql.SQLException e) {
@@ -56,18 +49,26 @@ public class DriverModel  extends AccountModel<Driver>{
         try {
             if(!table.next()) return null;
 
-            return new Driver(
-                    table.getString("username"),
-                    table.getString("password"),
-                    table.getString("email"),
-                    table.getString("phoneNumber"),
-                    table.getString("national_id"),
-                    table.getString("license"),
-                    table.getBoolean("suspended"),
-                    table.getBoolean("verified")
-            );
+            return createDriverFromResultSet(table);
         } catch (SQLException ignored) {}
         return null;
+    }
+
+    private Driver createDriverFromResultSet(ResultSet table) throws SQLException {
+        Driver driver = new Driver(
+                table.getString("username"),
+                table.getString("password"),
+                table.getString("email"),
+                table.getString("phoneNumber"),
+                table.getString("national_id"),
+                table.getString("license"),
+                table.getBoolean("suspended"),
+                table.getBoolean("verified")
+        );
+        driver.initFavouriteAreasFromDB();
+        driver.initRatesFromDB();
+        driver.initActiveOffersFromDB();
+        return driver;
     }
 
     @Override

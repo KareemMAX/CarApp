@@ -211,11 +211,11 @@ public class Driver extends Account {
     public void initFavouriteAreasFromDB() {
         Database db = Database.getInstance();
         ArrayList<String> areas = new ArrayList<String>();
-        ResultSet areasTable = db.query("SELECT favourite_place FROM favourite_places WHERE driver_id = '" + getUserName() + "'");
+        ResultSet areasTable = db.query("SELECT area FROM favouriteAreas WHERE driverUsername = '" + getUserName() + "'");
 
         try {
             while (areasTable.next())
-                areas.add(areasTable.getString("favourite_place"));
+                areas.add(areasTable.getString("area"));
             favouriteAreas = areas;
         } catch (java.sql.SQLException e) {
             System.out.println("SQL ERROR");
