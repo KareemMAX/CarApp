@@ -2,9 +2,7 @@ package api;
 
 
 import controller.*;
-import model.AuthenticationManager;
-import model.DiscountManager;
-import model.EventManager;
+import model.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,6 +50,24 @@ public class Route {
     @PutMapping("admin/discount/add")
     public void addDiscountDestination(@RequestBody String destination){
         DiscountManager.getInstance().addDiscountDestination(destination);
+    }
+    @GetMapping("admin/alldrivers")
+    public List<Driver> getALlDriver(){
+        return AccountManager.getInstance().getAllAccounts("driver");
+    }
+    @GetMapping("admin/allcustomer")
+    public List<Customer> getALlCustomer(){
+        return AccountManager.getInstance().getAllAccounts("customer");
+    }
+    @PostMapping("admin/verify/{userName}")
+    public void setVerify(@PathVariable String userName,@RequestParam boolean verified){
+       Driver driver=(Driver) AccountManager.getInstance().getAccount(userName);
+       driver.setVerified(verified);
+    }
+    @PostMapping("admin/suspend/{userName}")
+    public void setSuspend(@PathVariable String userName,@RequestParam boolean suspended){
+        Account account= AccountManager.getInstance().getAccount(userName);
+        account.setSuspended(suspended);
     }
 
 }

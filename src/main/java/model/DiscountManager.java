@@ -27,6 +27,18 @@ public class DiscountManager {
                 holiday.getPublicHolidayDate() + "', '" + holiday.getName() + "')");
 
     }
+    public boolean searchForDestination(String destination) throws SQLException {
+        ResultSet resultSet = db.query("SELECT * FROM discountDestination WHERE destination=" + destination);
+        return resultSet.next();
+    }
+
+    public boolean deleteDiscountDestination(String destination) throws SQLException {
+        if (searchForDestination(destination)) {
+            Database.getInstance().update("DELETE FROM discountDestination WHERE destination=" + destination);
+            return true;
+        }
+        return false;
+    }
 
     public ArrayList<PublicHolidays> getAllPublicHolidays() {
         ArrayList<PublicHolidays> allHolidays = new ArrayList<PublicHolidays>();
