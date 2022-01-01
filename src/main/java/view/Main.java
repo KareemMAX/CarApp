@@ -43,7 +43,7 @@ public class Main {
                     }
                 }
             } else {
-                AuthenticationManager.getInstance().getCurrentAccount().userInterface.userDashboard();
+                AuthenticationManager.getInstance().getCurrentAccount().getUserInterface().userDashboard();
             }
         }
     }

@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import view.UserInterface;
 
 /**
@@ -9,7 +10,8 @@ import view.UserInterface;
  */
 public abstract class Account {
     public String password = "";
-    public UserInterface userInterface;
+    @JsonIgnore
+    private UserInterface userInterface;
     private String userName = "";
     private boolean suspended = false;
 
@@ -22,6 +24,10 @@ public abstract class Account {
     public Account(String userName, String password) {
         this.userName = userName;
         this.password = password;
+    }
+
+    public Account(){
+
     }
 
     /**
@@ -58,8 +64,29 @@ public abstract class Account {
         return userName;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public String toString() {
         return "suspended=" + suspended;
+    }
+
+    @JsonIgnore
+    public UserInterface getUserInterface() {
+        return userInterface;
+    }
+
+    public void setUserInterface(UserInterface userInterface) {
+        this.userInterface = userInterface;
     }
 }

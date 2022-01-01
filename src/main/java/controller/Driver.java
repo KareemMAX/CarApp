@@ -44,7 +44,7 @@ public class Driver extends Account {
         this.phoneNumber = phoneNumber;
         this.license = licence;
         this.nationalID = nationalID;
-        this.userInterface = new DriverInterface();
+        setUserInterface(new DriverInterface());
         this.rates = new ArrayList<>();
     }
 
@@ -56,7 +56,7 @@ public class Driver extends Account {
         this.license = license;
         this.verified = verified;
         super.setSuspended(suspended);
-        this.userInterface = new DriverInterface();
+        setUserInterface(new DriverInterface());
     }
 
     /**
@@ -75,7 +75,7 @@ public class Driver extends Account {
         this.license = licence;
         this.nationalID = nationalID;
         this.rates = new ArrayList<>();
-        this.userInterface = new DriverInterface();
+        setUserInterface(new DriverInterface());
     }
 
     /**

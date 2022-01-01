@@ -307,4 +307,27 @@ CREATE NONCLUSTERED INDEX [FK_151] ON [discount]
 
 GO
 
+-- ******************SqlDBM: Microsoft SQL Server * *****************
+-- ******************************************************************
+
+-- ************************************** [dbo].[tokens]
+CREATE TABLE [dbo].[tokens]
+(
+    [token]    uniqueidentifier NOT NULL ,
+    [username] varchar(50) NOT NULL ,
+
+
+    CONSTRAINT [PK_181] PRIMARY KEY CLUSTERED ([token] ASC),
+    CONSTRAINT [FK_158] FOREIGN KEY ([username])  REFERENCES [dbo].[account]([username])
+    );
+GO
+
+
+CREATE NONCLUSTERED INDEX [FK_160] ON [dbo].[tokens]
+ (
+  [username] ASC
+ )
+
+GO
+
 

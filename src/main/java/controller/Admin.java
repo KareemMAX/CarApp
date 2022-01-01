@@ -1,6 +1,7 @@
 package controller;
 import model.DiscountManager;
 import view.AdminInterface;
+import view.DriverInterface;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +24,7 @@ public class Admin extends Account {
      */
     public Admin(String username, String password) {
         super(username, password);
-        this.userInterface = new AdminInterface();
+        setUserInterface(new AdminInterface());
     }
 
     /**

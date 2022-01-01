@@ -2,6 +2,7 @@ package controller;
 
 import model.AccountManager;
 import model.Database;
+import view.AdminInterface;
 import view.CustomerInterface;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -33,7 +34,7 @@ public class Customer extends Account {
         super(userName, password);
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.userInterface = new CustomerInterface();
+        setUserInterface(new CustomerInterface());
         this.birthday = birthday;
     }
 
@@ -58,6 +59,16 @@ public class Customer extends Account {
         super(userName, password);
         this.phoneNumber = phoneNumber;
         this.birthday = birthday;
+    }
+
+    public Customer(String username, String password, String phoneNumber, String birthday) {
+        super(username, password);
+        this.phoneNumber = phoneNumber;
+        this.birthday = Date.valueOf(birthday);
+    }
+
+    public Customer(){
+
     }
 
     /**
