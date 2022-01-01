@@ -27,14 +27,18 @@ public class DiscountManager {
                 holiday.getPublicHolidayDate() + "', '" + holiday.getName() + "')");
 
     }
-    public boolean searchForDestination(String destination) throws SQLException {
-        ResultSet resultSet = db.query("SELECT * FROM discountDestination WHERE destination=" + destination);
-        return resultSet.next();
+    public boolean searchForDestination(String destination) {
+        ResultSet resultSet = db.query("SELECT * FROM discountDestination WHERE destination='" + destination + "';");
+        try {
+            return resultSet.next();
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
-    public boolean deleteDiscountDestination(String destination) throws SQLException {
+    public boolean deleteDiscountDestination(String destination) {
         if (searchForDestination(destination)) {
-            Database.getInstance().update("DELETE FROM discountDestination WHERE destination=" + destination);
+            Database.getInstance().update("DELETE FROM discountDestination WHERE destination='" + destination + "';");
             return true;
         }
         return false;

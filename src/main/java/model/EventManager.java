@@ -52,7 +52,7 @@ public class EventManager
         String z=":"; //time separator
         calender.setTime(date);
         int year = calender.get(Calendar.YEAR);
-        int month = calender.get(Calendar.MONTH);
+        int month = calender.get(Calendar.MONTH) + 1;
         int day = calender.get(Calendar.DAY_OF_MONTH);
         int hour = calender.get(Calendar.HOUR_OF_DAY);
         int min = calender.get(Calendar.MINUTE);
@@ -60,8 +60,14 @@ public class EventManager
         String sDate = String.valueOf(year)+x+month+x+day+' ';
         sDate+= hour+z+min+z+sec;
 
+        String id;
+        if (name.equals("price added"))
+            id = offer.getRequest().getId();
+        else
+            id = offer.getId();
+
         //Build the query
-        db.update("INSERT into event VALUES (NewID() ,'"+offer.getId()+"' ,'"+name+"' ,'"+sDate+"')");
+        db.update("INSERT into event VALUES (NewID() ,'"+id+"' ,'"+name+"' ,'"+sDate+"')");
 
     }
 

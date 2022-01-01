@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import model.AccountManager;
 import model.Database;
 import model.EventManager;
@@ -76,6 +77,10 @@ public class Driver extends Account {
         this.nationalID = nationalID;
         this.rates = new ArrayList<>();
         setUserInterface(new DriverInterface());
+    }
+
+    public Driver() {
+
     }
 
     /**
@@ -209,6 +214,7 @@ public class Driver extends Account {
         accountManager.updateAccount(this);
     }
 
+    @JsonIgnore
     public List<Offer> getActiveOffers() {
         return activeOffers;
     }
@@ -285,6 +291,14 @@ public class Driver extends Account {
     }
 
     /**
+     * Called when the customer accepts the driver's offer
+     * @param offer The offer to be added
+     */
+    public void acceptCustomer(Offer offer) {
+        activeOffers.add(offer);
+    }
+
+    /**
      * Adds the offer to the current active offers of the driver
      *
      * @param offer The offer to be active
@@ -294,7 +308,6 @@ public class Driver extends Account {
         EventManager eventManager = EventManager.getInstance();
         Event event = new Event("Pick up",new Date(),offer);
         eventManager.receiveEvent(event);
-        activeOffers.add(offer);
         rideManager.pickUpCustomer(offer);
     }
 

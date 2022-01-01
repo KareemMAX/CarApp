@@ -255,7 +255,6 @@ CREATE TABLE [dbo].[event]
 
 
     CONSTRAINT [PK_105] PRIMARY KEY CLUSTERED ([eventID] ASC),
-    CONSTRAINT [FK_106] FOREIGN KEY ([offerID]) REFERENCES [dbo].[offer] ([offerID])
 );
 GO
 
@@ -296,6 +295,7 @@ CREATE TABLE [discount]
 
     CONSTRAINT [PK_144] PRIMARY KEY CLUSTERED ([discountID] ASC),
     CONSTRAINT [FK_149] FOREIGN KEY ([discountID]) REFERENCES [dbo].[offer] ([offerID])
+        ON UPDATE CASCADE ON DELETE CASCADE
 );
 GO
 

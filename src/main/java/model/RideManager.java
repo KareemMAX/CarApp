@@ -122,14 +122,12 @@ public class RideManager {
                         " offerID= '" + offer.getId() + "'")) {
                     db.update("DELETE FROM [offer] WHERE accepted=0 and  requestID = '" + offer.getRequest().getId() + "';");
 
-                    offer.getDriver().pickUpCustomer(offer);
-                } else {
-                    System.out.println("SOMETHING WENT TERRIBLY WRONG");
+                    db.update("Insert Into activeOffers (username,offerID) values" + "('" + offer.getDriver().getUserName() + "','" + offer.getId() + "');");
                 }
             } else {
                 db.update("DELETE FROM [offer] WHERE requestID = '" + offer.getRequest().getId() + "' AND driverUsername= '" + offer.getDriver().getUserName() + "'");
             }
-
+            offer.getDriver().acceptCustomer(offer);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -198,6 +196,33 @@ public class RideManager {
                         table.getInt("numberOfPassengers")
                 );
                 result.add(request);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * Gets request from the database by its ID
+     *
+     * @param id ID of the request
+     * @return The offer object
+     */
+    public Request getRequestById(String id) {
+        AccountManager dbA = AccountManager.getInstance();
+        ResultSet table = db.query("SELECT requestID, [source], destination, " +
+                "customerUsername, numberOfPassengers FROM request WHERE requestID = '" + id + "';");
+        Request result = null;
+        try {
+            while (table.next()) {
+                result = new Request(
+                        table.getString("requestID"),
+                        table.getString("source"),
+                        table.getString("destination"),
+                        (Customer) dbA.getAccount(table.getString("customerUsername")),
+                        table.getInt("numberOfPassengers")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -285,7 +310,7 @@ public class RideManager {
     }
 
     public void pickUpCustomer(Offer offer) {
-        db.update("Insert Into activeOffers (username,offerID) values" + "('" + offer.getDriver().getUserName() + "','" + offer.getId() + "');");
+
     }
 
     public void dropCustomer(Offer offer) {

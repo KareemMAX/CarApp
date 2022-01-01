@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import model.RideManager;
 
 import java.util.List;
@@ -83,6 +84,7 @@ public class Request {
      *
      * @return A list of {@link Offer} that contains a price and a {@link Driver}
      */
+    @JsonIgnore
     public List<Offer> getAllOffers() {
         return rideManager.listOffers(this);
     }

@@ -27,7 +27,7 @@ public class Database {
     private Connection connection;
 
     private Database() {
-        String connectionUrl = "jdbc:sqlserver://localhost;databaseName=car_app;user=car2;password=123456789";
+        String connectionUrl = "jdbc:sqlserver://localhost;databaseName=car_app;user=car;password=1234567890";
 
         try {
             connection = DriverManager.getConnection(connectionUrl);

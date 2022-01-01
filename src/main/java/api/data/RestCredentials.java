@@ -1,6 +1,6 @@
-package api;
+package api.data;
 
-public class creds {
+public class RestCredentials {
     private String username;
     private String password;
 

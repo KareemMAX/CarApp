@@ -1,0 +1,757 @@
+{
+	"info": {
+		"_postman_id": "443d139e-9d6f-46cc-a5ff-ca0301070749",
+		"name": "CarApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login Customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"andrew\",\r\n    \"password\": \"andrew\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}\\login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Driver",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"khaled\",\r\n    \"password\": \"khaled\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}\\login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}\\logout",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getLogs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}\\admin\\logs",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"admin",
+						"logs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getHolidays",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}\\admin\\holiday\\view",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"admin",
+						"holiday",
+						"view"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addHolidays",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"25 Jan\",\r\n    \"date\": \"2011-01-25\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}\\admin\\holiday\\add",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"admin",
+						"holiday",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDiscountDestination",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/admin/discount/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"admin",
+						"discount",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addDiscountDestination",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/admin/discount/:destination",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"admin",
+						"discount",
+						":destination"
+					],
+					"variable": [
+						{
+							"key": "destination",
+							"value": "dokii"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteDiscountDestination",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/admin/discount/:destination",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"admin",
+						"discount",
+						":destination"
+					],
+					"variable": [
+						{
+							"key": "destination",
+							"value": "giza"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all drivers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/admin/drivers",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"admin",
+						"drivers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all customers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/admin/customers",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"admin",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/admin/verify/:userName?verified=true",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"admin",
+						"verify",
+						":userName"
+					],
+					"query": [
+						{
+							"key": "verified",
+							"value": "true"
+						}
+					],
+					"variable": [
+						{
+							"key": "userName",
+							"value": "khaled"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Suspend",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/admin/suspend/:userName?suspended=true",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"admin",
+						"suspend",
+						":userName"
+					],
+					"query": [
+						{
+							"key": "suspended",
+							"value": "true"
+						}
+					],
+					"variable": [
+						{
+							"key": "userName",
+							"value": "kareem"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Customer",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\": \"andrew\",\r\n    \"userName\": \"andrew\",\r\n    \"email\": \"asfkjasld@a7a.zby\",\r\n    \"phoneNumber\": \"01123456789\",\r\n    \"birthday\": \"2010-02-11\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/customer/register",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"customer",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request Ride",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"source\": \"doki\",\r\n    \"destination\": \"cairo\",\r\n    \"numberOfPassengers\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/customer/request",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"customer",
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rate",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/customer/rate/:driverUsername?rate=3",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"customer",
+						"rate",
+						":driverUsername"
+					],
+					"query": [
+						{
+							"key": "rate",
+							"value": "3"
+						}
+					],
+					"variable": [
+						{
+							"key": "driverUsername",
+							"value": "khaled"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get customer offers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/customer/offers",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"customer",
+						"offers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Accept offer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/customer/offers/:offerId/accept",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"customer",
+						"offers",
+						":offerId",
+						"accept"
+					],
+					"variable": [
+						{
+							"key": "offerId",
+							"value": "9F824396-EA6E-40E9-A6B4-D2E23EE95F98"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reject Offer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/customer/offers/:offerId/reject",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"customer",
+						"offers",
+						":offerId",
+						"reject"
+					],
+					"variable": [
+						{
+							"key": "offerId",
+							"value": "F8D1562C-6014-4FAE-A513-5ADE7BF13123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get past rides",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/customer/pastrides",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"customer",
+						"pastrides"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Driver",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\": \"khaled\",\r\n    \"userName\": \"khaled\",\r\n    \"email\": \"asfkjasld@a7a.zby\",\r\n    \"phoneNumber\": \"01123456789\",\r\n    \"nationalID\": \"2001\",\r\n    \"license\": \"2001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/driver/register",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"driver",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get favourite areas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/driver/favouritearea",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"driver",
+						"favouritearea"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add favourite areas",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/driver/favouritearea/:area",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"driver",
+						"favouritearea",
+						":area"
+					],
+					"variable": [
+						{
+							"key": "area",
+							"value": "giza"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete favourite areas",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/driver/favouritearea/:area",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"driver",
+						"favouritearea",
+						":area"
+					],
+					"variable": [
+						{
+							"key": "area",
+							"value": "giza"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all requests",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/driver/requests",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"driver",
+						"requests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make offer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/driver/offer/:requestID?price=50",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"driver",
+						"offer",
+						":requestID"
+					],
+					"query": [
+						{
+							"key": "price",
+							"value": "50"
+						}
+					],
+					"variable": [
+						{
+							"key": "requestID",
+							"value": "BF7A35CB-D081-403B-856F-A5C01EBEC74E"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all ratings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/driver/ratings",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"driver",
+						"ratings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get active rides",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/driver/activerides",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"driver",
+						"activerides"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get profile",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/driver/profile",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"driver",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pickup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/driver/pickup/:offerId",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"driver",
+						"pickup",
+						":offerId"
+					],
+					"variable": [
+						{
+							"key": "offerId",
+							"value": "9F824396-EA6E-40E9-A6B4-D2E23EE95F98"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Drop",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/driver/drop/:offerId",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"driver",
+						"drop",
+						":offerId"
+					],
+					"variable": [
+						{
+							"key": "offerId",
+							"value": "9F824396-EA6E-40E9-A6B4-D2E23EE95F98"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "localhost:8080"
+		}
+	]
+}

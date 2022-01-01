@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import model.AccountManager;
 import model.Database;
 import view.AdminInterface;
@@ -103,6 +104,7 @@ public class Customer extends Account {
      *
      * @return A list of accepted offers
      */
+    @JsonIgnore
     public List<Offer> getPastRides() {
         initPastRidesFromDB();
         return pastRides;
@@ -145,6 +147,8 @@ public class Customer extends Account {
         super.setSuspended(b);
         AccountManager.getInstance().updateAccount(this);
     }
+
+    @JsonIgnore
     public boolean isBirthDay() {
         java.util.Date currentDate = new java.util.Date();
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
