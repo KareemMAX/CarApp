@@ -87,7 +87,7 @@ public class Discount extends Offer {
      */
     @Override
     public float getPaidPrice() {
-        return offer.getPaidPrice() - (offer.getOfferPrice() * (discount / 100));
+        return offer.getPaidPrice();
     }
 
     @Override
